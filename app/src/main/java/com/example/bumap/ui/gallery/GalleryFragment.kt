@@ -26,6 +26,7 @@ class GalleryFragment : Fragment() {
         galleryViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
+
         return root
     }
 }

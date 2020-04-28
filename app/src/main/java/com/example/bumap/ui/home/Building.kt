@@ -10,7 +10,7 @@ class Building (){
 
 }
 
-class Location(){
+class Location() {
     lateinit var lat : String
     lateinit var lng : String
 }
