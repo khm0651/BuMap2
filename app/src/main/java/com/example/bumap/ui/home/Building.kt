@@ -16,6 +16,10 @@ class Location() {
 }
 
 class Floor(){
+    var roomNumber : HashMap<String,RoomNumber> = HashMap()
+}
+
+class RoomNumber(){
     var room : HashMap<String,Room> = HashMap()
 }
 
