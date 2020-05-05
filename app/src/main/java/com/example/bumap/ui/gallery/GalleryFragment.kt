@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.bumap.R
+import com.google.firebase.database.FirebaseDatabase
 
 class GalleryFragment : Fragment() {
 

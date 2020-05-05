@@ -1,5 +1,6 @@
 val database = FirebaseDatabase.getInstance()
         val myRef = database.getReference("WelfareBuilding")
+
         myRef.child("high").setValue("5")
         myRef.child("low").setValue("-1")
         myRef.child("floor").child("B1").child("B105").child("name").setValue("복사점")
@@ -50,9 +51,9 @@ val database = FirebaseDatabase.getInstance()
         myRef.child("floor").child("1").child("106").child("location").child("lat").setValue("36.840770")
         myRef.child("floor").child("1").child("106").child("location").child("lng").setValue("127.182366")
 
-        myRef.child("floor").child("1").child("ATM").child("name").setValue("신한")
-        myRef.child("floor").child("1").child("ATM").child("location").child("lat").setValue("36.840730")
-        myRef.child("floor").child("1").child("ATM").child("location").child("lng").setValue("127.182456")
+        myRef.child("floor").child("1").child("ATM-1").child("name").setValue("신한")
+        myRef.child("floor").child("1").child("ATM-1").child("location").child("lat").setValue("36.840730")
+        myRef.child("floor").child("1").child("ATM-1").child("location").child("lng").setValue("127.182456")
 
         myRef.child("floor").child("1").child("ATM").child("name").setValue("국민")
         myRef.child("floor").child("1").child("ATM").child("location").child("lat").setValue("36.840750")
