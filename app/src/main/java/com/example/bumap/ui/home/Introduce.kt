@@ -4,10 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.view.ViewGroup
-import android.view.Window
-import android.view.WindowManager
+import android.view.*
 import android.widget.AdapterView
 import android.widget.Button
 import android.widget.LinearLayout
@@ -218,7 +215,15 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
                     marker.width =40
                     marker.height=60
                     roomMaker.room.set(roomNumber,marker)
+
                 }
+                showFloor = arrayListOf()
+                total_list.get(selectFloor)!!.split(",").forEach { s->
+                    showFloor.add(s)
+                }
+                room_list.adapter=HBaseAdapter(this@Introduce,showFloor)
+                room_list.onItemClickListener = adapterListener
+                room_list.deferNotifyDataSetChanged()
             }else{
                 for(roomNumber in building.floor.get("floor")?.roomNumber?.get(floor)!!.room.keys){
                     Log.d("test",roomNumber);
@@ -238,44 +243,105 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
             if(i == 0) continue
             var floor_btn : Button = Button(this)
             floor_btn.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT)
-            if(i<0) floor_btn.setText("B"+i.absoluteValue.toString()) else floor_btn.setText(i.toString())
+            var floor:String
+            if(i<0){
+                floor_btn.setText("B"+i.absoluteValue.toString())
+                floor = "B"+i.absoluteValue.toString()
+            } else {
+                floor_btn.setText(i.toString())
+                floor=i.toString()
+            }
             floor_layout.addView(floor_btn)
             floor_btn_arr.set(i.toString(),floor_btn)
-            floor_btn.setOnClickListener{v: View? ->
-                if(selectMarker!=null) { //선택한 마커가 있는경우 끄기
-                    selectMarker!!.map=null
+            if(floor_maker.containsKey(floor) ){
+                floor_btn.setOnClickListener{v: View? ->
+                    var clickFloor :String =floor_btn.text.toString()
+                    if(selectMarker!=null) { //선택한 마커가 있는경우 끄기
+                        selectMarker!!.map=null
+                    }
+
+                    if(isMarkerOn && floor_btn.text.equals(selectFloor) && floor_maker.containsKey(clickFloor)){ // 마커 끄기
+                        for (roomNumber in floor_maker.get(selectFloor)!!.room.keys){
+                            floor_maker.get(selectFloor)!!.room.get(roomNumber)!!.map=null
+                        }
+                        isMarkerOn=false
+                    }else if(!floor_btn.text.equals(selectFloor)){ // 다른층 마커 키기 및 리스트 메뉴 교체
+                        if(floor_maker.containsKey(selectFloor)){
+                            for (roomNumber in floor_maker.get(selectFloor)!!.room.keys){
+                                floor_maker.get(selectFloor)!!.room.get(roomNumber)!!.map=null
+                            }
+                        }
+
+                        for(roomNumber in floor_maker.get(floor_btn.text.toString())!!.room.keys){
+                            floor_maker.get(floor_btn.text.toString())!!.room.get(roomNumber)!!.map=naverMap
+                        }
+
+                        selectFloor=floor_btn.text.toString()
+                        isMarkerOn=true
+
+                    }else{ //마커 끈 상태에서 마커 키기
+                        if(floor_maker.containsKey(clickFloor)){
+                            for (roomNumber in floor_maker.get(selectFloor)!!.room.keys){
+                                floor_maker.get(selectFloor)!!.room.get(roomNumber)!!.map=naverMap
+                            }
+                            isMarkerOn=true
+                        }
+                    }
+                    showFloor = arrayListOf()
+                    total_list.get(selectFloor)!!.split(",").forEach { s->
+                        showFloor.add(s)
+                    }
+                    room_list.adapter=HBaseAdapter(this@Introduce,showFloor)
+                    room_list.onItemClickListener = adapterListener
                 }
+            }else{
+                floor_btn.setOnClickListener{v: View? ->
+                    var clickFloor :String =floor_btn.text.toString()
 
-                if(isMarkerOn && floor_btn.text.equals(selectFloor)){ // 마커 끄기
-                    for (roomNumber in floor_maker.get(selectFloor)!!.room.keys){
-                        floor_maker.get(selectFloor)!!.room.get(roomNumber)!!.map=null
-                    }
-                    isMarkerOn=false
-                }else if(!floor_btn.text.equals(selectFloor)){ // 다른층 마커 키기 및 리스트 메뉴 교체
-                    for (roomNumber in floor_maker.get(selectFloor)!!.room.keys){
-                        floor_maker.get(selectFloor)!!.room.get(roomNumber)!!.map=null
-                    }
-                    for(roomNumber in floor_maker.get(floor_btn.text.toString())!!.room.keys){
-                        floor_maker.get(floor_btn.text.toString())!!.room.get(roomNumber)!!.map=naverMap
+                    if(selectMarker!=null) { //선택한 마커가 있는경우 끄기
+                        selectMarker!!.map=null
                     }
 
-                    selectFloor=floor_btn.text.toString()
-                    isMarkerOn=true
+                    if(isMarkerOn && floor_btn.text.equals(selectFloor)){ // 마커 끄기
+                        for (roomNumber in floor_maker.get(selectFloor)!!.room.keys){
+                            floor_maker.get(selectFloor)!!.room.get(roomNumber)!!.map=null
+                        }
+                        isMarkerOn=false
+                    }else if(!floor_btn.text.equals(selectFloor)){ // 다른층 마커 키기 및 리스트 메뉴 교체
+                        if(floor_maker.containsKey(clickFloor)){
+                            for (roomNumber in floor_maker.get(selectFloor)!!.room.keys){
+                                floor_maker.get(selectFloor)!!.room.get(roomNumber)!!.map=null
+                            }
 
-                }else{ //마커 끈 상태에서 마커 키기
-                    for (roomNumber in floor_maker.get(selectFloor)!!.room.keys){
-                        floor_maker.get(selectFloor)!!.room.get(roomNumber)!!.map=naverMap
+                            for(roomNumber in floor_maker.get(floor_btn.text.toString())!!.room.keys){
+                                floor_maker.get(floor_btn.text.toString())!!.room.get(roomNumber)!!.map=naverMap
+                            }
+
+                            selectFloor=floor_btn.text.toString()
+                            isMarkerOn=true
+                        }else{
+                            for (roomNumber in floor_maker.get(selectFloor)!!.room.keys){
+                                floor_maker.get(selectFloor)!!.room.get(roomNumber)!!.map=null
+                            }
+                            selectFloor=floor_btn.text.toString()
+                            isMarkerOn=false
+                        }
+
+
+                    }else{ //마커 끈 상태에서 마커 키기
+                        if(floor_maker.containsKey((clickFloor))){
+                            for (roomNumber in floor_maker.get(selectFloor)!!.room.keys){
+                                floor_maker.get(selectFloor)!!.room.get(roomNumber)!!.map=naverMap
+                            }
+                            isMarkerOn=true
+                        }
                     }
-                    isMarkerOn=true
+
+                    room_list.adapter=HBaseAdapter(this@Introduce, arrayListOf())
 
                 }
-                showFloor = arrayListOf()
-                total_list.get(selectFloor)!!.split(",").forEach { s->
-                    showFloor.add(s)
-                }
-                room_list.adapter=HBaseAdapter(this@Introduce,showFloor)
-                room_list.onItemClickListener = adapterListener
             }
+
         }
 
 

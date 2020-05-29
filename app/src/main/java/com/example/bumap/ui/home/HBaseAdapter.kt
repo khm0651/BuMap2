@@ -16,6 +16,7 @@ class HBaseAdapter(context: Context, item:ArrayList<String>) : BaseAdapter(){
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         lateinit var viewHolder : ViewHolder
         var view = convertView
+        Log.d("coord",mItem.size.toString())
         var split = mItem[position].split("+")
         if (view == null){
             viewHolder=ViewHolder()

@@ -45,7 +45,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         val view = inflater.inflate(R.layout.fragment_home,container,false);
         val fm = childFragmentManager
         val options = NaverMapOptions()
-            .camera(CameraPosition(LatLng(36.83949817622067, 127.18256704147348), 17.5))
+            .camera(CameraPosition(LatLng(36.840167531007694, 127.18453879140225), 17.5))
             .mapType(NaverMap.MapType.Basic)
             .zoomControlEnabled(false)
             .locationButtonEnabled(true)
@@ -89,16 +89,14 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
 
 
+
+//        mapFragment.getMapAsync(this@HomeFragment);
         return view;
 
 
 
 
-//
-//        myRef.child("high").setValue("4")
-//        myRef.child("low").setValue("-1")
-//        myRef.child("location").child("lat").setValue("36.83949817622067")
-//        myRef.child("location").child("lng").setValue("127.18256704147348")
+
 
 
 
@@ -131,6 +129,82 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 return infoWindow.marker!!.tag.toString().split("-").toTypedArray()[0]
             }
         }
+
+
+//        val database = FirebaseDatabase.getInstance()
+//        val myRef = database.getReference("TruthBuilding")
+//        myRef.child("high").setValue("4")
+//        myRef.child("low").setValue("-1")
+//        myRef.child("location").child("lat").setValue("36.840167531007694")
+//        myRef.child("location").child("lng").setValue("127.18453879140225")
+//
+//        myRef.child("floor").child("1").child("101").child("name").setValue("시설관리 처장실")
+//        myRef.child("floor").child("1").child("101").child("location").child("lat").setValue("36.840544")
+//        myRef.child("floor").child("1").child("101").child("location").child("lng").setValue("127.184800")
+//
+//        myRef.child("floor").child("1").child("102").child("name").setValue("시설관리처")
+//        myRef.child("floor").child("1").child("102").child("location").child("lat").setValue("36.840514")
+//        myRef.child("floor").child("1").child("102").child("location").child("lng").setValue("127.184770")
+//
+//        myRef.child("floor").child("1").child("103").child("name").setValue("관리본부장실")
+//        myRef.child("floor").child("1").child("103").child("location").child("lat").setValue("36.840484")
+//        myRef.child("floor").child("1").child("103").child("location").child("lng").setValue("127.184740")
+//
+//        myRef.child("floor").child("1").child("104").child("name").setValue("교무처장실 / 커리큘럼인증센터")
+//        myRef.child("floor").child("1").child("104").child("location").child("lat").setValue("36.840214")
+//        myRef.child("floor").child("1").child("104").child("location").child("lng").setValue("127.184740")
+//
+//        myRef.child("floor").child("1").child("105").child("name").setValue("여학생 회복실")
+//        myRef.child("floor").child("1").child("105").child("location").child("lat").setValue("36.840084")
+//        myRef.child("floor").child("1").child("105").child("location").child("lng").setValue("127.184420")
+//
+//        myRef.child("floor").child("1").child("106").child("name").setValue("보건실 / 장애학생휴게실")
+//        myRef.child("floor").child("1").child("106").child("location").child("lat").setValue("36.840014")
+//        myRef.child("floor").child("1").child("106").child("location").child("lng").setValue("127.184360")
+//
+//        myRef.child("floor").child("1").child("107").child("name").setValue("서점")
+//        myRef.child("floor").child("1").child("107").child("location").child("lat").setValue("36.839824")
+//        myRef.child("floor").child("1").child("107").child("location").child("lng").setValue("127.184200")
+//
+//        myRef.child("floor").child("1").child("108").child("name").setValue("우편취급국")
+//        myRef.child("floor").child("1").child("108").child("location").child("lat").setValue("36.839744")
+//        myRef.child("floor").child("1").child("108").child("location").child("lng").setValue("127.184340")
+//
+//        myRef.child("floor").child("1").child("109").child("name").setValue("안경점")
+//        myRef.child("floor").child("1").child("109").child("location").child("lat").setValue("36.839774")
+//        myRef.child("floor").child("1").child("109").child("location").child("lng").setValue("127.184370")
+//
+//        myRef.child("floor").child("1").child("toilet-2").child("name").setValue("화장실")
+//        myRef.child("floor").child("1").child("toilet-2").child("location").child("lat").setValue("36.839804")
+//        myRef.child("floor").child("1").child("toilet-2").child("location").child("lng").setValue("127.184400")
+//
+//        myRef.child("floor").child("1").child("110").child("name").setValue("대외협력처 창고")
+//        myRef.child("floor").child("1").child("110").child("location").child("lat").setValue("36.840014")
+//        myRef.child("floor").child("1").child("110").child("location").child("lng").setValue("127.184570")
+//
+//        myRef.child("floor").child("1").child("112").child("name").setValue("뷰리서점")
+//        myRef.child("floor").child("1").child("112").child("location").child("lat").setValue("36.840084")
+//        myRef.child("floor").child("1").child("112").child("location").child("lng").setValue("127.184620")
+//
+//        myRef.child("floor").child("1").child("113").child("name").setValue("교무처장실 / 커리큘럼인증센터")
+//        myRef.child("floor").child("1").child("113").child("location").child("lat").setValue("36.840214")
+//        myRef.child("floor").child("1").child("113").child("location").child("lng").setValue("127.184740")
+//
+//        myRef.child("floor").child("1").child("toilet").child("name").setValue("화장실")
+//        myRef.child("floor").child("1").child("toilet").child("location").child("lat").setValue("36.840284")
+//        myRef.child("floor").child("1").child("toilet").child("location").child("lng").setValue("127.184800")
+//
+//        myRef.child("floor").child("1").child("114").child("name").setValue("당직실")
+//        myRef.child("floor").child("1").child("114").child("location").child("lat").setValue("36.840414")
+//        myRef.child("floor").child("1").child("114").child("location").child("lng").setValue("127.184890")
+//
+//        myRef.child("floor").child("1").child("115").child("name").setValue("에스원상황실")
+//        myRef.child("floor").child("1").child("115").child("location").child("lat").setValue("36.840444")
+//        myRef.child("floor").child("1").child("115").child("location").child("lng").setValue("127.184920")
+//
+//        myRef.child("floor").child("1").child("116").child("name").setValue("방재실")
+//        myRef.child("floor").child("1").child("116").child("location").child("lat").setValue("36.840474")
+//        myRef.child("floor").child("1").child("116").child("location").child("lng").setValue("127.184950")
 
 
 
@@ -168,41 +242,149 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         }
 
 
-//        var marker = Marker()
-//        marker.position = LatLng(36.839951, 127.182626)
+        var marker = Marker()
+//        marker.position = LatLng(36.840084, 127.184620)
 //        marker.map = naverMap
-//        marker.tag = "CCD팀"
+//        marker.tag = "뷰리서점"
 //        marker.onClickListener = listener
 //
 //        marker = Marker()
-//        marker.position = LatLng(36.839967, 127.182725)
+//        marker.position = LatLng(36.840014, 127.184570)
 //        marker.map = naverMap
-//        marker.tag = "문화사역팀"
+//        marker.tag = "대외협력처 창고"
 //        marker.onClickListener = listener
 //
 //        marker = Marker()
-//        marker.position = LatLng(36.839966, 127.182678)
+//        marker.position = LatLng(36.839944, 127.184520)
 //        marker.map = naverMap
-//        marker.tag = "소울메이트"
+//        marker.tag = "신한은행"
 //        marker.onClickListener = listener
 //
 //        marker = Marker()
-//        marker.position = LatLng(36.839907, 127.182573)
+//        marker.position = LatLng(36.839804, 127.184400)
 //        marker.map = naverMap
-//        marker.tag = "???"
+//        marker.tag = "화장실"
 //        marker.onClickListener = listener
 //
 //        marker = Marker()
-//        marker.position = LatLng(36.839913, 127.182701)
+//        marker.position = LatLng(36.839774, 127.184370)
 //        marker.map = naverMap
-//        marker.tag = "B109"
+//        marker.tag = "안경점"
 //        marker.onClickListener = listener
 //
 //        marker = Marker()
-//        marker.position = LatLng(36.839883, 127.182671)
+//        marker.position = LatLng(36.839744, 127.184340)
 //        marker.map = naverMap
-//        marker.tag = "B108"
+//        marker.tag = "우편취급국"
 //        marker.onClickListener = listener
+//
+//        marker = Marker()
+//        marker.position = LatLng(36.839824, 127.184200)
+//        marker.map = naverMap
+//        marker.tag = "서점"
+//        marker.onClickListener = listener
+//
+//        marker = Marker()
+//        marker.position = LatLng(36.839924, 127.184250)
+//        marker.map = naverMap
+//        marker.tag = "복사기"
+//        marker.onClickListener = listener
+//
+//        marker = Marker()
+//        marker.position = LatLng(36.840014, 127.184360)
+//        marker.map = naverMap
+//        marker.tag = "보건실 / 장애학생휴게실"
+//        marker.onClickListener = listener
+//
+//        marker = Marker()
+//        marker.position = LatLng(36.840084, 127.184420)
+//        marker.map = naverMap
+//        marker.tag = "여학생 회복실"
+//        marker.onClickListener = listener
+//
+//
+//
+        marker = Marker()
+        marker.position = LatLng(36.840284, 127.184600)
+        marker.map = naverMap
+        marker.tag = "백석정신아카데미 기독교대학실천원"
+        marker.onClickListener = listener
+
+        marker = Marker()
+        marker.position = LatLng(36.840344, 127.184650)
+        marker.map = naverMap
+        marker.tag = "기독교대학실천 원장실"
+        marker.onClickListener = listener
+
+        marker = Marker()
+        marker.position = LatLng(36.840484, 127.184740)
+        marker.map = naverMap
+        marker.tag = "화장실"
+        marker.onClickListener = listener
+
+//        marker = Marker()
+//        marker.position = LatLng(36.840514, 127.184770)
+//        marker.map = naverMap
+//        marker.tag = "시설관리처"
+//        marker.onClickListener = listener
+//
+//        marker = Marker()
+//        marker.position = LatLng(36.840544, 127.184800)
+//        marker.map = naverMap
+//        marker.tag = "시설관리 처장실"
+//        marker.onClickListener = listener
+//
+//        marker = Marker()
+//        marker.position = LatLng(36.840474, 127.184950)
+//        marker.map = naverMap
+//        marker.tag = "방재실"
+//        marker.onClickListener = listener
+
+        marker = Marker()
+        marker.position = LatLng(36.840444, 127.184920)
+        marker.map = naverMap
+        marker.tag = "학사부총장실"
+        marker.onClickListener = listener
+
+        marker = Marker()
+        marker.position = LatLng(36.840354, 127.184850)
+        marker.map = naverMap
+        marker.tag = "백석정신아카데미"
+        marker.onClickListener = listener
+
+        marker = Marker()
+        marker.position = LatLng(36.840284, 127.184800)
+        marker.map = naverMap
+        marker.tag = "기독교대학실천원 연구위원실"
+        marker.onClickListener = listener
+
+        marker = Marker()
+        marker.position = LatLng(36.840214, 127.184740)
+        marker.map = naverMap
+        marker.tag = "백석정신아카데미 부총재실"
+        marker.onClickListener = listener
+
+//        marker = Marker()
+//        marker.position = LatLng(36.83972175, 127.182791)
+//        marker.map = naverMap
+//        marker.tag = "B101"
+//        marker.onClickListener = listener
+//
+//
+//
+//        marker = Marker()
+//        marker.position = LatLng(36.839643, 127.182931)
+//        marker.map = naverMap
+//        marker.tag = "창고"
+//        marker.onClickListener = listener
+//
+//        marker = Marker()
+//        marker.position = LatLng(36.839928, 127.182841)
+//        marker.map = naverMap
+//        marker.tag = "103"
+//        marker.onClickListener = listener
+
+
 
 
 

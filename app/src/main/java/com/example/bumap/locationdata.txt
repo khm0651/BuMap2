@@ -751,3 +751,77 @@ val myRef = database.getReference("MocYangBuilding")
         myRef.child("floor").child("5").child("509").child("name").setValue("기독교비서학 실습실")
         myRef.child("floor").child("5").child("509").child("location").child("lat").setValue("36.84073375")
         myRef.child("floor").child("5").child("509").child("location").child("lng").setValue("127.1837965")
+
+        val myRef = database.getReference("TruthBuilding")
+        myRef.child("high").setValue("4")
+        myRef.child("low").setValue("-1")
+        myRef.child("location").child("lat").setValue("36.840167531007694")
+        myRef.child("location").child("lng").setValue("127.18453879140225")
+
+        myRef.child("floor").child("1").child("101").child("name").setValue("시설관리 처장실")
+        myRef.child("floor").child("1").child("101").child("location").child("lat").setValue("36.840544")
+        myRef.child("floor").child("1").child("101").child("location").child("lng").setValue("127.184800")
+
+        myRef.child("floor").child("1").child("102").child("name").setValue("시설관리처")
+        myRef.child("floor").child("1").child("102").child("location").child("lat").setValue("36.840514")
+        myRef.child("floor").child("1").child("102").child("location").child("lng").setValue("127.184770")
+
+        myRef.child("floor").child("1").child("103").child("name").setValue("관리본부장실")
+        myRef.child("floor").child("1").child("103").child("location").child("lat").setValue("36.840484")
+        myRef.child("floor").child("1").child("103").child("location").child("lng").setValue("127.184740")
+
+        myRef.child("floor").child("1").child("104").child("name").setValue("교무처장실 / 커리큘럼인증센터")
+        myRef.child("floor").child("1").child("104").child("location").child("lat").setValue("36.840214")
+        myRef.child("floor").child("1").child("104").child("location").child("lng").setValue("127.184740")
+
+        myRef.child("floor").child("1").child("105").child("name").setValue("여학생 회복실")
+        myRef.child("floor").child("1").child("105").child("location").child("lat").setValue("36.840084")
+        myRef.child("floor").child("1").child("105").child("location").child("lng").setValue("127.184420")
+
+        myRef.child("floor").child("1").child("106").child("name").setValue("보건실 / 장애학생휴게실")
+        myRef.child("floor").child("1").child("106").child("location").child("lat").setValue("36.840014")
+        myRef.child("floor").child("1").child("106").child("location").child("lng").setValue("127.184360")
+
+        myRef.child("floor").child("1").child("107").child("name").setValue("서점")
+        myRef.child("floor").child("1").child("107").child("location").child("lat").setValue("36.839824")
+        myRef.child("floor").child("1").child("107").child("location").child("lng").setValue("127.184200")
+
+        myRef.child("floor").child("1").child("108").child("name").setValue("우편취급국")
+        myRef.child("floor").child("1").child("108").child("location").child("lat").setValue("36.839744")
+        myRef.child("floor").child("1").child("108").child("location").child("lng").setValue("127.184340")
+
+        myRef.child("floor").child("1").child("109").child("name").setValue("안경점")
+        myRef.child("floor").child("1").child("109").child("location").child("lat").setValue("36.839774")
+        myRef.child("floor").child("1").child("109").child("location").child("lng").setValue("127.184370")
+
+        myRef.child("floor").child("1").child("toilet-2").child("name").setValue("화장실")
+        myRef.child("floor").child("1").child("toilet-2").child("location").child("lat").setValue("36.839804")
+        myRef.child("floor").child("1").child("toilet-2").child("location").child("lng").setValue("127.184400")
+
+        myRef.child("floor").child("1").child("110").child("name").setValue("대외협력처 창고")
+        myRef.child("floor").child("1").child("110").child("location").child("lat").setValue("36.840014")
+        myRef.child("floor").child("1").child("110").child("location").child("lng").setValue("127.184570")
+
+        myRef.child("floor").child("1").child("112").child("name").setValue("뷰리서점")
+        myRef.child("floor").child("1").child("112").child("location").child("lat").setValue("36.840084")
+        myRef.child("floor").child("1").child("112").child("location").child("lng").setValue("127.184620")
+
+        myRef.child("floor").child("1").child("113").child("name").setValue("교무처장실 / 커리큘럼인증센터")
+        myRef.child("floor").child("1").child("113").child("location").child("lat").setValue("36.840214")
+        myRef.child("floor").child("1").child("113").child("location").child("lng").setValue("127.184740")
+
+        myRef.child("floor").child("1").child("toilet").child("name").setValue("화장실")
+        myRef.child("floor").child("1").child("toilet").child("location").child("lat").setValue("36.840284")
+        myRef.child("floor").child("1").child("toilet").child("location").child("lng").setValue("127.184800")
+
+        myRef.child("floor").child("1").child("114").child("name").setValue("당직실")
+        myRef.child("floor").child("1").child("114").child("location").child("lat").setValue("36.840414")
+        myRef.child("floor").child("1").child("114").child("location").child("lng").setValue("127.184890")
+
+        myRef.child("floor").child("1").child("115").child("name").setValue("에스원상황실")
+        myRef.child("floor").child("1").child("115").child("location").child("lat").setValue("36.840444")
+        myRef.child("floor").child("1").child("115").child("location").child("lng").setValue("127.184920")
+
+        myRef.child("floor").child("1").child("116").child("name").setValue("방재실")
+        myRef.child("floor").child("1").child("116").child("location").child("lat").setValue("36.840474")
+        myRef.child("floor").child("1").child("116").child("location").child("lng").setValue("127.184950")
