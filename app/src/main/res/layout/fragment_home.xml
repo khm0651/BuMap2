@@ -1,23 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/map"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.HomeFragment">
+    tools:context=".ui.home.HomeFragment"
+    >
 
-    <Button
-        android:layout_width="70dp"
-        android:layout_height="wrap_content"
-        android:text="마커"
-        android:layout_gravity="bottom | right"
-        android:layout_marginBottom="50dp"
-        android:layout_marginRight="20dp"
-        android:id="@+id/markerBtn"
+    <FrameLayout
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         >
 
-    </Button>
+        <Button
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:text="마커"
+            android:layout_gravity="bottom | right"
+            android:layout_marginBottom="50dp"
+            android:layout_marginRight="20dp"
+            android:id="@+id/markerBtn"
+            >
+
+        </Button>
+
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/predict_time_layout"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/home_fragment_predict_time"
+        android:paddingLeft="50dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:visibility="gone"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="40dp"
+            android:background="@drawable/home_fragment_predict_all_conner">
+
+            <TextView
+                android:id="@+id/predict_tiem_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="도착지까지 예상 소요시간 : 5~7분"
+                android:textSize="15sp"
+                android:layout_centerInParent="true"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/predict_tiem_close"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:text="X"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_alignParentRight="true"/>
 
 
-</FrameLayout>
+    </RelativeLayout>
+
+</RelativeLayout>
+
+

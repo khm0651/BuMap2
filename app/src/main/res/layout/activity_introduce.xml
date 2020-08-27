@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.Introduce"
+    tools:context=".ui.introduce.Introduce"
     android:orientation="vertical"
     >
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/map2"
@@ -19,9 +21,13 @@
    </FrameLayout>
 
     <LinearLayout
+        android:id="@+id/introduce_tool_layout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:gravity="center">
+        android:gravity="center"
+        android:layout_below="@+id/map2"
+        >
+
         <RelativeLayout
             android:id="@+id/introduce_title"
             android:layout_width="match_parent"
@@ -47,6 +53,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
+                android:background="@drawable/button_radius"
                 >
 
             </Button>
@@ -60,7 +67,9 @@
                 android:layout_toLeftOf="@id/view_all"
                 android:layout_marginRight="10dp"
                 android:layout_centerVertical="true"
+                android:background="@drawable/button_radius"
                 >
+
 
             </Button>
 
@@ -69,35 +78,57 @@
 
     </LinearLayout>
 
+    <RelativeLayout
+        android:id="@+id/introduce_not_yet_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/introduce_tool_layout"
+        android:visibility="gone"
+    >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="준비중 입니다. \n 빠른시일내에 업데이트하겠습니다."
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:lineHeight="45dp"
+            />
 
+
+    </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/introduce_list_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/introduce_tool_layout"
+        >
 
-        <ListView
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/room_list"
-            android:dividerHeight="5dp"
-            android:background="#17F44336"
+            android:id="@+id/recycler_view_room_list"
+            android:background="#17C5C5C5"
+            android:paddingTop="5dp"
             >
 
 
-        </ListView>
+        </androidx.recyclerview.widget.RecyclerView>
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/floor_btn_layout"
             android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_alignRight="@id/room_list"
+            android:layout_height="250dp"
+            android:layout_alignRight="@id/recycler_view_room_list"
             android:layout_centerVertical="true"
             android:layout_marginRight="15dp"
             android:orientation="vertical">
 
 
-        </LinearLayout>
+        </androidx.recyclerview.widget.RecyclerView>
 
     </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>

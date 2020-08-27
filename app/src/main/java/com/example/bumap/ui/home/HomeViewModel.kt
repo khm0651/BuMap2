@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.bumap.Model.Location
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -13,7 +14,7 @@ import com.naver.maps.map.overlay.Marker
 class HomeViewModel : ViewModel() {
 
 
-    private val _buildingArr = MutableLiveData<HashMap<String,Location>>().apply {
+    private val _buildingArr = MutableLiveData<HashMap<String, Location>>().apply {
         var markerList:HashMap<String, Marker> = HashMap()
         var buildingArr : HashMap<String,Location> = HashMap()
 
