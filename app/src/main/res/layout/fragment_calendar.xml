@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.slideshow.SlideshowFragment">
+
+    <GridLayout
+        android:id="@+id/day_name_calender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="7"
+        android:orientation="horizontal"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        >
+
+
+        <TextView
+            android:layout_columnWeight="1"
+            android:text="일"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:textColor="@android:color/holo_red_dark"
+            />
+        <TextView
+            android:layout_columnWeight="1"
+            android:text="월"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            />
+        <TextView
+            android:layout_columnWeight="1"
+            android:text="화"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            />
+        <TextView
+            android:layout_columnWeight="1"
+            android:text="수"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            />
+        <TextView
+            android:layout_columnWeight="1"
+            android:text="목"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            />
+        <TextView
+            android:layout_columnWeight="1"
+            android:text="금"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            />
+        <TextView
+            android:layout_columnWeight="1"
+            android:text="토"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:textColor="@android:color/holo_blue_dark"
+            />
+
+
+
+    </GridLayout>
+
+    <GridLayout
+        android:id="@+id/day_calender"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:columnCount="7"
+        android:rowCount="6"
+        android:layout_below="@+id/day_name_calender"
+        >
+
+    </GridLayout>
+
+
+
+</RelativeLayout>
