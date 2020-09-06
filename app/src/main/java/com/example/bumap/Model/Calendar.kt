@@ -1,6 +1,6 @@
-package com.example.bumap.Singleton
+package com.example.bumap.Model
 
-object Calendar {
+class Calendar {
 
     private var year : String = ""
     private var month : String = ""

@@ -69,7 +69,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             view!!.predict_tiem_text.text = ""
             isShow=false
             }else{
-                var a = findNavController()
                 activity!!.finish()
 
             }
@@ -91,6 +90,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         val view = inflater.inflate(R.layout.fragment_home,container,false);
         val fm = childFragmentManager
         var options = NaverMapOptions()
@@ -267,11 +267,15 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                     k.value.map=null;
                 }
                 markerFlag=true;
+                v.markerImg.setImageResource(R.drawable.markeroff)
+                v.markerText.text = "OFF"
             }else{
                 for(k in markerList){
                     k.value.map=naverMap;
                 }
                 markerFlag=false;
+                v.markerImg.setImageResource(R.drawable.markeron)
+                v.markerText.text = "ON"
             }
 
         }

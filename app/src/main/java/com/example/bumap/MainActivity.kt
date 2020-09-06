@@ -2,41 +2,37 @@ package com.example.bumap
 
 import android.content.Context
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
-import android.view.Gravity
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.widget.addTextChangedListener
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.recyclerview.widget.RecyclerView
-import com.example.bumap.Adapter.SearchAdapter
-import com.example.bumap.ui.search.SearchFragment
+import com.example.bumap.Interface.RetrofitService
+import com.example.bumap.Model.Calendar
+import com.example.bumap.Model.Notice
+import com.example.bumap.Singleton.CalendarList
+import com.example.bumap.Singleton.NoticeList
+import com.example.bumap.Singleton.RetrofitClient
 import com.google.android.material.navigation.NavigationView
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import com.naver.maps.map.NaverMapSdk
 import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.android.synthetic.main.fragment_search.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var myAPI: RetrofitService
+    private lateinit var retrofit : Retrofit
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +47,8 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
+
+
         search_text.setOnClickListener {
             navController.navigate(R.id.action_nav_home_to_searchFragment)
             search_edit.isEnabled = true
@@ -62,9 +60,47 @@ class MainActivity : AppCompatActivity() {
             search_text.visibility = View.GONE
         }
 
+        retrofit = RetrofitClient.getInstance()
+        myAPI = retrofit.create(RetrofitService::class.java)
+
+        myAPI.getCalendar().enqueue(object  : Callback<ArrayList<Calendar>> {
+            override fun onFailure(call: Call<ArrayList<Calendar>>, t: Throwable) {
+                Toast.makeText(applicationContext,"서버에 문제가 생겼습니다." + t.message, Toast.LENGTH_LONG).show()
+            }
+
+            override fun onResponse(
+                call: Call<ArrayList<Calendar>>,
+                response: Response<ArrayList<Calendar>>
+            ) {
+                if(response.isSuccessful){
+                    var response =response.body()
+
+                    if(response != null) CalendarList.setList(response)
+
+                }
+            }
+
+        })
 
 
+        myAPI.getNotice().enqueue(object  : Callback<ArrayList<Notice>>{
+            override fun onFailure(call: Call<ArrayList<Notice>>, t: Throwable) {
+                Toast.makeText(applicationContext,"서버에 문제가 생겼습니다." + t.message,Toast.LENGTH_LONG).show()
+            }
 
+            override fun onResponse(
+                call: Call<ArrayList<Notice>>,
+                response: Response<ArrayList<Notice>>
+            ) {
+                if(response.isSuccessful){
+                    var response =response.body()
+
+                    if(response != null) NoticeList.setList(response)
+
+                }
+            }
+
+        })
 
 
     }
@@ -83,12 +119,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
         when(item.itemId){
 
         }
 
         return false
     }
-
 
 }

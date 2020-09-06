@@ -11,11 +11,11 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_homeFragment_to_galleryFragment"
-            app:destination="@id/nav_gallery" />
+            android:id="@+id/action_homeFragment_to_noticeFragment"
+            app:destination="@id/nav_notice" />
         <action
-            android:id="@+id/action_homeFragment_to_slideshowFragment"
-            app:destination="@id/nav_slideshow" />
+            android:id="@+id/action_homeFragment_to_calendarFragment"
+            app:destination="@id/nav_calendar" />
         <action
             android:id="@+id/action_nav_home_to_searchFragment"
             app:destination="@id/searchFragment" />
@@ -33,15 +33,23 @@
 
     </fragment>
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.example.bumap.ui.gallery.GalleryFragment"
-        android:label="fragment_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_notice"
+        android:name="com.example.bumap.ui.notice.NoticeFragment"
+        android:label="fragment_notice"
+        tools:layout="@layout/fragment_notice" >
+        <action
+            android:id="@+id/action_nav_notice_to_nav_home"
+            app:destination="@id/nav_home" />
+    </fragment>
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.bumap.ui.slideshow.SlideshowFragment"
-        android:label="fragment_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/nav_calendar"
+        android:name="com.example.bumap.ui.calendar.CalendarFragment"
+        android:label="fragment_calendar"
+        tools:layout="@layout/fragment_calendar" >
+        <action
+            android:id="@+id/action_nav_calendar_to_nav_home"
+            app:destination="@id/nav_home" />
+    </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.bumap.ui.search.SearchFragment"

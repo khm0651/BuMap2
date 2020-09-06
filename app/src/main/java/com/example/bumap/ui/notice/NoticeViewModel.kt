@@ -1,10 +1,10 @@
-package com.example.bumap.ui.gallery
+package com.example.bumap.ui.notice
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class GalleryViewModel : ViewModel() {
+class NoticeViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
         value = "This is gallery Fragment"

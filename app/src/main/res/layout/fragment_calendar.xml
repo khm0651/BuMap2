@@ -5,7 +5,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.slideshow.SlideshowFragment">
+    tools:context=".ui.calendar.CalendarFragment"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    >
+
+    <RelativeLayout
+        android:id="@+id/calendar_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/white"
+        >
+
+        <TextView
+            android:id="@+id/calendar_bar_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="9월"
+            android:textSize="23sp"
+            android:textColor="@android:color/black"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            />
+
+        <TextView
+            android:id="@+id/calendar_bar_year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2020년"
+            android:layout_toRightOf="@+id/calendar_bar_month"
+            android:layout_alignBottom="@+id/calendar_bar_month"
+            android:layout_marginLeft="10dp"
+            android:textSize="15sp"
+            />
+
+    </RelativeLayout>
 
     <GridLayout
         android:id="@+id/day_name_calender"
@@ -13,52 +47,46 @@
         android:layout_height="wrap_content"
         android:columnCount="7"
         android:orientation="horizontal"
-        android:paddingTop="5dp"
+        android:paddingTop="10dp"
         android:paddingBottom="5dp"
+        android:layout_below="@+id/calendar_bar"
         >
 
 
         <TextView
             android:layout_columnWeight="1"
             android:text="일"
-            android:gravity="center"
             android:layout_gravity="center_vertical"
             android:textColor="@android:color/holo_red_dark"
             />
         <TextView
             android:layout_columnWeight="1"
             android:text="월"
-            android:gravity="center"
             android:layout_gravity="center_vertical"
             />
         <TextView
             android:layout_columnWeight="1"
             android:text="화"
-            android:gravity="center"
             android:layout_gravity="center_vertical"
             />
         <TextView
             android:layout_columnWeight="1"
             android:text="수"
-            android:gravity="center"
             android:layout_gravity="center_vertical"
             />
         <TextView
             android:layout_columnWeight="1"
             android:text="목"
-            android:gravity="center"
             android:layout_gravity="center_vertical"
             />
         <TextView
             android:layout_columnWeight="1"
             android:text="금"
-            android:gravity="center"
             android:layout_gravity="center_vertical"
             />
         <TextView
             android:layout_columnWeight="1"
             android:text="토"
-            android:gravity="center"
             android:layout_gravity="center_vertical"
             android:textColor="@android:color/holo_blue_dark"
             />

@@ -1,6 +1,6 @@
-package com.example.bumap.Singleton
+package com.example.bumap.Model
 
-object Notice {
+class Notice {
 
     private var artclTitle : String = "";
     private var artclDate : String = "";

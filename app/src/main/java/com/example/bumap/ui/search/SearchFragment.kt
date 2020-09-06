@@ -170,8 +170,6 @@ class SearchFragment : Fragment() {
     }
 
     private fun moveFromSearchToHome() {
-        var a = findNavController().currentDestination
-        var b =findNavController().graph
         findNavController().navigate(R.id.action_searchFragment_to_nav_home)
         (activity as MainActivity).search_edit.isEnabled = false
         (activity as MainActivity).search_edit.visibility = View.GONE

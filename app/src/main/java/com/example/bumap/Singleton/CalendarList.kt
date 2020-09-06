@@ -1,43 +1,20 @@
 package com.example.bumap.Singleton
 
-object Calendar {
+import com.example.bumap.Model.Calendar
 
-    private var year : String = ""
-    private var month : String = ""
-    private var day : String = ""
-    private var content : String = ""
+object CalendarList {
 
-    fun getYear() : String {
-        return year
+    private var list : ArrayList<Calendar> = arrayListOf()
+
+    fun getList() : ArrayList<Calendar> {
+        return list
     }
 
-    fun setYear(year : String) {
-        this.year = year
+    fun setList(list : ArrayList<Calendar>) {
+        this.list = list
     }
 
-    fun getMonth() : String {
-        return month
-    }
 
-    fun setMonth(month : String) {
-        this.month = month
-    }
-
-    fun getDay() : String {
-        return day
-    }
-
-    fun setDay(day : String) {
-        this.day = day
-    }
-
-    fun getContent() : String {
-        return content
-    }
-
-    fun setContent(content : String) {
-        this.content = content
-    }
 
 
 }

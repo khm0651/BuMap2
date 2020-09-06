@@ -14,18 +14,6 @@
         android:layout_height="match_parent"
         >
 
-        <Button
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:text="마커"
-            android:layout_gravity="bottom | right"
-            android:layout_marginBottom="50dp"
-            android:layout_marginRight="20dp"
-            android:id="@+id/markerBtn"
-            >
-
-        </Button>
-
     </FrameLayout>
 
     <RelativeLayout
@@ -68,6 +56,55 @@
 
 
     </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="33dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/marker_solid"
+        android:orientation="vertical"
+        android:id="@+id/markerBtn"
+        >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            >
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/markerImg"
+                android:src="@drawable/markeron"
+                android:layout_centerHorizontal="true"
+                />
+
+            <TextView
+                android:id="@+id/markerText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/markerImg"
+                android:text="ON"
+                android:textSize="8sp"
+                android:textStyle="bold"
+                android:layout_marginTop="5dp"
+                android:layout_centerHorizontal="true"
+                />
+
+
+
+        </RelativeLayout>
+
+
+
+    </RelativeLayout>
+
+
+
 
 </RelativeLayout>
 
