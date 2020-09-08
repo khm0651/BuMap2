@@ -148,7 +148,7 @@ class SearchFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         (activity as MainActivity).toolbar.setNavigationOnClickListener {
-            Log.d("kwak",findNavController().currentDestination!!.label.toString())
+
             when(findNavController().currentDestination!!.label){
 
                 "fragment_search" -> {

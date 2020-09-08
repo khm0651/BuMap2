@@ -19,7 +19,7 @@ object RetrofitClient {
     fun getInstance() : Retrofit{
         if(instance == null){
             instance = Retrofit.Builder()
-                .baseUrl("http://192.168.0.9:8080/")
+                .baseUrl("http://ec2-3-34-130-211.ap-northeast-2.compute.amazonaws.com:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build()

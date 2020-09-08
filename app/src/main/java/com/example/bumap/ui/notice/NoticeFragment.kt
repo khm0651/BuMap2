@@ -64,8 +64,10 @@ class NoticeFragment : Fragment() {
         }
 
         if(NoticeList.getList().isEmpty()){
+            view.progressbar_notice.visibility = View.VISIBLE
             noticeAdapter = NoticeAdapter(context!!, arrayListOf())
         }else{
+            view.progressbar_notice.visibility = View.GONE
             noticeAdapter = NoticeAdapter(context!!, NoticeList.getList())
         }
         recyclerView.adapter = noticeAdapter

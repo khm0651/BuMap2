@@ -2,7 +2,9 @@ package com.example.bumap.ui.introduce
 
 import android.os.Build
 import android.os.Bundle
+import android.text.Layout
 import android.view.*
+import android.widget.RelativeLayout
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,6 +37,7 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
     var selectFloor = "1"
     var total_list : HashMap<String,String> = HashMap()
     var isFirst : Boolean = true
+    lateinit var v:RelativeLayout
 
     lateinit var btnAdapter : IntroduceBtnAdapter
     lateinit var introduceAdapter : IntroduceAdapter
@@ -45,7 +48,7 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setTheme(R.style.NoTitleBar);
         setContentView(R.layout.activity_introduce)
-
+        v = introduce_layout
         val fm = supportFragmentManager
         val lat = intent.getDoubleExtra("lat",0.0)!!
         val lng = intent.getDoubleExtra("lng",0.0)!!
@@ -302,8 +305,16 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
                 introduceAdapter = IntroduceAdapter(applicationContext, showFloor, floor_maker,naverMap,introduce,mapFragment)
                 recyclerView.adapter = introduceAdapter
 
+                if(btn_list.size <=5){
+                    var layoutParam = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT)
+                    layoutParam.addRule(RelativeLayout.CENTER_VERTICAL)
+                    layoutParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
+                    layoutParam.rightMargin = 60
+                    btn_recyclerView.layoutParams = layoutParam
+
+                }
                 btnAdapter = IntroduceBtnAdapter(applicationContext,btn_list,recyclerView,total_list,
-                    floor_maker,mapFragment,naverMap,introduce,btn_recyclerView,btn_list)
+                    floor_maker,mapFragment,naverMap,introduce,btn_recyclerView,btn_list,v)
                 btn_recyclerView.adapter = btnAdapter
 
 

@@ -2,9 +2,12 @@ package com.example.bumap.Adapter
 
 import android.content.Context
 import android.os.Build
+import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewParent
+import android.widget.RelativeLayout
 import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
@@ -13,13 +16,15 @@ import com.example.bumap.ui.introduce.Introduce
 import com.example.bumap.ui.introduce.RoomMaker
 import com.naver.maps.map.MapFragment
 import com.naver.maps.map.NaverMap
+import kotlinx.android.synthetic.main.activity_introduce.*
+import kotlinx.android.synthetic.main.activity_introduce.view.*
 import kotlinx.android.synthetic.main.btn_layout.view.*
 
 class IntroduceBtnAdapter (private var mContext : Context, private var mBtnList : ArrayList<String>,
                            private var recyclerView: RecyclerView, private var total_list : HashMap<String,String>,
                            private var floor_maker : HashMap<String, RoomMaker>, private var mapFragment:MapFragment,
                            private var naverMap : NaverMap, private var introduce : Introduce, private var btn_recyclerView : RecyclerView,
-                           private var btn_list : ArrayList<String>)
+                           private var btn_list : ArrayList<String>, private var layout : RelativeLayout)
     :RecyclerView.Adapter<IntroduceBtnAdapter.ViewHolder>(){
 
 
@@ -30,6 +35,7 @@ class IntroduceBtnAdapter (private var mContext : Context, private var mBtnList 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         var view = LayoutInflater.from(mContext).inflate(R.layout.btn_layout,parent,false)
+
         return ViewHolder(view)
     }
 
@@ -39,6 +45,7 @@ class IntroduceBtnAdapter (private var mContext : Context, private var mBtnList 
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
 
         btn_recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -63,15 +70,21 @@ class IntroduceBtnAdapter (private var mContext : Context, private var mBtnList 
                 }
             }
 
-            for(roomNumber in floor_maker.get(selectFloor)!!.room.keys){
-                floor_maker.get(selectFloor)!!.room.get(roomNumber)!!.map=naverMap
+            if(total_list.containsKey(selectFloor)){
+                for(roomNumber in floor_maker.get(selectFloor)!!.room.keys){
+                    floor_maker.get(selectFloor)!!.room.get(roomNumber)!!.map=naverMap
+                }
+                total_list.get(selectFloor)!!.split(",").forEach { s->
+                    showFloor.add(s)
+                }
             }
 
-            total_list.get(selectFloor)!!.split(",").forEach { s->
-                showFloor.add(s)
+            if(showFloor.isEmpty()){
+                layout.introduce_not_yet_layout.visibility = View.VISIBLE
+
+            }else{
+                layout.introduce_not_yet_layout.visibility = View.GONE
             }
-
-
 
             introduce.isFirst=false
             mapFragment.getMapAsync(introduce)
@@ -97,6 +110,9 @@ class IntroduceBtnAdapter (private var mContext : Context, private var mBtnList 
                 if(position < 3){
                     btn_recyclerView.scrollToPosition(0)
                 }else if (position <= (mBtnList.size/2) ){
+                    if(pre_select_floor.startsWith("B")){
+                        pre_select_floor = pre_select_floor.replace("B","-")
+                    }
                     if(pre_select_floor.toInt()>selectFloor.toInt() || (scroll_state.equals("up") && pre_select_floor<selectFloor && position<5)){
                         btn_recyclerView.scrollToPosition(position+2)
                     }else{

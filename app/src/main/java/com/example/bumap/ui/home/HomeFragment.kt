@@ -207,8 +207,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                     intent.putExtra("lng",marker.position.longitude!!);
                     intent.putExtra("placename", split[0]);
                     intent.putExtra("d_name",split[1])
-                    Log.d("fire-base",split[0])
-                    Log.d("fire-base",split[1])
                     startActivity(intent)
 
                     true
@@ -233,7 +231,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
             }
             val marker = Marker()
-            Log.d("fire-base",k.value.keys.first())
             marker.position = LatLng(k.value.get(k.value.keys.first().toString())?.lat!!.toDouble(), k.value.get(k.value.keys.first().toString())?.lng!!.toDouble())
             marker.tag = k.value.keys.first().toString() + "-" +k.key
             marker.map = naverMap
@@ -251,8 +248,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                     intent.putExtra("lng",marker.position.longitude!!);
                     intent.putExtra("placename", split[0]);
                     intent.putExtra("d_name",split[1])
-                    Log.d("fire-base",split[0])
-                    Log.d("fire-base",split[1])
                     startActivity(intent)
 
                     true
@@ -447,7 +442,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 //사용자가 GPS 활성 시켰는지 검사
                 if (checkLocationServicesStatus()) {
                     if (checkLocationServicesStatus()) {
-                        Log.d("kwak", "onActivityResult : GPS 활성화 되있음")
                         checkRunTimePermission()
                         return
                     }

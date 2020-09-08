@@ -110,15 +110,28 @@ class CalendarFragment : Fragment() {
     private fun createCalendar(calendar: GregorianCalendar) {
         var dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1; //해당 월에 시작하는 요일 -1 을 하면 빈칸을 구할 수 있겠죠 ?
         var max = calendar.getActualMaximum(Calendar.DAY_OF_MONTH); // 해당 월에 마지막 요일
-
+        var dayOfPreMonth = calendar.getMaximum(Calendar.DAY_OF_MONTH)
+        var dayOfNextMonth = 1
         for (j in 0 until dayOfWeek) {
-            calendarList.add("");  //비어있는 일자 타입
+            if(month == "1"){
+                calendarList.add("${year.toInt() -1 }.12.${dayOfPreMonth}");  //비어있는 일자 타입
+            }else{
+                calendarList.add("${year}.${(month.toInt() - 1).toString()}.${dayOfPreMonth.toString()}");  //비어있는 일자 타입
+            }
+
+            dayOfPreMonth--
         }
         for (j in 1 .. max) {
-            calendarList.add(j.toString()); //일자 타입
+            calendarList.add("${year}.${month}.${j.toString()}"); //일자 타입
         }
         for(j in calendarList.size until 42 ){
-            calendarList.add("")
+            if(month == "12"){
+                calendarList.add("${(year.toInt() +1)}.1.${dayOfNextMonth}")
+            }else{
+                calendarList.add("${year}.${(month.toInt() + 1)}.${dayOfNextMonth}")
+            }
+
+            dayOfNextMonth++
         }
 
 
@@ -138,71 +151,90 @@ class CalendarFragment : Fragment() {
                     var linearLayout = LinearLayout(context)
                     linearLayout.layoutParams = linearLayoutParam
                     linearLayout.orientation = LinearLayout.VERTICAL
-                    linearLayout.tag = "${year}.${month}.${calendarList[i]}"
-                    linearLayout.setOnClickListener {
-                        it as LinearLayout
-                        if(select!!.tag.toString() == it.tag.toString()){
-                            var selectDay = it.tag.toString().split(".")[2]
-                            var contentArray = arrayListOf<String>()
-                            for(i in 1 until it.childCount){
-                                var tv = it.getChildAt(i) as TextView
-                                contentArray.add(tv.tag.toString())
-                            }
-                            startActivity(Intent(context,CalendarInfoActivity::class.java)
-                                .putExtra("day",selectDay)
-                                .putExtra("contents",contentArray))
-                        }else{
-                            select!!.background = null
-                            select = it as LinearLayout
-                            select!!.background = resources.getDrawable(R.drawable.calendar_solid)
+                    linearLayout.tag = "${calendarList[i]}"
 
+                    if(linearLayout.tag.toString().split(".")[1] != month){
+
+                        if((Calendar.getInstance().get(Calendar.YEAR).toString() == linearLayout.tag.toString().split(".")[0])
+                            || ((Calendar.getInstance().get(Calendar.YEAR)+1).toString() == linearLayout.tag.toString().split(".")[0])){
+                            linearLayout.setOnClickListener(nextMonthLayoutListener)
                         }
 
+                    }else{
+                        linearLayout.setOnClickListener(dayLayoutListener)
                     }
-                    if(calendarList[i] != "0" ){
-                        linearLayout.id = "${year}${month}${calendarList[i]}".toInt()
-                    }
+
 
                     var dayNumTextView = TextView(context)
                     var dayNumTextViewParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT)
                     dayNumTextView.layoutParams = dayNumTextViewParam
-                    dayNumTextView.text = calendarList[i]
+                    dayNumTextView.text = calendarList[i].split(".")[2]
                     dayNumTextView.textSize = 12F
                     dayNumTextView.setPadding(10,0,0,0)
                     dayNumTextView.setTypeface(dayNumTextView.getTypeface(), Typeface.BOLD)
-                    if(i%7==0) dayNumTextView.setTextColor(resources.getColor(R.color.sunday))
-                    else if(i%7==6) dayNumTextView.setTextColor(resources.getColor(R.color.saturday))
-                    linearLayout.addView(dayNumTextView)
-
-                    for(c in allCalendar){
-                        if(linearLayout.tag == "${c.getYear()}.${c.getMonth()}.${c.getDay()}"){
-                            var contentTextView = TextView(context)
-                            var textParam = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
-                            textParam.setMargins(5,15,30,0)
-
-                            contentTextView.layoutParams = textParam
-                            contentTextView.tag = c.getContent()
-                            if(c.getContent().length>=9){
-                                contentTextView.text = "${c.getContent().substring(0,9)} ..."
-                            }else{
-                                contentTextView.text = "${c.getContent()}"
-                            }
-                            contentTextView.setPadding(0,0,0,20)
-                            contentTextView.textSize = 9F
-                            contentTextView.background = resources.getDrawable(R.drawable.bottom_solid)
-                            linearLayout.addView(contentTextView)
-
+                    if(i%7==0) {
+                        if(calendarList[i].split(".")[1] != month){
+                            dayNumTextView.setTextColor(resources.getColor(R.color.notNowSunday))
+                        }else{
+                            dayNumTextView.setTextColor(resources.getColor(R.color.sunday))
                         }
 
                     }
-
-                    if(linearLayout.tag == nowDate){
-                        select = linearLayout
-                        select!!.background = resources.getDrawable(R.drawable.calendar_solid)
+                    else if(i%7==6) {
+                        if(calendarList[i].split(".")[1] != month){
+                            dayNumTextView.setTextColor(resources.getColor(R.color.notNowSaturday))
+                        }else{
+                            dayNumTextView.setTextColor(resources.getColor(R.color.saturday))
+                        }
+                    }else{
+                        if(calendarList[i].split(".")[1] != month){
+                            dayNumTextView.setTextColor(resources.getColor(R.color.notNowday))
+                        }
                     }
 
+                    linearLayout.addView(dayNumTextView)
 
-                    dayCalendar.addView(linearLayout)
+                    if(allCalendar.isEmpty()){
+                        progressbar_calendar.visibility = View.VISIBLE
+                    }else{
+
+                        progressbar_calendar.visibility = View.GONE
+                        for(c in allCalendar){
+                            if(linearLayout.tag == "${c.getYear()}.${c.getMonth()}.${c.getDay()}"){
+                                var contentTextView = TextView(context)
+                                var textParam = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
+                                textParam.setMargins(5,15,30,0)
+                                if(calendarList[i].split(".")[1] != month){
+                                    contentTextView.setTextColor(resources.getColor(R.color.notNowday))
+                                }else{
+                                    contentTextView.setTextColor(resources.getColor(R.color.hamburgerBlack))
+                                }
+                                contentTextView.layoutParams = textParam
+                                contentTextView.tag = c.getContent()
+                                if(c.getContent().length>=9){
+                                    contentTextView.text = "${c.getContent().substring(0,9)} ..."
+                                }else{
+                                    contentTextView.text = "${c.getContent()}"
+                                }
+                                contentTextView.setPadding(0,0,0,20)
+                                contentTextView.textSize = 7F
+                                contentTextView.background = resources.getDrawable(R.drawable.bottom_solid)
+                                linearLayout.addView(contentTextView)
+
+                            }
+
+                        }
+
+                        if(linearLayout.tag == nowDate){
+                            select = linearLayout
+                            select!!.background = resources.getDrawable(R.drawable.calendar_solid)
+                        }
+
+
+                        dayCalendar.addView(linearLayout)
+
+                    }
+
 
 
                 }
@@ -211,6 +243,47 @@ class CalendarFragment : Fragment() {
         })
     }
 
+    private var dayLayoutListener : View.OnClickListener = View.OnClickListener {
+
+        it as LinearLayout
+
+        if(select!!.tag.toString() == it.tag.toString()){
+            var selectDay = it.tag.toString().split(".")[2]
+            var contentArray = arrayListOf<String>()
+            for(i in 1 until it.childCount){
+                var tv = it.getChildAt(i) as TextView
+                contentArray.add(tv.tag.toString())
+            }
+            startActivity(Intent(context,CalendarInfoActivity::class.java)
+                .putExtra("day",selectDay)
+                .putExtra("contents",contentArray))
+        }else{
+            select!!.background = null
+            select = it as LinearLayout
+            select!!.background = resources.getDrawable(R.drawable.calendar_solid)
+
+        }
+
+    }
+
+    private var nextMonthLayoutListener : View.OnClickListener = View.OnClickListener {
+
+        it as LinearLayout
+
+        calendarList.clear()
+        dayCalendar.removeAllViews()
+        year = it.tag.toString().split(".")[0]
+        month = it.tag.toString().split(".")[1]
+        calendar_bar_month.text = "${month}월"
+        calendar_bar_year.text = "${year}년"
+        var calendar = GregorianCalendar(year.toInt(), month.toInt() , 1, 0, 0, 0);
+
+        day = 1.toString()
+        nowDate = "${year}.${month}.${day}"
+
+        createCalendar(calendar)
+
+    }
 
     private fun moveFromSearchToHome() {
         findNavController().navigate(R.id.action_nav_calendar_to_nav_home)
