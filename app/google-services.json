@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:1064528584679:android:a91ac4be92f74dfcdd6742",
         "android_client_info": {
-          "package_name": "com.example.bumap"
+          "package_name": "com.biggates.bumap"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "1064528584679-4qaf7oat29gqnsfud076ptlj3d6a96uq.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.bumap",
+            "package_name": "com.biggates.bumap",
             "certificate_hash": "d1535d99c177c42f3d39a1a839528fcdcdbe98f5"
           }
         },

@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/bus_fragment_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.bus.BusFragment"
+    android:tag="bus_fragment"
+    >
+
+
+        <RelativeLayout
+            android:id="@+id/app_bar_layout_bus"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@drawable/button_radius"
+            android:theme="@style/AppTheme.AppBarOverlay">
+            
+            <LinearLayout
+                android:id="@+id/search_layout_bus"
+                android:layout_toRightOf="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:weightSum="1"
+                android:paddingRight="30dp"
+                android:paddingLeft="40dp"
+                android:orientation="vertical"
+                >
+
+                <EditText
+                    android:id="@+id/search_edit_bus"
+                    android:layout_width="match_parent"
+                    android:inputType="text"
+                    android:imeOptions="actionSearch"
+                    android:layout_height="match_parent"
+                    android:hint="장소 검색"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp"
+                    android:paddingLeft="10dp"
+                    android:textColorHint="@android:color/darker_gray"
+                    android:gravity="center_vertical"
+                    />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/select_layout_bus"
+        android:layout_below="@+id/app_bar_layout_bus"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        >
+        
+        <TextView
+            android:id="@+id/select_layout_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="선택하세요"
+            android:textSize="18sp"
+            android:textColor="#B6B6B6"
+            android:layout_centerInParent="true"
+            />
+        
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/downarrow"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/scrrollView_bus"
+        android:layout_below="@+id/select_layout_bus"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="20dp"
+        android:visibility="gone"
+        >
+
+        <RelativeLayout
+            android:id="@+id/bus_info_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <LinearLayout
+                android:id="@+id/bus_take_place_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="타는곳"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:gravity="center"
+                    />
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+
+                    <LinearLayout
+                        android:id="@+id/bus_image_wrapper"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        >
+
+                    </LinearLayout>
+
+
+                </HorizontalScrollView>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/bus_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:layout_below="@+id/bus_take_place_wrapper"
+                android:layout_marginTop="10dp"
+                android:textSize="13sp"
+                android:layout_marginLeft="10dp"
+                android:textStyle="bold"
+                />
+
+
+
+            <LinearLayout
+                android:id="@+id/toBuLayout"
+                android:layout_below="@+id/bus_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:layout_marginTop="10dp"
+                >
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/toHomeLayout"
+                android:layout_below="@+id/toBuLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:layout_marginTop="30dp"
+                >
+
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+    </ScrollView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_bus"
+        android:layout_below="@+id/select_layout_bus"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:visibility="gone"
+        android:background="#FAFAFA"
+        >
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_bus_search"
+        android:layout_below="@+id/app_bar_layout_bus"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:visibility="gone"
+        android:background="#FAFAFA"
+        >
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+
+
+</RelativeLayout>

@@ -11,8 +11,8 @@
         android:useLevel="false">
 
         <size
-            android:width="76dip"
-            android:height="76dip"/>
+            android:width="15dp"
+            android:height="15dp"/>
         <gradient
             android:angle="0"
             android:endColor="@color/colorPrimary"
