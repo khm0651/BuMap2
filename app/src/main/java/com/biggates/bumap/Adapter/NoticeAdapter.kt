@@ -34,6 +34,11 @@ class NoticeAdapter(private var mContext: Context, private var mNoticeList: Arra
         return mNoticeList.size
     }
 
+    fun update(data:ArrayList<Notice>){
+        mNoticeList= data
+        notifyDataSetChanged()
+    }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         holder.notice_date.text = mNoticeList[position].getArtclDate()

@@ -6,21 +6,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.biggates.bumap.Adapter.NoticeAdapter
-import com.biggates.bumap.Interface.RetrofitService
 import com.biggates.bumap.MainActivity
+import com.biggates.bumap.Model.Notice
 import com.biggates.bumap.R
-import com.biggates.bumap.Singleton.NoticeList
+import com.biggates.bumap.ViewModel.notice.NoticeViewModel
+import com.biggates.bumap.ViewModel.ViewModelFactory
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_notice.view.*
-import retrofit2.Retrofit
 
 class NoticeFragment : Fragment() {
 
-    private lateinit var myAPI: RetrofitService
-    private lateinit var retrofit : Retrofit
+    lateinit var noticeAdapter : NoticeAdapter
+
     private var onBackPressedCallback = object : OnBackPressedCallback(true){
         override fun handleOnBackPressed() {
             moveFromSearchToHome()
@@ -47,27 +49,31 @@ class NoticeFragment : Fragment() {
             (context as MainActivity).app_bar_layout_main.visibility = View.GONE
         }
 
+        NoticeViewModel.noticeList.observe(viewLifecycleOwner,noticeListObserver)
+        NoticeViewModel.isViewLoading.observe(viewLifecycleOwner,noticeIsLoadingObserver)
+
         var recyclerView = view.recycler_view_notice
         var linearLayoutManager : LinearLayoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = linearLayoutManager
-        var noticeAdapter : NoticeAdapter
-
+        noticeAdapter = NoticeAdapter(context!!, NoticeViewModel.noticeList.value?: arrayListOf())
+        recyclerView.adapter = noticeAdapter
 
         view.up_btn_notice.setOnClickListener {
             recyclerView.scrollToPosition(0)
         }
 
-        if(NoticeList.getList().isEmpty()){
-            view.progressbar_notice.visibility = View.VISIBLE
-            noticeAdapter = NoticeAdapter(context!!, arrayListOf())
-        }else{
-            view.progressbar_notice.visibility = View.GONE
-            noticeAdapter = NoticeAdapter(context!!, NoticeList.getList())
-        }
-        recyclerView.adapter = noticeAdapter
 
 
         return view
+    }
+
+    private val noticeListObserver = Observer<ArrayList<Notice>>{
+            noticeAdapter.update(it)
+    }
+
+    private val noticeIsLoadingObserver = Observer<Boolean> {
+        if(it) view!!.progressbar_notice.visibility = View.VISIBLE
+        else view!!.progressbar_notice.visibility = View.GONE
     }
 
     private fun moveFromSearchToHome() {

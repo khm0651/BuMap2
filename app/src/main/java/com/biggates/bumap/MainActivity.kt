@@ -3,37 +3,29 @@ package com.biggates.bumap
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.biggates.bumap.Interface.RetrofitService
-import com.biggates.bumap.Model.Bus
-import com.biggates.bumap.Model.Calendar
-import com.biggates.bumap.Model.Notice
-import com.biggates.bumap.Singleton.BusList
-import com.biggates.bumap.Singleton.CalendarList
-import com.biggates.bumap.Singleton.NoticeList
-import com.biggates.bumap.Singleton.RetrofitClient
+import com.biggates.bumap.Retrofit.RetrofitService
+import com.biggates.bumap.ViewModel.bus.BusViewModel
+import com.biggates.bumap.ViewModel.calendar.CalendarViewModel
+import com.biggates.bumap.ViewModel.notice.NoticeViewModel
+import com.biggates.bumap.ViewModel.ViewModelFactory
 import com.biggates.bumap.ui.bus.BusFragment
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_bus.*
-import kotlinx.android.synthetic.main.fragment_bus.view.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.Retrofit
 
 
@@ -42,6 +34,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var myAPI: RetrofitService
     private lateinit var retrofit : Retrofit
+
+    lateinit var noticeViewModel : NoticeViewModel
+    lateinit var busViewModel : BusViewModel
+    lateinit var calendarViewModel : CalendarViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,68 +65,17 @@ class MainActivity : AppCompatActivity() {
             search_text.visibility = View.GONE
         }
 
-        retrofit = RetrofitClient.getInstance()
-        myAPI = retrofit.create(RetrofitService::class.java)
+        noticeViewModel = ViewModelProvider(this,ViewModelFactory("notice")).get(NoticeViewModel::class.java)
+        noticeViewModel.setContext(applicationContext)
+        noticeViewModel.loadNoitce()
 
-        myAPI.getCalendar().enqueue(object  : Callback<ArrayList<Calendar>> {
-            override fun onFailure(call: Call<ArrayList<Calendar>>, t: Throwable) {
-                Toast.makeText(applicationContext,"서버에 문제가 생겼습니다." + t.message, Toast.LENGTH_LONG).show()
-            }
+        busViewModel = ViewModelProvider(this,ViewModelFactory("bus")).get(BusViewModel::class.java)
+        busViewModel.setContext(applicationContext)
+        busViewModel.loadBus()
 
-            override fun onResponse(
-                call: Call<ArrayList<Calendar>>,
-                response: Response<ArrayList<Calendar>>
-            ) {
-                if(response.isSuccessful){
-                    var response =response.body()
-
-                    if(response != null) CalendarList.setList(response)
-                    Toast.makeText(applicationContext,"캘린더 불러오기 완료",Toast.LENGTH_SHORT).show()
-                }
-            }
-
-        })
-
-
-        myAPI.getNotice().enqueue(object  : Callback<ArrayList<Notice>>{
-            override fun onFailure(call: Call<ArrayList<Notice>>, t: Throwable) {
-                Toast.makeText(applicationContext,"서버에 문제가 생겼습니다." + t.message,Toast.LENGTH_LONG).show()
-            }
-
-            override fun onResponse(
-                call: Call<ArrayList<Notice>>,
-                response: Response<ArrayList<Notice>>
-            ) {
-                if(response.isSuccessful){
-                    var response =response.body()
-
-                    if(response != null) NoticeList.setList(response)
-                    Toast.makeText(applicationContext,"공지사항 불러오기 완료",Toast.LENGTH_SHORT).show()
-
-                }
-            }
-
-        })
-
-        myAPI.getBus().enqueue(object  : Callback<ArrayList<Bus>>{
-            override fun onFailure(call: Call<ArrayList<Bus>>, t: Throwable) {
-                Toast.makeText(applicationContext,"서버에 문제가 생겼습니다." + t.message,Toast.LENGTH_LONG).show()
-            }
-
-            override fun onResponse(
-                call: Call<ArrayList<Bus>>,
-                response: Response<ArrayList<Bus>>
-            ) {
-                if(response.isSuccessful){
-                    var response =response.body()
-
-                    if(response != null) BusList.setList(response)
-                    Toast.makeText(applicationContext,"셔틀버스 시간표 불러오기 완료",Toast.LENGTH_SHORT).show()
-                }
-            }
-
-        })
-
+        calendarViewModel = ViewModelProvider(this,ViewModelFactory("calendar")).get(CalendarViewModel::class.java)
+        calendarViewModel.setContext(applicationContext)
+        calendarViewModel.loadCalendar()
 
 
 

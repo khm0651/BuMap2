@@ -11,10 +11,11 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.biggates.bumap.Model.Bus
 import com.biggates.bumap.R
-import com.biggates.bumap.Singleton.BusList
+import com.biggates.bumap.ViewModel.bus.BusViewModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.busitem_layout.view.*
 import kotlinx.android.synthetic.main.fragment_bus.view.*
@@ -59,7 +60,7 @@ class BusAdapter(
             view.toHomeLayout.removeAllViews()
             view.toBuLayout.removeAllViews()
 
-            var busListInfo = BusList.getList()
+            var busListInfo = BusViewModel.busList.value!!
             for(bus in busListInfo){
                 if(bus.busStation == busList[position]){
                     for(i in 0 until bus.img!!.size){
@@ -74,7 +75,7 @@ class BusAdapter(
                         imageView.setPadding(10,10,10,10)
                         imageView.layoutParams = imageParam
                         bus_image_wrapper.addView(imageView)
-                        Picasso.get().load(bus.img!![i]).fit().placeholder(R.drawable.progress_bar).into(imageView)
+                        Picasso.get().load(bus.img!![i]).fit().into(imageView)
 
 
                     }

@@ -18,26 +18,44 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.biggates.bumap.MainActivity
 import com.biggates.bumap.R
-import com.biggates.bumap.Singleton.CalendarList
+import com.biggates.bumap.ViewModel.calendar.CalendarViewModel
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import kotlinx.android.synthetic.main.fragment_calendar.view.*
 import java.util.*
 import kotlin.collections.ArrayList
+import androidx.lifecycle.Observer
+import com.biggates.bumap.ViewModel.bus.BusViewModel
 
 
 class CalendarFragment : Fragment() {
 
-    private lateinit var slideshowViewModel: CalendarViewModel
     lateinit var dayCalendar :GridLayout
     private var calendarList =  ArrayList<String>()
     private lateinit var year : String
     private lateinit var month : String
     private lateinit var  day : String
     private lateinit var nowDate : String
-    private var allCalendar = CalendarList.getList()
+    private var allCalendar = arrayListOf<com.biggates.bumap.Model.Calendar>()
+
+    private var isLoading = Observer<Boolean> {
+        if(it)view!!.progressbar_calendar.visibility = View.VISIBLE
+        else {
+            allCalendar = CalendarViewModel.calendarList.value!!
+            var cal = GregorianCalendar() // 오늘 날짜
+
+            var calendar = GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) , 1, 0, 0, 0);
+            year = cal.get(Calendar.YEAR).toString()
+            month = (cal.get(Calendar.MONTH)+1).toString()
+            day = cal.get(Calendar.DATE).toString()
+            nowDate = "${year}.${month}.${day}"
+            createCalendar(calendar)
+            view!!.progressbar_calendar.visibility = View.GONE
+        }
+    }
     private var select : LinearLayout? = null
     private lateinit var v : View
+    lateinit var noticeViewModel : CalendarViewModel
 
     var d = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
 
@@ -75,6 +93,8 @@ class CalendarFragment : Fragment() {
         v = view
         dayCalendar = v.day_calender
 
+        CalendarViewModel.isViewLoading.observe(viewLifecycleOwner,isLoading)
+
         if(findNavController().currentDestination.toString() != "home_fragment"){
             activity!!.app_bar_layout_main.visibility = View.GONE
         }
@@ -85,15 +105,7 @@ class CalendarFragment : Fragment() {
             pd.show(parentFragmentManager,"YearMonthPicker")
         }
 
-        var cal = GregorianCalendar() // 오늘 날짜
 
-        var calendar = GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) , 1, 0, 0, 0);
-        year = cal.get(Calendar.YEAR).toString()
-        month = (cal.get(Calendar.MONTH)+1).toString()
-        day = cal.get(Calendar.DATE).toString()
-        nowDate = "${year}.${month}.${day}"
-
-        createCalendar(calendar)
 
         return view
     }
@@ -185,48 +197,39 @@ class CalendarFragment : Fragment() {
 
                     linearLayout.addView(dayNumTextView)
 
-                    if(allCalendar.isEmpty()){
-                        progressbar_calendar.visibility = View.VISIBLE
-                    }else{
 
-                        progressbar_calendar.visibility = View.GONE
-                        for(c in allCalendar){
-                            if(linearLayout.tag == "${c.getYear()}.${c.getMonth()}.${c.getDay()}"){
-                                var contentTextView = TextView(context)
-                                var textParam = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
-                                textParam.setMargins(5,15,30,0)
-                                if(calendarList[i].split(".")[1] != month){
-                                    contentTextView.setTextColor(resources.getColor(R.color.notNowday))
-                                }else{
-                                    contentTextView.setTextColor(resources.getColor(R.color.hamburgerBlack))
-                                }
-                                contentTextView.layoutParams = textParam
-                                contentTextView.tag = c.getContent()
-                                if(c.getContent().length>=9){
-                                    contentTextView.text = "${c.getContent().substring(0,9)} ..."
-                                }else{
-                                    contentTextView.text = "${c.getContent()}"
-                                }
-                                contentTextView.setPadding(0,0,0,20)
-                                contentTextView.textSize = 7F
-                                contentTextView.background = resources.getDrawable(R.drawable.bottom_solid)
-                                linearLayout.addView(contentTextView)
 
+
+                    for(c in allCalendar){
+                        if(linearLayout.tag == "${c.getYear()}.${c.getMonth()}.${c.getDay()}"){
+                            var contentTextView = TextView(context)
+                            var textParam = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
+                            textParam.setMargins(5,15,30,0)
+                            if(calendarList[i].split(".")[1] != month){
+                                contentTextView.setTextColor(resources.getColor(R.color.notNowday))
+                            }else{
+                                contentTextView.setTextColor(resources.getColor(R.color.hamburgerBlack))
                             }
-
-                        }
-
-                        if(linearLayout.tag == nowDate){
-                            select = linearLayout
-                            select!!.background = resources.getDrawable(R.drawable.calendar_solid)
-                        }
-
-
-                        dayCalendar.addView(linearLayout)
+                            contentTextView.layoutParams = textParam
+                            contentTextView.tag = c.getContent()
+                            if(c.getContent().length>=9){
+                                contentTextView.text = "${c.getContent().substring(0,9)} ..."
+                            }else{
+                                contentTextView.text = "${c.getContent()}"
+                            }
+                            contentTextView.setPadding(0,0,0,20)
+                            contentTextView.textSize = 7F
+                            contentTextView.background = resources.getDrawable(R.drawable.bottom_solid)
+                            linearLayout.addView(contentTextView)
+                            }
 
                     }
 
-
+                    if(linearLayout.tag == nowDate){
+                        select = linearLayout
+                        select!!.background = resources.getDrawable(R.drawable.calendar_solid)
+                    }
+                    dayCalendar.addView(linearLayout)
 
                 }
 
