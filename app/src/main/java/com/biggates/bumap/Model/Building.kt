@@ -3,10 +3,10 @@ package com.biggates.bumap.Model
 
 
 class Building (){
-    lateinit var  name : String
-    lateinit var high :String
-    lateinit var low : String
-    lateinit var  location : Location
+    var  name : String = ""
+    var high :String = ""
+    var low : String = ""
+    var  location : Location = Location()
     var  floor : HashMap<String, Floor> = HashMap()
 
 

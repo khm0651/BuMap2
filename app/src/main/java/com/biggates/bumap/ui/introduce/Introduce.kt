@@ -12,6 +12,7 @@ import com.biggates.bumap.Adapter.IntroduceAdapter
 import com.biggates.bumap.Adapter.IntroduceBtnAdapter
 import com.biggates.bumap.Model.*
 import com.biggates.bumap.R
+import com.biggates.bumap.ViewModel.building.BuBuilding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -43,6 +44,7 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
     lateinit var mapFragment: MapFragment
     lateinit var introduce: Introduce
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.NoTitleBar);
@@ -63,63 +65,19 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
         placeNameText.setText(placeName)
 
 
-        val database = FirebaseDatabase.getInstance()
-        val myRef = database.reference.child("BuildingInfo").child(d_name)
-
-        myRef.addListenerForSingleValueEvent(object : ValueEventListener {
-
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-
-                dataSnapshot.children.forEach { dataSnapshot: DataSnapshot? ->
-                    var str = ""
-                    if(dataSnapshot?.key.toString().equals("high")) building.high = dataSnapshot?.value as String
-                    if(dataSnapshot?.key.toString().equals("low")) building.low = dataSnapshot?.value as String
-                    if(dataSnapshot?.key.toString().equals("name")) {
-                        building.name = dataSnapshot?.value as String
-                    }
-                    if(dataSnapshot?.key.toString().equals("location")) building.location = dataSnapshot?.getValue(
-                        Location::class.java) as Location
-
-                    if (dataSnapshot?.key.toString().equals("floor")) {
-                            var floor = Floor()
-                            dataSnapshot?.children?.forEach { dataSnapshot: DataSnapshot ->
-                                var roomNumber =
-                                    RoomNumber()
-                                var floor_num = dataSnapshot.key.toString()
-                                dataSnapshot?.children?.forEach{dataSnapshot:DataSnapshot ->
-                                    roomNumber.room.set(dataSnapshot.key.toString(),dataSnapshot.getValue(
-                                        Room::class.java) as Room
-                                    )
-                                    str += (dataSnapshot.getValue(Room::class.java) as Room).name+"+"
-                                    str+= dataSnapshot.key.toString()+"+"
-                                    str+=placeName+"+"+floor_num+"층,"
-                                }
-                                floor.roomNumber.set(
-                                    dataSnapshot.key.toString(),
-                                    roomNumber
-                                )
-
-                                total_list.set(dataSnapshot?.key.toString(),str.substring(0,str.length-1))
-                                str =""
-                            }
-                            building.floor.set(dataSnapshot?.key.toString(), floor)
-
-                        }
-
-
-
-                }
-                introduce = this@Introduce
-                mapFragment.getMapAsync(this@Introduce)
+        building = BuBuilding.buBuilding.value!!.get(d_name)!!
+        BuBuilding.buBuilding.value!!.get(d_name!!)!!.floor.forEach { floorKey, f ->
+            var str = ""
+            f.roomNumber.forEach { roomKey, r ->
+                str += "${r.name}+${roomKey}+${placeName}+${floorKey}층,"
             }
+            total_list.put(floorKey,str.substring(0,str.length-1))
+            str =""
 
-            override fun onCancelled(dataSnapshot: DatabaseError) {
+        }
 
-            }
-
-        })
-
-
+        introduce = this@Introduce
+        mapFragment.getMapAsync(this@Introduce)
 
     }
 
@@ -177,16 +135,16 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
                 }
 
                 if(floor_maker.isEmpty()){
-                    for(floor in building.floor.get("floor")?.roomNumber?.keys!!){
+                    for(floor in building.floor.keys){
                         var roomMaker =
                             RoomMaker()
 
                         if(floor.equals("1")){
-                            for(roomNumber in building.floor.get("floor")?.roomNumber?.get(floor)!!.room.keys){
-                                if(building.floor.get("floor")?.roomNumber?.get(floor)!!.room.get(roomNumber)!!.name == "화장실"){
+                            for(roomNumber in building.floor.get(floor)!!.roomNumber.keys){
+                                if(building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.name == "화장실"){
                                     var marker = Marker()
-                                    marker.tag = building.floor.get("floor")?.roomNumber?.get(floor)!!.room.get(roomNumber)!!.name
-                                    marker.position = LatLng(building.floor.get("floor")?.roomNumber?.get(floor)!!.room.get(roomNumber)!!.location.lat.toDouble(), building.floor.get("floor")?.roomNumber?.get(floor)!!.room.get(roomNumber)!!.location.lng.toDouble())
+                                    marker.tag = building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.name
+                                    marker.position = LatLng(building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lat.toDouble(), building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lng.toDouble())
                                     marker.onClickListener = listener
                                     marker.map = naverMap
                                     marker.icon = OverlayImage.fromResource(R.drawable.toilet)
@@ -196,8 +154,8 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
                                     roomMaker.room.set(roomNumber,marker)
                                 }else{
                                     var marker = Marker()
-                                    marker.tag = building.floor.get("floor")?.roomNumber?.get(floor)!!.room.get(roomNumber)!!.name
-                                    marker.position = LatLng(building.floor.get("floor")?.roomNumber?.get(floor)!!.room.get(roomNumber)!!.location.lat.toDouble(), building.floor.get("floor")?.roomNumber?.get(floor)!!.room.get(roomNumber)!!.location.lng.toDouble())
+                                    marker.tag = building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.name
+                                    marker.position = LatLng(building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lat.toDouble(), building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lng.toDouble())
                                     marker.onClickListener = listener
                                     marker.map = naverMap
                                     marker.width =40
@@ -208,11 +166,11 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
                             }
 
                         }else{
-                            for(roomNumber in building.floor.get("floor")?.roomNumber?.get(floor)!!.room.keys){
-                                if(building.floor.get("floor")?.roomNumber?.get(floor)!!.room.get(roomNumber)!!.name == "화장실"){
+                            for(roomNumber in building.floor.get(floor)!!.roomNumber.keys){
+                                if(building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.name == "화장실"){
                                     var marker = Marker()
-                                    marker.tag = building.floor.get("floor")?.roomNumber?.get(floor)!!.room.get(roomNumber)!!.name
-                                    marker.position = LatLng(building.floor.get("floor")?.roomNumber?.get(floor)!!.room.get(roomNumber)!!.location.lat.toDouble(), building.floor.get("floor")?.roomNumber?.get(floor)!!.room.get(roomNumber)!!.location.lng.toDouble())
+                                    marker.tag = building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.name
+                                    marker.position = LatLng(building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lat.toDouble(), building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lng.toDouble())
                                     marker.onClickListener = listener
                                     marker.icon = OverlayImage.fromResource(R.drawable.toilet)
                                     marker.width=50
@@ -221,8 +179,8 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
                                     roomMaker.room.set(roomNumber,marker)
                                 }else{
                                     var marker = Marker()
-                                    marker.tag = building.floor.get("floor")?.roomNumber?.get(floor)!!.room.get(roomNumber)!!.name
-                                    marker.position = LatLng(building.floor.get("floor")?.roomNumber?.get(floor)!!.room.get(roomNumber)!!.location.lat.toDouble(), building.floor.get("floor")?.roomNumber?.get(floor)!!.room.get(roomNumber)!!.location.lng.toDouble())
+                                    marker.tag = building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.name
+                                    marker.position = LatLng(building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lat.toDouble(), building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lng.toDouble())
                                     marker.onClickListener = listener
                                     marker.width =40
                                     marker.height=60

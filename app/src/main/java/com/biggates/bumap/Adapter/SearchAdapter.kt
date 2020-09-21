@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.search_result_layout.view.*
 
-class SearchAdapter (private var mContext : Context, private var mSearchList : ArrayList<String>, private var mLocationList : ArrayList<Location>)
+class SearchAdapter (private var mContext : Context, private var mSearchList : ArrayList<HashMap<String,Location>>)
     :RecyclerView.Adapter<SearchAdapter.ViewHolder>(){
 
     inner class ViewHolder(@NonNull itemView : View) : RecyclerView.ViewHolder(itemView){
@@ -34,7 +34,7 @@ class SearchAdapter (private var mContext : Context, private var mSearchList : A
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var nameArr = mSearchList[position].split("+")
+        var nameArr = mSearchList[position].keys.first().split("+")
         if(nameArr.size == 3){
             var infotext = ""
             if(nameArr[2].contains("?")){
@@ -56,8 +56,8 @@ class SearchAdapter (private var mContext : Context, private var mSearchList : A
 
         holder.search_result_layout.setOnClickListener {
             var bundle = Bundle()
-            bundle.putString("lat",mLocationList[position].lat)
-            bundle.putString("lng",mLocationList[position].lng)
+            bundle.putString("lat",mSearchList[position].values.first().lat)
+            bundle.putString("lng",mSearchList[position].values.first().lng)
             bundle.putBoolean("isShowPredictTime",true)
             holder.itemView.findNavController().navigate(R.id.action_searchFragment_to_nav_home,bundle)
             (mContext as MainActivity).search_edit.isEnabled = false

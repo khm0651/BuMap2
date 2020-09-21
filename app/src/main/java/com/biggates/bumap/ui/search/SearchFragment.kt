@@ -1,14 +1,17 @@
 package com.biggates.bumap.ui.search
 
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.RequiresApi
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,19 +21,25 @@ import com.biggates.bumap.MainActivity
 import com.biggates.bumap.Model.Location
 
 import com.biggates.bumap.R
+import com.biggates.bumap.ViewModel.building.BuBuilding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_search.view.*
+import java.util.*
+import kotlin.Comparator
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
-
+@RequiresApi(Build.VERSION_CODES.N)
 class SearchFragment : Fragment() {
 
     private lateinit var search_recyclerView : RecyclerView
     private var searchList : ArrayList<String> = arrayListOf()
     private var locationList : ArrayList<Location> = arrayListOf()
+    private var arrayList : ArrayList<HashMap<String,Location>> = arrayListOf()
     private lateinit var  searchAdapter: SearchAdapter
     private var onBackPressedCallback = object : OnBackPressedCallback (true){
         override fun handleOnBackPressed() {
@@ -56,7 +65,7 @@ class SearchFragment : Fragment() {
         search_recyclerView.visibility = View.VISIBLE
         search_recyclerView?.setHasFixedSize(true)
         search_recyclerView?.layoutManager = LinearLayoutManager(context)
-        searchAdapter = SearchAdapter(context!!, searchList, locationList)
+        searchAdapter = SearchAdapter(context!!, arrayList)
         search_recyclerView.adapter = searchAdapter
 
         (activity as MainActivity).search_edit.addTextChangedListener(object : TextWatcher {
@@ -78,70 +87,54 @@ class SearchFragment : Fragment() {
         return view
     }
 
+
     private fun searchBuilding(input: String) {
 
-        val ref = FirebaseDatabase.getInstance().reference.child("BuildingInfo")
+        arrayList.clear()
+        BuBuilding.buBuilding.value!!.forEach { buildingKey, b ->
+            var location = b.location
+            var name = b.name
 
-        ref.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-
+            if(name.contains(input)){
+                var map : HashMap<String,Location> = hashMapOf()
+                map.put(name,location)
+                arrayList.add(map)
             }
 
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                searchList.clear()
-                locationList.clear()
-                for(snapshot in dataSnapshot.children){
 
-                    var arr = arrayListOf<String>()
-                    var name = snapshot.child("name").value.toString()
-                    var location : Location = snapshot.child("location").getValue(Location::class.java)!!
-                    var range = Math.round((name.length.toDouble()/ input.length.toDouble())).toInt()
-                    for(i in 0 until range){
-                        if((i+input.length) <= name.length){
-                            arr.add(name.substring(i, i + input.length))
-                        }
+            b.floor.forEach { floorKey, f ->
+                f.roomNumber.forEach { roomKey, r ->
+                    var roomName = r.name
+                    var roomNum = roomKey
+                    if(roomName.contains(input)){
+                        var map : HashMap<String,Location> = hashMapOf()
+                        map.put(roomName+ "+" + name + " " + floorKey+"층+"+roomNum+"호",location)
+                        arrayList.add(map)
                     }
-
-                    for (char in arr){
-                        if(char.equals(input)){
-                            searchList.add(name)
-                            locationList.add(location)
-                        }
-                    }
-
-                    searchAdapter.notifyDataSetChanged()
-
-                    for(floorSnapshot in snapshot.child("floor").children){
-                        var floor = floorSnapshot.key.toString()
-                        for(roomSnapshot in floorSnapshot.children){
-                            var arr2 = arrayListOf<String>()
-                            var roomName = roomSnapshot.child("name").value.toString()
-                            var roomNum = roomSnapshot.key.toString()
-                            var range2 = Math.round((roomName.length.toDouble()/ input.length.toDouble())).toInt()
-
-                            for(i in 0 until range2){
-                                if((i+input.length) <= roomName.length){
-                                    arr2.add(roomName.substring(i, i + input.length))
-                                }
-                            }
-
-                            for (char in arr2){
-                                if(char.equals(input)){
-                                    searchList.add(roomName+ "+" + name + " " + floor+"층+"+roomNum+"호")
-                                    locationList.add(location)
-                                    break
-                                }
-                            }
-
-                            searchAdapter.notifyDataSetChanged()
-                        }
-                    }
-
+                }
+            }
+        }
+        Collections.sort(arrayList, object : Comparator<HashMap<String, Location>> {
+            override fun compare(
+                o1: HashMap<String, Location>?,
+                o2: HashMap<String, Location>?
+            ): Int {
+                var a = o1!!.keys.first().split("+")[0]
+                var b = o2!!.keys.first().split("+")[0]
+                if(a.startsWith(input)){
+                    return -1
+                }else if(b.startsWith(input)){
+                    return 1
+                }else{
+                    return a.compareTo(b)
                 }
 
-
             }
+
         })
+        searchAdapter.notifyDataSetChanged()
+
+
     }
 
 

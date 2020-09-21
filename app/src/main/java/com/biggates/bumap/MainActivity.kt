@@ -22,6 +22,7 @@ import com.biggates.bumap.ViewModel.bus.BusViewModel
 import com.biggates.bumap.ViewModel.calendar.CalendarViewModel
 import com.biggates.bumap.ViewModel.notice.NoticeViewModel
 import com.biggates.bumap.ViewModel.ViewModelFactory
+import com.biggates.bumap.ViewModel.building.BuBuilding
 import com.biggates.bumap.ui.bus.BusFragment
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -32,12 +33,6 @@ import retrofit2.Retrofit
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var myAPI: RetrofitService
-    private lateinit var retrofit : Retrofit
-
-    lateinit var noticeViewModel : NoticeViewModel
-    lateinit var busViewModel : BusViewModel
-    lateinit var calendarViewModel : CalendarViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,17 +60,17 @@ class MainActivity : AppCompatActivity() {
             search_text.visibility = View.GONE
         }
 
-        noticeViewModel = ViewModelProvider(this,ViewModelFactory("notice")).get(NoticeViewModel::class.java)
-        noticeViewModel.setContext(applicationContext)
-        noticeViewModel.loadNoitce()
+        NoticeViewModel.setContext(applicationContext)
+        NoticeViewModel.loadNoitce()
 
-        busViewModel = ViewModelProvider(this,ViewModelFactory("bus")).get(BusViewModel::class.java)
-        busViewModel.setContext(applicationContext)
-        busViewModel.loadBus()
+        BusViewModel.setContext(applicationContext)
+        BusViewModel.loadBus()
 
-        calendarViewModel = ViewModelProvider(this,ViewModelFactory("calendar")).get(CalendarViewModel::class.java)
-        calendarViewModel.setContext(applicationContext)
-        calendarViewModel.loadCalendar()
+        CalendarViewModel.setContext(applicationContext)
+        CalendarViewModel.loadCalendar()
+
+        BuBuilding.setContext(applicationContext)
+        BuBuilding.loadBuBuilding()
 
 
 
