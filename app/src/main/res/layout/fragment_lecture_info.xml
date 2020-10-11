@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.schedule.LectureInfoFragment">
+
+    <LinearLayout
+        android:id="@+id/tab_bar_lecture_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+        >
+
+        <LinearLayout
+            android:id="@+id/notice_btn_lecture_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.33"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
+
+            <ImageView
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:src="@drawable/notice"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="공지사항"
+                android:layout_marginLeft="7dp"
+                android:textSize="11sp"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/work_btn_lecture_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.33"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
+
+            <ImageView
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:src="@drawable/notice"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="과제"
+                android:layout_marginLeft="7dp"
+                android:textSize="11sp"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/check_btn_lecture_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.33"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
+
+            <ImageView
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:src="@drawable/notice"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="출결"
+                android:layout_marginLeft="7dp"
+                android:textSize="11sp"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+    
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewpage_lecture_info"
+        android:layout_below="@+id/tab_bar_lecture_info"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        />
+
+</RelativeLayout>

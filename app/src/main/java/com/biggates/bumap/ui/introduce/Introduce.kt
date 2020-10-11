@@ -1,7 +1,9 @@
 package com.biggates.bumap.ui.introduce
 
+import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.*
 import android.widget.RelativeLayout
 import androidx.annotation.RequiresApi
@@ -84,6 +86,28 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onMapReady(naverMap: NaverMap) {
 
+        var r: Resources = resources
+        var w = Math.round(
+            TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 10F, r.getDisplayMetrics()
+            )
+        ).toInt()
+        var h = Math.round(
+            TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 15F, r.getDisplayMetrics()
+            )
+        ).toInt()
+        var tw = Math.round(
+            TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 15F, r.getDisplayMetrics()
+            )
+        ).toInt()
+        var th = Math.round(
+            TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 15F, r.getDisplayMetrics()
+            )
+        ).toInt()
+
         if(isFirst){
             val infoWindow = InfoWindow()
             var recyclerView : RecyclerView = recycler_view_room_list
@@ -148,8 +172,8 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
                                     marker.onClickListener = listener
                                     marker.map = naverMap
                                     marker.icon = OverlayImage.fromResource(R.drawable.toilet)
-                                    marker.width=50
-                                    marker.height=50
+                                    marker.width=tw
+                                    marker.height=th
                                     marker.zIndex=-10
                                     roomMaker.room.set(roomNumber,marker)
                                 }else{
@@ -158,8 +182,8 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
                                     marker.position = LatLng(building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lat.toDouble(), building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lng.toDouble())
                                     marker.onClickListener = listener
                                     marker.map = naverMap
-                                    marker.width =40
-                                    marker.height=60
+                                    marker.width =w
+                                    marker.height=h
                                     roomMaker.room.set(roomNumber,marker)
                                 }
 
@@ -173,8 +197,8 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
                                     marker.position = LatLng(building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lat.toDouble(), building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lng.toDouble())
                                     marker.onClickListener = listener
                                     marker.icon = OverlayImage.fromResource(R.drawable.toilet)
-                                    marker.width=50
-                                    marker.height=50
+                                    marker.width=tw
+                                    marker.height=th
                                     marker.zIndex=-10
                                     roomMaker.room.set(roomNumber,marker)
                                 }else{
@@ -182,8 +206,8 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
                                     marker.tag = building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.name
                                     marker.position = LatLng(building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lat.toDouble(), building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lng.toDouble())
                                     marker.onClickListener = listener
-                                    marker.width =40
-                                    marker.height=60
+                                    marker.width =w
+                                    marker.height=h
                                     roomMaker.room.set(roomNumber,marker)
                                 }
                             }

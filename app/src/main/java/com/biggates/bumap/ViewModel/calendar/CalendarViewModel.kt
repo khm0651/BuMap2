@@ -41,7 +41,7 @@ object CalendarViewModel : ViewModel(){
         myAPI.getCalendar().enqueue(object  : Callback<ArrayList<Calendar>> {
             override fun onFailure(call: Call<ArrayList<Calendar>>, t: Throwable) {
                 _isViewLoading.postValue(false)
-                Toast.makeText(context,"서버에 문제가 생겼습니다." + t.message, Toast.LENGTH_LONG).show()
+                Toast.makeText(context,"캘린더 불러오기 실패\n서버 또는 네트워크에 문제가 생겼습니다.", Toast.LENGTH_LONG).show()
             }
 
             override fun onResponse(

@@ -40,7 +40,7 @@ object BusViewModel : ViewModel() {
         myAPI.getBus().enqueue(object  : Callback<ArrayList<Bus>> {
             override fun onFailure(call: Call<ArrayList<Bus>>, t: Throwable) {
                 _isViewLoading.postValue(false)
-                Toast.makeText(context,"서버에 문제가 생겼습니다." + t.message, Toast.LENGTH_LONG).show()
+                Toast.makeText(context,"셔틀버스 시간표 불러오기 실패\n서버 또는 네트워크에 문제가 생겼습니다.", Toast.LENGTH_LONG).show()
             }
 
             override fun onResponse(

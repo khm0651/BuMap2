@@ -19,7 +19,8 @@ class NoticeWebViewActivity : AppCompatActivity() {
 
         var webSettings = webView.settings
         webSettings.javaScriptEnabled = true
-
+        webSettings.builtInZoomControls = true
+        webSettings.setSupportZoom(true)
         webView.loadUrl(href)
 
     }

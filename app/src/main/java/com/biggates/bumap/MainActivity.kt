@@ -23,10 +23,13 @@ import com.biggates.bumap.ViewModel.calendar.CalendarViewModel
 import com.biggates.bumap.ViewModel.notice.NoticeViewModel
 import com.biggates.bumap.ViewModel.ViewModelFactory
 import com.biggates.bumap.ViewModel.building.BuBuilding
+import com.biggates.bumap.ViewModel.schedule.LectureScheduleViewModel
 import com.biggates.bumap.ui.bus.BusFragment
+import com.biggates.bumap.ui.schedule.ScheduleFragment
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_bus.*
+import kotlinx.android.synthetic.main.fragment_schedule.*
 import retrofit2.Retrofit
 
 
@@ -71,6 +74,9 @@ class MainActivity : AppCompatActivity() {
 
         BuBuilding.setContext(applicationContext)
         BuBuilding.loadBuBuilding()
+
+        LectureScheduleViewModel.setContext(applicationContext)
+        LectureScheduleViewModel.loadSchedule()
 
 
 
@@ -132,6 +138,19 @@ class MainActivity : AppCompatActivity() {
 
                 }
 
+            }
+
+            if(childFragments is ScheduleFragment){
+                if(childFragments.recycler_view_schedule.visibility == View.VISIBLE){
+                    var rect = Rect()
+                    var rect2 = Rect()
+                    childFragments!!.select_layout_schedule.getGlobalVisibleRect(rect2)
+                    childFragments!!.recycler_view_schedule.getGlobalVisibleRect(rect)
+
+                    if(childFragments.isSelectRecyclerViewScroll != 1 && !rect.contains(ev!!.rawX.toInt(), ev!!.rawY.toInt()) && !rect2.contains(ev!!.rawX.toInt(), ev!!.rawY.toInt())){
+                        childFragments!!.recycler_view_schedule.visibility = View.GONE
+                    }
+                }
             }
 
         }

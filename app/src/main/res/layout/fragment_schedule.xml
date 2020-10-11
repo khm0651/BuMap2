@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.schedule.ScheduleFragment">
+
+    <RelativeLayout
+        android:id="@+id/select_layout_schedule"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        >
+
+        <TextView
+            android:id="@+id/select_layout_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="선택하세요"
+            android:textSize="18sp"
+            android:textColor="#B6B6B6"
+            android:layout_centerInParent="true"
+            />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/downarrow"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            />
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/schedule_framlayout"
+        android:layout_below="@+id/select_layout_schedule"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        
+    </FrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_schedule"
+        android:layout_below="@+id/select_layout_schedule"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:visibility="gone"
+        android:background="#FAFAFA"
+        android:paddingBottom="20dp"
+        >
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+
+
+</RelativeLayout>

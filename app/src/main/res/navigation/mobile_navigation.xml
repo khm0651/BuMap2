@@ -13,8 +13,7 @@
         <action
             android:id="@+id/action_homeFragment_to_noticeFragment"
             app:destination="@id/nav_notice" />
-        <action
-            android:id="@+id/action_homeFragment_to_calendarFragment"
+        <action            android:id="@+id/action_homeFragment_to_calendarFragment"
             app:destination="@id/nav_calendar" />
         <action
             android:id="@+id/action_nav_home_to_searchFragment"
@@ -33,6 +32,9 @@
         <action
             android:id="@+id/action_nav_home_to_busFragment"
             app:destination="@id/nav_bus" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_schedule"
+            app:destination="@id/nav_schedule" />
 
     </fragment>
     <fragment
@@ -73,6 +75,15 @@
         tools:layout="@layout/fragment_bus" >
         <action
             android:id="@+id/action_busFragment_to_nav_home"
+            app:destination="@id/nav_home" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_schedule"
+        android:name="com.biggates.bumap.ui.schedule.ScheduleFragment"
+        android:label="fragment_schedule"
+        tools:layout="@layout/fragment_schedule" >
+        <action
+            android:id="@+id/action_nav_schedule_to_nav_home"
             app:destination="@id/nav_home" />
     </fragment>
 </navigation>

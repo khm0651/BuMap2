@@ -14,8 +14,7 @@ import retrofit2.Response
 
 object NoticeViewModel : ViewModel(){
 
-    private val myAPI = RetrofitClient.getInstance()
-        .create(RetrofitService::class.java)
+    private val myAPI = RetrofitClient.getInstance().create(RetrofitService::class.java)
 
     private val _noticeList = MutableLiveData<ArrayList<Notice>>().apply {
         value = arrayListOf()
@@ -33,15 +32,14 @@ object NoticeViewModel : ViewModel(){
         this.context = context
     }
 
-    fun getContext(context: Context) =
-        this.context
+    fun getContext(context: Context) = this.context
 
     fun loadNoitce(){
         _isViewLoading.postValue(true)
         myAPI.getNotice().enqueue(object  : Callback<ArrayList<Notice>> {
             override fun onFailure(call: Call<ArrayList<Notice>>, t: Throwable) {
                 _isViewLoading.postValue(false)
-                Toast.makeText(context,"서버에 문제가 생겼습니다." + t.message, Toast.LENGTH_LONG).show()
+                Toast.makeText(context,"공지사항 불러오기 실패\n서버 또는 네트워크에 문제가 생겼습니다.", Toast.LENGTH_LONG).show()
             }
 
             override fun onResponse(

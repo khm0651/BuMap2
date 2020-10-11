@@ -1,9 +1,11 @@
 package com.biggates.bumap.ui.calendar
 
 import android.app.Activity
+import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.TypedValue
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -27,8 +29,19 @@ class CalendarInfoActivity : Activity() {
         var contentArray = intent.getStringArrayListExtra("contents")!!
         var layout = calendar_info_layout!!
         var layoutParam = FrameLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT)
-        layoutParam.width = displayMetrics.widthPixels - 350
-        layoutParam.height = displayMetrics.heightPixels - 1350
+        var r: Resources = resources
+        var w = Math.round(
+            TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 100F, r.getDisplayMetrics()
+            )
+        ).toInt()
+        var h = Math.round(
+            TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 400F, r.getDisplayMetrics()
+            )
+        ).toInt()
+        layoutParam.width = displayMetrics.widthPixels - w
+        layoutParam.height = h
         layout.layoutParams = layoutParam
 
         day_calendar_info.text = "${day}일"

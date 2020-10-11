@@ -28,7 +28,7 @@ object BuBuilding {
 
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
-
+                Toast.makeText(context,"백석대 건물정보 불러오기 실패\n서버 또는 네트워크에 문제가 생겼습니다.", Toast.LENGTH_LONG).show()
             }
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {

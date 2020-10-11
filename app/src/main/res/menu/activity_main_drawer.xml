@@ -9,6 +9,10 @@
             android:icon="@drawable/home"
             android:title="@string/menu_home" />
         <item
+            android:id="@+id/nav_schedule"
+            android:icon="@drawable/calendar"
+            android:title="내 시간표" />
+        <item
             android:id="@+id/nav_notice"
             android:icon="@drawable/notice"
             android:title="공지사항" />

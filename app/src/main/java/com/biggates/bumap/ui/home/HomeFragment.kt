@@ -5,11 +5,13 @@ import android.content.Context.LOCATION_SERVICE
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -48,10 +50,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private var isShowPredictTime = false
     private var isShow = false
 
-    var markerList:HashMap<String,Marker> = HashMap()
+
+    var markerList:HashMap<String, Marker> = HashMap()
     var markerFlag:Boolean = false;
 //    var buildingArr : HashMap<String,Building> = HashMap()
-    var buildingArr : HashMap<String,HashMap<String, Location>> = HashMap()
+    var buildingArr : HashMap<String, HashMap<String, Location>> = HashMap()
     private lateinit var gpsTracker : GpsTracker
 
     private var REQUIRED_PERMISSIONS = arrayOf<String>(
@@ -90,7 +93,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         savedInstanceState: Bundle?
     ): View? {
 
-        val view = inflater.inflate(R.layout.fragment_home,container,false);
+        val view = inflater.inflate(R.layout.fragment_home, container, false);
         val fm = childFragmentManager
         var options = NaverMapOptions()
         locationSource =
@@ -104,7 +107,15 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 .camera(CameraPosition(LatLng(36.839533958, 127.1846484710), 15.0))
         }else{
             options = NaverMapOptions()
-                .camera(CameraPosition(LatLng(arguments!!.getString("lat")!!.toDouble(), arguments!!.getString("lng")!!.toDouble()), 17.5))
+                .camera(
+                    CameraPosition(
+                        LatLng(
+                            arguments!!.getString("lat")!!.toDouble(), arguments!!.getString(
+                                "lng"
+                            )!!.toDouble()
+                        ), 17.5
+                    )
+                )
                 .mapType(NaverMap.MapType.Basic)
                 .zoomControlEnabled(false)
                 .locationButtonEnabled(true)
@@ -122,18 +133,19 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         val myRef = database.reference.child("BuildingInfo")
 
 
-                myRef.addListenerForSingleValueEvent(object : ValueEventListener{
+                myRef.addListenerForSingleValueEvent(object : ValueEventListener {
 
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        dataSnapshot.children.forEach { dataSnapshot:DataSnapshot? ->
-                            var d_name : String =dataSnapshot?.key.toString()
-                            var name : String =""
-                            var location : Location = Location()
-                            dataSnapshot?.children?.forEach { dataSnapshot:DataSnapshot->
-                                if(dataSnapshot.key.toString().equals("name")){
+                        dataSnapshot.children.forEach { dataSnapshot: DataSnapshot? ->
+                            var d_name: String = dataSnapshot?.key.toString()
+                            var name: String = ""
+                            var location: Location = Location()
+                            dataSnapshot?.children?.forEach { dataSnapshot: DataSnapshot ->
+                                if (dataSnapshot.key.toString().equals("name")) {
                                     name = dataSnapshot.value.toString()
-                                }else if(dataSnapshot.key.toString().equals("location")){
-                                    location = dataSnapshot.getValue(Location::class.java) as Location
+                                } else if (dataSnapshot.key.toString().equals("location")) {
+                                    location =
+                                        dataSnapshot.getValue(Location::class.java) as Location
                                 }
                             }
                             buildingArr.set(d_name, hashMapOf(name to location))
@@ -157,6 +169,18 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
     @UiThread
     override fun onMapReady(naverMap: NaverMap) {
+
+        var r: Resources = resources
+        var w = Math.round(
+            TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 20F, r.getDisplayMetrics()
+            )
+        ).toInt()
+        var h = Math.round(
+            TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 30F, r.getDisplayMetrics()
+            )
+        ).toInt()
 
         this.naverMap = naverMap
         naverMap.locationSource = locationSource
@@ -183,10 +207,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                     var myLat = gpsTracker.getLatitude()
                     var myLng = gpsTracker.getLongitude()
                     isShow = true
-                    showPredictTimeLayout(myLat!!,myLng!!)
+                    showPredictTimeLayout(myLat!!, myLng!!)
                 }else{
-                    var toast = Toast.makeText(context,"GPS권한 거부로인해 서비스 사용불가.",Toast.LENGTH_LONG)
-                    toast.setGravity(Gravity.TOP,Gravity.CENTER,450)
+                    var toast = Toast.makeText(context, "GPS권한 거부로인해 서비스 사용불가.", Toast.LENGTH_LONG)
+                    toast.setGravity(Gravity.TOP, Gravity.CENTER, 450)
                     toast.show()
                 }
             }
@@ -199,13 +223,15 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             if (marker.infoWindow == null) { // 현재 마커에 정보 창이 열려있지 않을 경우 엶
                 infoWindow.open(marker)
                 infoWindow.onClickListener = Overlay.OnClickListener { o: Overlay? ->
-                    val intent = Intent(context,
-                        Introduce::class.java)
+                    val intent = Intent(
+                        context,
+                        Introduce::class.java
+                    )
                     var split : ArrayList<String> = marker.tag.toString().split("-") as ArrayList<String>
-                    intent.putExtra("lat",marker.position.latitude!!);
-                    intent.putExtra("lng",marker.position.longitude!!);
+                    intent.putExtra("lat", marker.position.latitude!!);
+                    intent.putExtra("lng", marker.position.longitude!!);
                     intent.putExtra("placename", split[0]);
-                    intent.putExtra("d_name",split[1])
+                    intent.putExtra("d_name", split[1])
                     startActivity(intent)
 
                     true
@@ -223,30 +249,44 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         for (k in buildingArr) {
             var isOpen = false
             if(!arguments!!.isEmpty){
-                if(arguments!!.getString("lat")!!.toDouble().equals(k.value.get(k.value.keys.first().toString())?.lat!!.toDouble())
-                    && arguments!!.getString("lng")!!.toDouble().equals(k.value.get(k.value.keys.first().toString())?.lng!!.toDouble())){
+                if(arguments!!.getString("lat")!!.toDouble().equals(
+                        k.value.get(
+                            k.value.keys.first().toString()
+                        )?.lat!!.toDouble()
+                    )
+                    && arguments!!.getString("lng")!!.toDouble().equals(
+                        k.value.get(
+                            k.value.keys.first().toString()
+                        )?.lng!!.toDouble()
+                    )){
                         isOpen = true
                     }
 
             }
             val marker = Marker()
-            marker.position = LatLng(k.value.get(k.value.keys.first().toString())?.lat!!.toDouble(), k.value.get(k.value.keys.first().toString())?.lng!!.toDouble())
+            marker.position = LatLng(
+                k.value.get(k.value.keys.first().toString())?.lat!!.toDouble(), k.value.get(
+                    k.value.keys.first().toString()
+                )?.lng!!.toDouble()
+            )
             marker.tag = k.value.keys.first().toString() + "-" +k.key
             marker.map = naverMap
             marker.onClickListener = listener
-            marker.width=80
-            marker.height=100
-            markerList.set(k.key,marker)
+            marker.width=w
+            marker.height=h
+            markerList.set(k.key, marker)
             if(isOpen){
                 infoWindow.open(marker)
                 infoWindow.onClickListener = Overlay.OnClickListener { o: Overlay? ->
-                    val intent = Intent(context,
-                        Introduce::class.java)
+                    val intent = Intent(
+                        context,
+                        Introduce::class.java
+                    )
                     var split : ArrayList<String> = marker.tag.toString().split("-") as ArrayList<String>
-                    intent.putExtra("lat",marker.position.latitude!!);
-                    intent.putExtra("lng",marker.position.longitude!!);
+                    intent.putExtra("lat", marker.position.latitude!!);
+                    intent.putExtra("lng", marker.position.longitude!!);
                     intent.putExtra("placename", split[0]);
-                    intent.putExtra("d_name",split[1])
+                    intent.putExtra("d_name", split[1])
                     startActivity(intent)
 
                     true
@@ -255,7 +295,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
         }
 
-        markerBtn.setOnClickListener{ v:View->
+        markerBtn.setOnClickListener{ v: View->
             if(!markerFlag){
                 for(k in markerList){
                     k.value.map=null;
@@ -280,12 +320,16 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int,
-                                            permissions: Array<String>,
-                                            grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (locationSource.onRequestPermissionsResult(requestCode, permissions,
-                grantResults)) {
+        if (locationSource.onRequestPermissionsResult(
+                requestCode, permissions,
+                grantResults
+            )) {
             if (!locationSource.isActivated) { // 권한 거부됨
                 naverMap.locationTrackingMode = LocationTrackingMode.None
             }

@@ -122,7 +122,6 @@ class BusAdapter(
             textview2.layoutParams = textViewParam2
             textview2.textSize = 16f
             textview2.text = tohome.value
-            textview2.lineHeight = 100
 
             linearLayout.setPadding(0,0,100,0)
             linearLayout.addView(textview)
@@ -147,7 +146,6 @@ class BusAdapter(
         takePlaceTextview2.layoutParams = takePlaceTextviewParam2
         takePlaceTextview2.textSize = 16f
         takePlaceTextview2.text = bus.toHomeTakePlace
-        takePlaceTextview2.lineHeight = 100
 
         linearLayout2.setPadding(0,0,100,0)
         linearLayout2.addView(takePlaceTextview)
@@ -190,7 +188,6 @@ class BusAdapter(
             textview2.textSize = 16f
             textview2.text = tobu.value
             textview2.layoutParams = textViewParam2
-            textview2.lineHeight = 100
 
             linearLayout.setPadding(0,0,100,0)
             linearLayout.addView(textview)
@@ -215,7 +212,6 @@ class BusAdapter(
         takePlaceTextview2.textSize = 16f
         takePlaceTextview2.text = bus.toBuTakePlace
         takePlaceTextview2.layoutParams = takePlaceTextviewParam2
-        takePlaceTextview2.lineHeight = 100
 
         linearLayout2.setPadding(0,0,100,0)
         linearLayout2.addView(takePlaceTextview)
