@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="선택하세요"
-            android:textSize="18sp"
+            android:textSize="18dp"
             android:textColor="#B6B6B6"
             android:layout_centerInParent="true"
             />

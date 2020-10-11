@@ -98,7 +98,7 @@
                 android:layout_height="wrap_content"
                 android:text="준비중 입니다. \n 빠른시일내에 \n업데이트하겠습니다."
                 android:textStyle="bold"
-                android:textSize="20sp"
+                android:textSize="20dp"
                 android:layout_centerInParent="true"
                 android:gravity="center"
                 android:lineHeight="45dp"

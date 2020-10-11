@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="이번주 할 것"
-        android:textSize="16sp"
+        android:textSize="16dp"
         android:textStyle="bold"
         android:layout_marginTop="20dp"
         android:textAlignment="center"
@@ -44,7 +44,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="과제"
-                    android:textSize="12sp"
+                    android:textSize="12dp"
                     android:textStyle="bold"
                     />
 
@@ -64,7 +64,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="동영상강의"
-                    android:textSize="12sp"
+                    android:textSize="12dp"
                     android:textStyle="bold"
                     />
 

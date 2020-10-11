@@ -27,7 +27,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="월"
-            android:textSize="10sp"
+            android:textSize="10dp"
             android:gravity="center"
             android:background="@drawable/all_solid"
             >
@@ -39,7 +39,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="화"
-            android:textSize="10sp"
+            android:textSize="10dp"
             android:gravity="center"
             android:background="@drawable/all_solid"
             >
@@ -51,7 +51,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="수"
-            android:textSize="10sp"
+            android:textSize="10dp"
             android:gravity="center"
             android:background="@drawable/all_solid"
             >
@@ -63,7 +63,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="목"
-            android:textSize="10sp"
+            android:textSize="10dp"
             android:gravity="center"
             android:background="@drawable/all_solid"
             >
@@ -75,7 +75,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="금"
-            android:textSize="10sp"
+            android:textSize="10dp"
             android:gravity="center"
             android:background="@drawable/all_solid"
             >

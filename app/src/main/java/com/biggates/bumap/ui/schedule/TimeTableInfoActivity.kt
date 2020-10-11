@@ -53,12 +53,11 @@ class TimeTableInfoActivity : Activity() {
         var name = intent.getStringExtra("name").toString().trim()
         var noticeList = ArrayList<String>()
         var lectureSchedule = LectureScheduleViewModel.lectureSchedule.value!!.getSchedule()
-        LectureScheduleViewModel.lectureSchedule
         lectureSchedule!!.forEach { user, lecture ->
             (lecture as LinkedTreeMap<String, Any>).forEach { lecutreKey, lectureList ->
-                lecture.forEach { lectureName, itemlist ->
 
-                    (itemlist as LinkedTreeMap<String,Any>).forEach { itemlistName, item ->
+
+                (lectureList as LinkedTreeMap<String,Any>).forEach { itemlistName, item ->
 
                         if(itemlistName.startsWith(name)){
                             (item as LinkedTreeMap<String, Any>).forEach { todoName, todoList ->
@@ -214,7 +213,7 @@ class TimeTableInfoActivity : Activity() {
 
                     }
 
-                }
+
             }
         }
     }

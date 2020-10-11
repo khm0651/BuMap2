@@ -48,7 +48,7 @@
             android:paddingRight="25dp"
             android:lineHeight="25dp"
             android:layout_marginLeft="20dp"
-            android:textSize="10sp"
+            android:textSize="10dp"
             />
 
     </LinearLayout>

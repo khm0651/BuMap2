@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:weightSum="1"
+        android:layout_marginTop="15dp"
         >
 
         <LinearLayout
@@ -32,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:text="공지사항"
                 android:layout_marginLeft="7dp"
-                android:textSize="11sp"
+                android:textSize="12dp"
                 />
 
         </LinearLayout>
@@ -57,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:text="과제"
                 android:layout_marginLeft="7dp"
-                android:textSize="11sp"
+                android:textSize="12dp"
                 />
 
         </LinearLayout>
@@ -82,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:text="출결"
                 android:layout_marginLeft="7dp"
-                android:textSize="11sp"
+                android:textSize="12dp"
                 />
 
         </LinearLayout>
@@ -95,6 +96,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
+        android:paddingTop="15dp"
         />
 
 </RelativeLayout>

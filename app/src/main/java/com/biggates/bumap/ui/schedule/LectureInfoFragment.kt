@@ -5,29 +5,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.biggates.bumap.Adapter.ViewPageAdapter
 
 import com.biggates.bumap.R
+import kotlinx.android.synthetic.main.fragment_lecture_info.view.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [LectureInfoFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+
+
 class LectureInfoFragment : Fragment() {
     // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    var title: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            title = it.getString("title")
         }
     }
 
@@ -36,25 +31,32 @@ class LectureInfoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_lecture_info, container, false)
+        var view = inflater.inflate(R.layout.fragment_lecture_info, container, false)
+
+        var viewPageAdapter = ViewPageAdapter(title, this)
+        var viewPager = view.viewpage_lecture_info
+        viewPager.adapter = viewPageAdapter
+
+        view.notice_btn_lecture_info.setOnClickListener {
+            viewPager.setCurrentItem(0)
+        }
+        view.work_btn_lecture_info.setOnClickListener {
+            viewPager.setCurrentItem(1)
+        }
+        view.check_btn_lecture_info.setOnClickListener {
+            viewPager.setCurrentItem(2)
+        }
+
+        return view
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment LectureInfoFragment.
-         */
-        // TODO: Rename and change types and number of parameters
+
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(title: String) =
             LectureInfoFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putString("title", title)
                 }
             }
     }

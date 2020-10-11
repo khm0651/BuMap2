@@ -80,7 +80,7 @@ class ScheduleFragment : Fragment() {
         var tiemTableFragment = TiemTableFragment()
         var fm = childFragmentManager
         fm.beginTransaction().add(R.id.schedule_framlayout, tiemTableFragment).commit()
-        var scheduleAdapter = ScheduleAdapter(context!!,lectureList,fm)
+        var scheduleAdapter = ScheduleAdapter(context!!,lectureList,fm,view.recycler_view_schedule,view.select_layout_title)
         select_recycler_view.adapter = scheduleAdapter
 
 

@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,7 +15,9 @@ import kotlinx.android.synthetic.main.lecture_layout.view.*
 class ScheduleAdapter(
     private var mContext: Context,
     private var lectureList: ArrayList<String>,
-    private var fm: FragmentManager
+    private var fm: FragmentManager,
+    private var recyclerViewSchedule: RecyclerView,
+    private var selectLayoutTitle: TextView
 )
     :RecyclerView.Adapter<ScheduleAdapter.ViewHolder>(){
 
@@ -35,14 +38,14 @@ class ScheduleAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.title.text = lectureList[position]
-//        holder.layout.setOnClickListener {
-//            var transaction = fm.beginTransaction().apply {
-//                var lectureInfoFragment = LectureInfoFragment.newInstance()
-//                lectureInfoFragment.arguments
-//                replace(R.id.schedule_framlayout, lectureInfoFragment)
-//                addToBackStack(null)
-//            }
-//            transaction.commit()
-//        }
+        holder.layout.setOnClickListener {
+            recyclerViewSchedule.visibility = View.GONE
+            selectLayoutTitle.text = lectureList[position]
+            var transaction = fm.beginTransaction().apply {
+                var lectureInfoFragment = LectureInfoFragment.newInstance(lectureList[position])
+                replace(R.id.schedule_framlayout, lectureInfoFragment)
+            }
+            transaction.commit()
+        }
     }
 }
