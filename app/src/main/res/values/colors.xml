@@ -10,6 +10,7 @@
     <color name="notNowSunday">#40CC0000</color>
     <color name="notNowSaturday">#400099CC</color>
     <color name="notNowday">#40000000</color>
+    <color name="lateness">#D2FDBF00</color>
 
     <color name="timeTable1">#40CC0000</color>
     <color name="timeTable2">#400099CC</color>

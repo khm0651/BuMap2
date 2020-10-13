@@ -59,7 +59,6 @@ class CalendarInfoActivity : Activity() {
             textView.layoutParams = textViewParam
             textView.text = "●  ${contentArray[i]}"
             textView.textSize = 16F
-            textView.lineHeight = 100
             textView.setPadding(60,0,60,0)
             layout.addView(textView)
         }

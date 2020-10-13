@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/check_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingBottom="15dp"
+    android:background="@drawable/bottom_solid"
+    >
+
+    <TextView
+        android:id="@+id/check_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="날짜"
+        android:textSize="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
+        />
+
+    <RelativeLayout
+        android:id="@+id/wrap_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/check_date"
+        >
+
+        <TextView
+            android:id="@+id/check_week_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1주차"
+            android:textSize="12dp"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="10dp"
+            />
+
+        <LinearLayout
+            android:id="@+id/wrap_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginRight="25dp"
+
+                >
+
+                <TextView
+                    android:id="@+id/video_state_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="강의영상"
+                    android:textSize="10dp"
+                    android:layout_marginRight="5dp"
+                    />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        android:id="@+id/video_state_total_check"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="total : 2"
+                        android:textSize="10dp"
+                        android:layout_gravity="right"
+                        android:textColor="@android:color/black"
+                        />
+
+                    <TextView
+                        android:id="@+id/video_state_finish_check"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="학습 : 2"
+                        android:textSize="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_gravity="right"
+                        android:textColor="@android:color/holo_blue_dark"
+                        />
+
+                    <TextView
+                        android:id="@+id/video_state_notFinish_check"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="미학습 : 2"
+                        android:textSize="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_gravity="right"
+                        android:textColor="@android:color/holo_red_dark"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:id="@+id/state_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="출결"
+                    android:textSize="10dp"
+                    android:layout_marginRight="5dp"
+                    />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        android:id="@+id/state_total_check"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="total : 2"
+                        android:textSize="10dp"
+                        android:layout_gravity="right"
+                        android:textColor="@android:color/black"
+                        />
+
+                    <TextView
+                        android:id="@+id/state_attendance_check"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="출석 : 2"
+                        android:textSize="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_gravity="right"
+                        android:textColor="@android:color/holo_blue_dark"
+                        />
+
+                    <TextView
+                        android:id="@+id/state_absent_check"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="결석 : 2"
+                        android:textSize="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_gravity="right"
+                        android:textColor="@android:color/holo_red_dark"
+                        />
+
+                    <TextView
+                        android:id="@+id/state_lateness_check"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="지각 : 2"
+                        android:textSize="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_gravity="right"
+                        android:textColor="@android:color/holo_orange_light"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+
+
+    <LinearLayout
+        android:id="@+id/detail_view_page_check"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/wrap_info"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        >
+
+    </LinearLayout>
+
+</RelativeLayout>

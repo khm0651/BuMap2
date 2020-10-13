@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    >
+
+    <ImageView
+        android:id="@+id/presentImg"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:src="@drawable/cancel"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp"
+        />
+
+    <TextView
+        android:id="@+id/title_check_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="제목"
+        android:textSize="12dp"
+        android:gravity="center"
+        android:layout_toRightOf="@+id/presentImg"
+        >
+
+    </TextView>
+
+</RelativeLayout>

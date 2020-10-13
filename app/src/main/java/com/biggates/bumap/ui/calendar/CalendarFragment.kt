@@ -92,7 +92,8 @@ class CalendarFragment : Fragment() {
         var view = inflater.inflate(R.layout.fragment_calendar, container, false)
         v = view
         dayCalendar = v.day_calender
-
+        var cal = GregorianCalendar()
+        v.calendar_bar_month.text =  "${cal.get(Calendar.MONTH)+1}월"
         CalendarViewModel.isViewLoading.observe(viewLifecycleOwner,isLoading)
 
         if(findNavController().currentDestination.toString() != "home_fragment"){

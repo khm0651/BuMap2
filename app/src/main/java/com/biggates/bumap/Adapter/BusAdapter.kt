@@ -1,7 +1,10 @@
 package com.biggates.bumap.Adapter
 
 import android.content.Context
+import android.content.res.Resources
 import android.os.Build
+import android.util.DisplayMetrics
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -162,8 +165,9 @@ class BusAdapter(
 
         var titletextview = TextView(mContext)
         var titletextViewParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT)
-        titletextViewParam.topMargin = 15
-        titletextview.textSize = 16f
+        var b = 16.pixelsToDp(mContext)
+        titletextViewParam.topMargin = 15.pixelsToDp(mContext).toInt()
+        titletextview.textSize = 16.pixelsToDp(mContext)
         titletextview.text = "등교"
         titletextview.layoutParams = titletextViewParam
 
@@ -221,6 +225,12 @@ class BusAdapter(
 
 
     }
+
+
+    fun Int.pixelsToDp(context: Context):Float{
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,this.toFloat(),context.resources.displayMetrics)
+    }
+
 
 
 }
