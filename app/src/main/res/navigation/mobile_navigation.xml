@@ -9,11 +9,12 @@
         android:id="@+id/nav_home"
         android:name="com.biggates.bumap.ui.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_noticeFragment"
             app:destination="@id/nav_notice" />
-        <action            android:id="@+id/action_homeFragment_to_calendarFragment"
+        <action
+            android:id="@+id/action_homeFragment_to_calendarFragment"
             app:destination="@id/nav_calendar" />
         <action
             android:id="@+id/action_nav_home_to_searchFragment"
@@ -41,7 +42,7 @@
         android:id="@+id/nav_notice"
         android:name="com.biggates.bumap.ui.notice.NoticeFragment"
         android:label="fragment_notice"
-        tools:layout="@layout/fragment_notice" >
+        tools:layout="@layout/fragment_notice">
         <action
             android:id="@+id/action_nav_notice_to_nav_home"
             app:destination="@id/nav_home" />
@@ -50,7 +51,7 @@
         android:id="@+id/nav_calendar"
         android:name="com.biggates.bumap.ui.calendar.CalendarFragment"
         android:label="fragment_calendar"
-        tools:layout="@layout/fragment_calendar" >
+        tools:layout="@layout/fragment_calendar">
         <action
             android:id="@+id/action_nav_calendar_to_nav_home"
             app:destination="@id/nav_home" />
@@ -59,20 +60,19 @@
         android:id="@+id/searchFragment"
         android:name="com.biggates.bumap.ui.search.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" >
+        tools:layout="@layout/fragment_search">
         <action
             android:id="@+id/action_searchFragment_to_nav_home"
             app:destination="@id/nav_home"
             app:popUpTo="@id/searchFragment"
-            app:popUpToInclusive="false"
-            />
+            app:popUpToInclusive="false" />
 
     </fragment>
     <fragment
         android:id="@+id/nav_bus"
         android:name="com.biggates.bumap.ui.bus.BusFragment"
         android:label="fragment_bus"
-        tools:layout="@layout/fragment_bus" >
+        tools:layout="@layout/fragment_bus">
         <action
             android:id="@+id/action_busFragment_to_nav_home"
             app:destination="@id/nav_home" />
@@ -81,7 +81,7 @@
         android:id="@+id/nav_schedule"
         android:name="com.biggates.bumap.ui.schedule.ScheduleFragment"
         android:label="fragment_schedule"
-        tools:layout="@layout/fragment_schedule" >
+        tools:layout="@layout/fragment_schedule">
         <action
             android:id="@+id/action_nav_schedule_to_nav_home"
             app:destination="@id/nav_home" />
