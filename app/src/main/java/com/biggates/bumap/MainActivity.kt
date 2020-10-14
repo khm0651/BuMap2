@@ -10,18 +10,17 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.biggates.bumap.Retrofit.RetrofitService
+import com.biggates.bumap.Adapter.BtnKeywordAdapter
+import com.biggates.bumap.Model.BtnKeyword
 import com.biggates.bumap.ViewModel.bus.BusViewModel
 import com.biggates.bumap.ViewModel.calendar.CalendarViewModel
 import com.biggates.bumap.ViewModel.notice.NoticeViewModel
-import com.biggates.bumap.ViewModel.ViewModelFactory
 import com.biggates.bumap.ViewModel.building.BuBuilding
 import com.biggates.bumap.ViewModel.schedule.LectureScheduleViewModel
 import com.biggates.bumap.ui.bus.BusFragment
@@ -30,7 +29,6 @@ import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_bus.*
 import kotlinx.android.synthetic.main.fragment_schedule.*
-import retrofit2.Retrofit
 
 
 class MainActivity : AppCompatActivity() {
@@ -40,6 +38,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
@@ -49,8 +48,6 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-
-
 
         search_text.setOnClickListener {
             navController.navigate(R.id.action_nav_home_to_searchFragment)

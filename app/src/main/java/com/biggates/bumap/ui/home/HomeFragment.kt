@@ -23,8 +23,11 @@ import androidx.annotation.UiThread
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.biggates.bumap.Adapter.BtnKeywordAdapter
 import com.biggates.bumap.GpsTracker
 import com.biggates.bumap.MainActivity
+import com.biggates.bumap.Model.BtnKeyword
 import com.biggates.bumap.Model.Location
 import com.biggates.bumap.R
 import com.biggates.bumap.ui.introduce.Introduce
@@ -40,6 +43,7 @@ import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.util.FusedLocationSource
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.btn_keyword_main.view.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 
@@ -78,12 +82,13 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         }
 
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requireActivity().getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback)
 
     }
+
+    private lateinit var btnKeywordAdapter: BtnKeywordAdapter
 
 
     @RequiresApi(Build.VERSION_CODES.P)
@@ -93,11 +98,24 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         savedInstanceState: Bundle?
     ): View? {
 
+
         val view = inflater.inflate(R.layout.fragment_home, container, false);
         val fm = childFragmentManager
         var options = NaverMapOptions()
         locationSource =
             FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
+
+        val btnKeywordList = arrayListOf<BtnKeyword>()
+        btnKeywordList.add(BtnKeyword("1"))
+        btnKeywordList.add(BtnKeyword("2"))
+        btnKeywordList.add(BtnKeyword("3"))
+        btnKeywordList.add(BtnKeyword("4"))
+        btnKeywordList.add(BtnKeyword("5"))
+
+        btnKeywordAdapter = BtnKeywordAdapter(btnKeywordList)
+        view.btn_keyword_recyclerview.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL ,false)
+        view.btn_keyword_recyclerview.adapter = btnKeywordAdapter
+
 
         if(arguments!!.isEmpty){
             options = NaverMapOptions()
@@ -164,8 +182,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
 
     }
-
-
 
     @UiThread
     override fun onMapReady(naverMap: NaverMap) {
