@@ -95,6 +95,7 @@ class BusAdapter(
         }
     }
 
+
     @RequiresApi(Build.VERSION_CODES.P)
     private fun createToHomeTable(bus: Bus, view: View) {
 
