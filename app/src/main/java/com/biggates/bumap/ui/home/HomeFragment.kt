@@ -53,6 +53,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private lateinit var naverMap: NaverMap
     private var isShowPredictTime = false
     private var isShow = false
+    private lateinit var btnKeywordAdapter: BtnKeywordAdapter
 
 
     var markerList:HashMap<String, Marker> = HashMap()
@@ -88,17 +89,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
     }
 
-    private lateinit var btnKeywordAdapter: BtnKeywordAdapter
-
-
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-
         val view = inflater.inflate(R.layout.fragment_home, container, false);
         val fm = childFragmentManager
         var options = NaverMapOptions()
@@ -106,14 +102,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
 
         val btnKeywordList = arrayListOf<BtnKeyword>()
-        btnKeywordList.add(BtnKeyword("1"))
-        btnKeywordList.add(BtnKeyword("2"))
-        btnKeywordList.add(BtnKeyword("3"))
-        btnKeywordList.add(BtnKeyword("4"))
-        btnKeywordList.add(BtnKeyword("5"))
+        for (title in resources.getStringArray(R.array.keyword_list)){
+            btnKeywordList.add(BtnKeyword(title))
+        }
 
         btnKeywordAdapter = BtnKeywordAdapter(btnKeywordList)
-        view.btn_keyword_recyclerview.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL ,false)
+        view.btn_keyword_recyclerview.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL ,false)
         view.btn_keyword_recyclerview.adapter = btnKeywordAdapter
 
 
