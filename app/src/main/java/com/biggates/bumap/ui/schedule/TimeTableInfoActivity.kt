@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
+import com.biggates.bumap.MyUtil
 import com.biggates.bumap.R
 import com.biggates.bumap.ViewModel.schedule.LectureScheduleViewModel
 import com.google.gson.internal.LinkedTreeMap
@@ -36,19 +37,9 @@ class TimeTableInfoActivity : Activity() {
         windowManager.defaultDisplay.getMetrics(displayMetrics)
         var layout = time_table_info_layout!!
         var layoutParam = FrameLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT)
-        var r: Resources = resources
-        var w = Math.round(
-            TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 100F, r.getDisplayMetrics()
-            )
-        ).toInt()
-        var h = Math.round(
-            TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 400F, r.getDisplayMetrics()
-            )
-        ).toInt()
-        layoutParam.width = displayMetrics.widthPixels - w
-        layoutParam.height = h
+
+        layoutParam.width = displayMetrics.widthPixels - MyUtil.Int2Dp(applicationContext,150)
+        layoutParam.height = MyUtil.Int2Dp(applicationContext,700)
         layout.layoutParams = layoutParam
         var name = intent.getStringExtra("name").toString().trim()
         var noticeList = ArrayList<String>()

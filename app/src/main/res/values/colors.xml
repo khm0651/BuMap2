@@ -16,6 +16,11 @@
     <color name="timeTable2">#400099CC</color>
     <color name="timeTable3">#40F44336</color>
     <color name="timeTable4">#409C27B0</color>
+    <color name="timeTable5">#40B06727</color>
+    <color name="timeTable6">#4027B02E</color>
+    <color name="timeTable7">#40B02727</color>
+    <color name="timeTable8">#4027B0A5</color>
+
 
     <color name="white">#FFFFFF</color>
 </resources>

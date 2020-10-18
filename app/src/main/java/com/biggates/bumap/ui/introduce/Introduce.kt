@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.biggates.bumap.Adapter.IntroduceAdapter
 import com.biggates.bumap.Adapter.IntroduceBtnAdapter
 import com.biggates.bumap.Model.*
+import com.biggates.bumap.MyUtil
 import com.biggates.bumap.R
 import com.biggates.bumap.ViewModel.building.BuBuilding
 import com.google.firebase.database.DataSnapshot
@@ -86,27 +87,7 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onMapReady(naverMap: NaverMap) {
 
-        var r: Resources = resources
-        var w = Math.round(
-            TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 10F, r.getDisplayMetrics()
-            )
-        ).toInt()
-        var h = Math.round(
-            TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 15F, r.getDisplayMetrics()
-            )
-        ).toInt()
-        var tw = Math.round(
-            TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 15F, r.getDisplayMetrics()
-            )
-        ).toInt()
-        var th = Math.round(
-            TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 15F, r.getDisplayMetrics()
-            )
-        ).toInt()
+
 
         if(isFirst){
             val infoWindow = InfoWindow()
@@ -172,8 +153,8 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
                                     marker.onClickListener = listener
                                     marker.map = naverMap
                                     marker.icon = OverlayImage.fromResource(R.drawable.toilet)
-                                    marker.width=tw
-                                    marker.height=th
+                                    marker.width= MyUtil.Dp2Px(applicationContext,15)
+                                    marker.height= MyUtil.Dp2Px(applicationContext,15)
                                     marker.zIndex=-10
                                     roomMaker.room.set(roomNumber,marker)
                                 }else{
@@ -182,8 +163,8 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
                                     marker.position = LatLng(building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lat.toDouble(), building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lng.toDouble())
                                     marker.onClickListener = listener
                                     marker.map = naverMap
-                                    marker.width =w
-                                    marker.height=h
+                                    marker.width= MyUtil.Dp2Px(applicationContext,10)
+                                    marker.height= MyUtil.Dp2Px(applicationContext,15)
                                     roomMaker.room.set(roomNumber,marker)
                                 }
 
@@ -197,8 +178,8 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
                                     marker.position = LatLng(building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lat.toDouble(), building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lng.toDouble())
                                     marker.onClickListener = listener
                                     marker.icon = OverlayImage.fromResource(R.drawable.toilet)
-                                    marker.width=tw
-                                    marker.height=th
+                                    marker.width= MyUtil.Dp2Px(applicationContext,15)
+                                    marker.height= MyUtil.Dp2Px(applicationContext,15)
                                     marker.zIndex=-10
                                     roomMaker.room.set(roomNumber,marker)
                                 }else{
@@ -206,8 +187,8 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
                                     marker.tag = building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.name
                                     marker.position = LatLng(building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lat.toDouble(), building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lng.toDouble())
                                     marker.onClickListener = listener
-                                    marker.width =w
-                                    marker.height=h
+                                    marker.width= MyUtil.Dp2Px(applicationContext,10)
+                                    marker.height= MyUtil.Dp2Px(applicationContext,15)
                                     roomMaker.room.set(roomNumber,marker)
                                 }
                             }
@@ -290,7 +271,7 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
                     var layoutParam = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT)
                     layoutParam.addRule(RelativeLayout.CENTER_VERTICAL)
                     layoutParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
-                    layoutParam.rightMargin = 60
+                    layoutParam.rightMargin = MyUtil.Dp2Px(applicationContext,60)
                     btn_recyclerView.layoutParams = layoutParam
 
                 }

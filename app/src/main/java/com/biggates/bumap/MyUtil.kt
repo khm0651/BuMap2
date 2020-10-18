@@ -11,5 +11,12 @@ class MyUtil {
 
             return (px / dm.density).toInt()
         }
+
+        fun Dp2Px(context : Context, num : Int) : Int{
+            var dm = context.resources.displayMetrics
+            var px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,num.toFloat(),dm).toInt()
+
+            return px
+        }
     }
 }

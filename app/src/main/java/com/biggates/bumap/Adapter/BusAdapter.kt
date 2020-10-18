@@ -76,7 +76,7 @@ class BusAdapter(
                         }else{
                             imageParam.width = view.width / 2
                         }
-                        imageView.setPadding(MyUtil.Int2Dp(mContext,10),MyUtil.Int2Dp(mContext,10),MyUtil.Int2Dp(mContext,10),10)
+                        imageView.setPadding(10,10,10,10)
                         imageView.layoutParams = imageParam
                         bus_image_wrapper.addView(imageView)
                         Picasso.get().load(bus.img!![i]).fit().into(imageView)
@@ -103,7 +103,7 @@ class BusAdapter(
         var titletextview = TextView(mContext)
         var titletextViewParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT)
         titletextViewParam.topMargin = MyUtil.Int2Dp(mContext,15)
-        titletextview.textSize = MyUtil.Int2Dp(mContext,16).toFloat()
+        titletextview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14F)
         titletextview.text = "하교"
         titletextview.layoutParams = titletextViewParam
 
@@ -118,17 +118,17 @@ class BusAdapter(
 
             var textview = TextView(mContext)
             var textViewParam = LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.WRAP_CONTENT,0.2f)
-            textview.textSize = MyUtil.Int2Dp(mContext,16).toFloat()
+            textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14F)
             textview.text = tohome.key
             textview.layoutParams = textViewParam
 
             var textview2 = TextView(mContext)
             var textViewParam2 = LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.WRAP_CONTENT,0.8f)
             textview2.layoutParams = textViewParam2
-            textview2.textSize = MyUtil.Int2Dp(mContext,16).toFloat()
+            textview2.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14F)
             textview2.text = tohome.value
 
-            linearLayout.setPadding(0,0,MyUtil.Int2Dp(mContext,20),0)
+            linearLayout.setPadding(0,0,20,0)
             linearLayout.addView(textview)
             linearLayout.addView(textview2)
             view.toHomeLayout.addView(linearLayout)
@@ -142,22 +142,20 @@ class BusAdapter(
 
         var takePlaceTextview = TextView(mContext)
         var takePlaceTextviewParam = LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.WRAP_CONTENT,0.2f)
-        takePlaceTextview.textSize = MyUtil.Int2Dp(mContext,16).toFloat()
+        takePlaceTextview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14F)
         takePlaceTextview.text = "타는곳"
         takePlaceTextview.layoutParams = takePlaceTextviewParam
 
         var takePlaceTextview2 = TextView(mContext)
         var takePlaceTextviewParam2 = LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.WRAP_CONTENT,0.8f)
         takePlaceTextview2.layoutParams = takePlaceTextviewParam2
-        takePlaceTextview2.textSize = MyUtil.Int2Dp(mContext,16).toFloat()
+        takePlaceTextview2.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14F)
         takePlaceTextview2.text = bus.toHomeTakePlace
 
-        linearLayout2.setPadding(0,0,MyUtil.Int2Dp(mContext,20),0)
+        linearLayout2.setPadding(0,0,20,0)
         linearLayout2.addView(takePlaceTextview)
         linearLayout2.addView(takePlaceTextview2)
         view.toHomeLayout.addView(linearLayout2)
-
-
 
     }
 
@@ -168,7 +166,7 @@ class BusAdapter(
         var titletextview = TextView(mContext)
         var titletextViewParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT)
         titletextViewParam.topMargin = MyUtil.Int2Dp(mContext,15)
-        titletextview.textSize = MyUtil.Int2Dp(mContext,16).toFloat()
+        titletextview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14F)
         titletextview.text = "등교"
         titletextview.layoutParams = titletextViewParam
 
@@ -184,17 +182,17 @@ class BusAdapter(
 
             var textview = TextView(mContext)
             var textViewParam = LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.WRAP_CONTENT,0.2f)
-            textview.textSize = MyUtil.Int2Dp(mContext,16).toFloat()
+            textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14F)
             textview.text = tobu.key
             textview.layoutParams = textViewParam
 
             var textview2 = TextView(mContext)
             var textViewParam2 = LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.WRAP_CONTENT,0.8f)
-            textview2.textSize = MyUtil.Int2Dp(mContext,16).toFloat()
+            textview2.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14F)
             textview2.text = tobu.value
             textview2.layoutParams = textViewParam2
 
-            linearLayout.setPadding(0,0,MyUtil.Int2Dp(mContext,20),0)
+            linearLayout.setPadding(0,0,20,0)
             linearLayout.addView(textview)
             linearLayout.addView(textview2)
             view.toBuLayout.addView(linearLayout)
@@ -208,22 +206,20 @@ class BusAdapter(
 
         var takePlaceTextview = TextView(mContext)
         var takePlaceTextviewParam = LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.WRAP_CONTENT,0.2f)
-        takePlaceTextview.textSize = MyUtil.Int2Dp(mContext,16).toFloat()
+        takePlaceTextview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14F)
         takePlaceTextview.text = "타는곳"
         takePlaceTextview.layoutParams = takePlaceTextviewParam
 
         var takePlaceTextview2 = TextView(mContext)
         var takePlaceTextviewParam2 = LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.WRAP_CONTENT,0.8f)
-        takePlaceTextview2.textSize = MyUtil.Int2Dp(mContext,16).toFloat()
+        takePlaceTextview2.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14F)
         takePlaceTextview2.text = bus.toBuTakePlace
         takePlaceTextview2.layoutParams = takePlaceTextviewParam2
 
-        linearLayout2.setPadding(0,0,MyUtil.Int2Dp(mContext,20),0)
+        linearLayout2.setPadding(0,0,20,0)
         linearLayout2.addView(takePlaceTextview)
         linearLayout2.addView(takePlaceTextview2)
         view.toBuLayout.addView(linearLayout2)
-
-
 
     }
 
