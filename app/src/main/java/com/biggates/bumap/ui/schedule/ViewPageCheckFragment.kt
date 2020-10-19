@@ -65,6 +65,9 @@ class ViewPageCheckFragment : Fragment() {
 
             })
         }
+        
+        if(arr.isEmpty()) view.view_page_check_empty.visibility = View.VISIBLE
+        else view.view_page_check_empty.visibility = View.GONE
 
         var viewPageCheckAdapter = ViewPageCheckAdapter(context!!,arr)
         recyclerView.adapter = viewPageCheckAdapter

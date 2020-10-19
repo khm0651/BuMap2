@@ -45,6 +45,9 @@ class ViewPageNoticeFragment : Fragment() {
             lectureNoticeSchedule = (((lecture as LinkedTreeMap<String, Any>)["lecture"] as LinkedTreeMap<String, Any>)[title] as LinkedTreeMap<String, Any>)["공지사항"] as LinkedTreeMap<String, LinkedTreeMap<String, String>>?
         }
 
+        if(lectureNoticeSchedule!!.isNullOrEmpty()) view.view_page_notice_empty.visibility = View.VISIBLE
+        else view.view_page_notice_empty.visibility = View.GONE
+
         var viewPageNoticeAdapter = ViewPageNoticeAdapter(context!!,lectureNoticeSchedule)
         recyclerView.adapter = viewPageNoticeAdapter
 

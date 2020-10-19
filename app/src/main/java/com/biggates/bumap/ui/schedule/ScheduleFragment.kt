@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -48,40 +49,51 @@ class ScheduleFragment : Fragment() {
         }
 
         var view =  inflater.inflate(R.layout.fragment_schedule, container, false)
-        var select_recycler_view = view.recycler_view_schedule
-        var linearLayoutManager = LinearLayoutManager(context)
-        select_recycler_view.layoutManager = linearLayoutManager
+        LectureScheduleViewModel.isViewLoading.observe(viewLifecycleOwner, Observer {
+            if(!it){
+                view.progressbar_schedule.visibility = View.GONE
+                var select_recycler_view = view.recycler_view_schedule
+                var linearLayoutManager = LinearLayoutManager(context)
+                select_recycler_view.layoutManager = linearLayoutManager
 
-        var lectureList : ArrayList<String> = arrayListOf()
-        var lectureSchedule = LectureScheduleViewModel.lectureSchedule.value!!.getSchedule()!!
-        lectureSchedule.forEach { name, lecture ->
-            (lecture as LinkedTreeMap<String, Any>).forEach { key, l ->
-                (l as LinkedTreeMap<String,Any>).forEach { lectureName, u ->
-                    lectureList.add(lectureName)
+                var lectureList : ArrayList<String> = arrayListOf()
+                var lectureSchedule = LectureScheduleViewModel.lectureSchedule.value!!.getSchedule()!!
+                lectureSchedule.forEach { name, lecture ->
+                    (lecture as LinkedTreeMap<String, Any>).forEach { key, l ->
+                        (l as LinkedTreeMap<String,Any>).forEach { lectureName, u ->
+                            lectureList.add(lectureName)
+                        }
+                    }
                 }
-            }
-        }
-        view.select_layout_schedule.setOnClickListener {
-            if(view.recycler_view_schedule.visibility == View.GONE){
-                view.recycler_view_schedule.visibility = View.VISIBLE
-            }else{
-                view.recycler_view_schedule.visibility = View.GONE
-            }
-        }
+                view.select_layout_schedule.setOnClickListener {
+                    if(view.recycler_view_schedule.visibility == View.GONE){
+                        view.recycler_view_schedule.visibility = View.VISIBLE
+                    }else{
+                        view.recycler_view_schedule.visibility = View.GONE
+                    }
+                }
 
-        view.recycler_view_schedule.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                view.recycler_view_schedule.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                isSelectRecyclerViewScroll = newState
+                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                        isSelectRecyclerViewScroll = newState
+                    }
+
+                })
+
+                var tiemTableFragment = TiemTableFragment()
+                var fm = childFragmentManager
+                fm.beginTransaction().add(R.id.schedule_framlayout, tiemTableFragment).commit()
+                var scheduleAdapter = ScheduleAdapter(context!!,lectureList,fm,view.recycler_view_schedule,view.select_layout_title)
+                select_recycler_view.adapter = scheduleAdapter
+
             }
-
+            else view.progressbar_schedule.visibility = View.VISIBLE
         })
 
-        var tiemTableFragment = TiemTableFragment()
-        var fm = childFragmentManager
-        fm.beginTransaction().add(R.id.schedule_framlayout, tiemTableFragment).commit()
-        var scheduleAdapter = ScheduleAdapter(context!!,lectureList,fm,view.recycler_view_schedule,view.select_layout_title)
-        select_recycler_view.adapter = scheduleAdapter
+
+
+
 
 
 

@@ -129,19 +129,33 @@ class ViewPageCheckAdapter(private var mContext: Context, private var checkList:
         videoLayout.time_video.text = info["state"]
         var time = info["state"].toString()
         if(time != "학습안함"){
-            var right = time.substring(time.lastIndexOf("/")+1,time.length).trim()
+            val right = time.substring(time.lastIndexOf("/")+1,time.length).trim()
             var left = time.substring(0,time.indexOf("/")).trim()
             var r_right = right.replace(" ","")
             var r_left = left.replace(" ","")
             var rc = Calendar.getInstance()
-            rc.set(Calendar.MINUTE,r_right.substring(0,r_right.indexOf("분")-1).toInt())
-            if(r_right.contains("초")) rc.set(Calendar.SECOND,r_right.substring(r_right.indexOf("분")+1,r_right.indexOf("초")).toInt())
+            var rc_m = r_right.substring(0,r_right.indexOf("분")).trim()
+            var rc_s =""
+
+            rc.set(Calendar.MINUTE,rc_m.toInt())
+            if(r_right.contains("초")) {
+                rc_s = r_right.substring(r_right.indexOf("분")+1,r_right.indexOf("초")).trim()
+                rc.set(Calendar.SECOND,rc_s.toInt())
+            }
+            else rc.set(Calendar.SECOND,0)
 
             var lc = Calendar.getInstance()
-            lc.set(Calendar.MINUTE,r_left.substring(0,r_left.indexOf("분")-1).toInt())
-            if(r_left.contains("초")) lc.set(Calendar.SECOND,r_left.substring(r_left.indexOf("분")+1,r_left.indexOf("초")).toInt())
+            var lc_m = r_left.substring(0,r_left.indexOf("분")).trim()
+            var lc_s = ""
 
-            if(lc.compareTo(rc) <1) videoLayout.presentImg.setImageResource(R.drawable.cancel)
+            lc.set(Calendar.MINUTE,lc_m.toInt())
+            if(r_left.contains("초")) {
+                lc_s = r_left.substring(r_left.indexOf("분")+1,r_left.indexOf("초")).trim()
+                lc.set(Calendar.SECOND,lc_s.toInt())
+            }
+            else lc.set(Calendar.SECOND,0)
+
+            if(lc.compareTo(rc) <0) videoLayout.presentImg.setImageResource(R.drawable.cancel)
             else videoLayout.presentImg.setImageResource(R.drawable.check)
 
         }else{

@@ -10,6 +10,7 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import com.biggates.bumap.MyUtil
 import com.biggates.bumap.R
 import kotlinx.android.synthetic.main.activity_calendar_info.*
 
@@ -28,20 +29,11 @@ class CalendarInfoActivity : Activity() {
         var day = intent.getStringExtra("day")!!
         var contentArray = intent.getStringArrayListExtra("contents")!!
         var layout = calendar_info_layout!!
+        var scrollLayout = item_list_view!!
         var layoutParam = FrameLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT)
-        var r: Resources = resources
-        var w = Math.round(
-            TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 100F, r.getDisplayMetrics()
-            )
-        ).toInt()
-        var h = Math.round(
-            TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 400F, r.getDisplayMetrics()
-            )
-        ).toInt()
-        layoutParam.width = displayMetrics.widthPixels - w
-        layoutParam.height = h
+
+        layoutParam.width = displayMetrics.widthPixels - MyUtil.Int2Dp(applicationContext,150)
+        layoutParam.height = MyUtil.Int2Dp(applicationContext,675)
         layout.layoutParams = layoutParam
 
         day_calendar_info.text = "${day}일"
@@ -51,16 +43,17 @@ class CalendarInfoActivity : Activity() {
             var textView = TextView(applicationContext)
             var textViewParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT)
             if(i==0){
-                textViewParam.topMargin = 50
+                textViewParam.topMargin = MyUtil.Dp2Px(applicationContext,25)
             }else{
-                textViewParam.topMargin = 30
+                textViewParam.topMargin = MyUtil.Dp2Px(applicationContext,20)
             }
 
             textView.layoutParams = textViewParam
             textView.text = "●  ${contentArray[i]}"
-            textView.textSize = 16F
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16F)
+            textView.lineHeight = MyUtil.Dp2Px(applicationContext,27)
             textView.setPadding(60,0,60,0)
-            layout.addView(textView)
+            scrollLayout.addView(textView)
         }
 
 

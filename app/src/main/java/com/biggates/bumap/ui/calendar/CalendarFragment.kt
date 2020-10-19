@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -173,7 +174,7 @@ class CalendarFragment : Fragment() {
                     var dayNumTextViewParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT)
                     dayNumTextView.layoutParams = dayNumTextViewParam
                     dayNumTextView.text = calendarList[i].split(".")[2]
-                    dayNumTextView.textSize = 12F
+                    dayNumTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12F)
                     dayNumTextView.setPadding(10,0,0,0)
                     dayNumTextView.setTypeface(dayNumTextView.getTypeface(), Typeface.BOLD)
                     if(i%7==0) {
@@ -219,7 +220,7 @@ class CalendarFragment : Fragment() {
                                 contentTextView.text = "${c.getContent()}"
                             }
                             contentTextView.setPadding(0,0,0,20)
-                            contentTextView.textSize = 7F
+                            contentTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 7F)
                             contentTextView.background = resources.getDrawable(R.drawable.bottom_solid)
                             linearLayout.addView(contentTextView)
                             }

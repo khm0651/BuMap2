@@ -26,6 +26,7 @@ import androidx.fragment.app.Fragment
 import com.biggates.bumap.GpsTracker
 import com.biggates.bumap.MainActivity
 import com.biggates.bumap.Model.Location
+import com.biggates.bumap.MyUtil
 import com.biggates.bumap.R
 import com.biggates.bumap.ui.introduce.Introduce
 import com.google.firebase.database.DataSnapshot
@@ -170,18 +171,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     @UiThread
     override fun onMapReady(naverMap: NaverMap) {
 
-        var r: Resources = resources
-        var w = Math.round(
-            TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 20F, r.getDisplayMetrics()
-            )
-        ).toInt()
-        var h = Math.round(
-            TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 30F, r.getDisplayMetrics()
-            )
-        ).toInt()
-
         this.naverMap = naverMap
         naverMap.locationSource = locationSource
         val context = context
@@ -272,8 +261,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             marker.tag = k.value.keys.first().toString() + "-" +k.key
             marker.map = naverMap
             marker.onClickListener = listener
-            marker.width=w
-            marker.height=h
+            marker.width= MyUtil.Dp2Px(context,15)
+            marker.height= MyUtil.Dp2Px(context,20)
             markerList.set(k.key, marker)
             if(isOpen){
                 infoWindow.open(marker)

@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
+import com.biggates.bumap.MyUtil
 import com.biggates.bumap.R
 import com.biggates.bumap.ViewModel.schedule.LectureScheduleViewModel
 import com.google.gson.internal.LinkedTreeMap
@@ -36,19 +37,9 @@ class TimeTableInfoActivity : Activity() {
         windowManager.defaultDisplay.getMetrics(displayMetrics)
         var layout = time_table_info_layout!!
         var layoutParam = FrameLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT)
-        var r: Resources = resources
-        var w = Math.round(
-            TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 100F, r.getDisplayMetrics()
-            )
-        ).toInt()
-        var h = Math.round(
-            TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 400F, r.getDisplayMetrics()
-            )
-        ).toInt()
-        layoutParam.width = displayMetrics.widthPixels - w
-        layoutParam.height = h
+
+        layoutParam.width = displayMetrics.widthPixels - MyUtil.Int2Dp(applicationContext,150)
+        layoutParam.height = MyUtil.Int2Dp(applicationContext,700)
         layout.layoutParams = layoutParam
         var name = intent.getStringExtra("name").toString().trim()
         var noticeList = ArrayList<String>()
@@ -172,18 +163,32 @@ class TimeTableInfoActivity : Activity() {
                                                             var r_right = right.replace(" ","")
                                                             var r_left = left.replace(" ","")
                                                             var rc = Calendar.getInstance()
-                                                            rc.set(Calendar.MINUTE,r_right.substring(0,r_right.indexOf("분")-1).toInt())
-                                                            if(r_right.contains("초")) rc.set(Calendar.SECOND,r_right.substring(r_right.indexOf("분")+1,r_right.indexOf("초")).toInt())
+                                                            var rc_m = r_right.substring(0,r_right.indexOf("분")).trim()
+                                                            var rc_s =""
+
+                                                            rc.set(Calendar.MINUTE,rc_m.toInt())
+                                                            if(r_right.contains("초")) {
+                                                                rc_s = r_right.substring(r_right.indexOf("분")+1,r_right.indexOf("초")).trim()
+                                                                rc.set(Calendar.SECOND,rc_s.toInt())
+                                                            }
+                                                            else rc.set(Calendar.SECOND,0)
 
                                                             var lc = Calendar.getInstance()
-                                                            lc.set(Calendar.MINUTE,r_left.substring(0,r_left.indexOf("분")-1).toInt())
-                                                            if(r_left.contains("초")) lc.set(Calendar.SECOND,r_left.substring(r_left.indexOf("분")+1,r_left.indexOf("초")).toInt())
+                                                            var lc_m = r_left.substring(0,r_left.indexOf("분")).trim()
+                                                            var lc_s = ""
+
+                                                            lc.set(Calendar.MINUTE,lc_m.toInt())
+                                                            if(r_left.contains("초")) {
+                                                                lc_s = r_left.substring(r_left.indexOf("분")+1,r_left.indexOf("초")).trim()
+                                                                lc.set(Calendar.SECOND,lc_s.toInt())
+                                                            }
+                                                            else lc.set(Calendar.SECOND,0)
 
                                                             var layout = layoutInflater.inflate(R.layout.video_layout,null)
                                                             layout.title_video.text = v_title
                                                             layout.time_video.text = time
                                                             layout.period.text = period
-                                                            if(lc.compareTo(rc) <1) layout.presentImg.setImageResource(R.drawable.cancel)
+                                                            if(lc.compareTo(rc) <0) layout.presentImg.setImageResource(R.drawable.cancel)
                                                             else layout.presentImg.setImageResource(R.drawable.check)
                                                             videoLayout.addView(layout)
                                                         }else{

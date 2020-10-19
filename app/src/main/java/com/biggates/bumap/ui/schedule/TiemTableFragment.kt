@@ -6,6 +6,7 @@ import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.LinearLayout
@@ -19,6 +20,7 @@ import androidx.core.view.marginBottom
 import androidx.core.view.marginTop
 import androidx.lifecycle.Observer
 import com.biggates.bumap.Model.LectureSchedule
+import com.biggates.bumap.MyUtil
 
 import com.biggates.bumap.R
 import com.biggates.bumap.ViewModel.schedule.LectureScheduleViewModel
@@ -28,12 +30,12 @@ import kotlinx.android.synthetic.main.fragment_tiem_table.view.*
 import java.util.*
 import kotlin.random.Random
 
-@RequiresApi(Build.VERSION_CODES.N)
+@RequiresApi(Build.VERSION_CODES.P)
 class TiemTableFragment : Fragment() {
 
     lateinit var time_table_layout : RelativeLayout
     lateinit var v : View
-    private var color : Array<Int> = arrayOf(R.color.timeTable1,R.color.timeTable2,R.color.timeTable3,R.color.timeTable4)
+    private var color : Array<Int> = arrayOf(R.color.timeTable1,R.color.timeTable2,R.color.timeTable3,R.color.timeTable4,R.color.timeTable5,R.color.timeTable6,R.color.timeTable7,R.color.timeTable8)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,13 +52,7 @@ class TiemTableFragment : Fragment() {
         v =view
         time_table_layout = view.time_table_layout
         LectureScheduleViewModel.isViewLoading.observe(viewLifecycleOwner, Observer {
-            if(it){
-                view.progressbar_time_table.visibility = View.VISIBLE
-            }else{
-                view.progressbar_time_table.visibility = View.GONE
-                createTimeTable()
-
-            }
+            if(!it) createTimeTable()
         })
 
 
@@ -70,6 +66,7 @@ class TiemTableFragment : Fragment() {
     private fun createTimeTable() {
         val vto: ViewTreeObserver = time_table_layout.getViewTreeObserver()
         vto.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener{
+
             override fun onGlobalLayout() {
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
                     time_table_layout.getViewTreeObserver().removeGlobalOnLayoutListener(this)
@@ -130,7 +127,8 @@ class TiemTableFragment : Fragment() {
                         (l as LinkedTreeMap<String,Any>).forEach { lectureName, u ->
                             var split = lectureName.split("(")
                             var name = split[0]
-                            var temp = split[1].replace("[^가-힣0-9]".toRegex(),"")
+                            var temp = split[1].replace("[^가-힣0-9]".toRegex(),"").trim()
+                            if(temp.contains("사")) temp = temp.substring(0,temp.indexOf("사"))
                             var day = temp.substring(0,1)
                             var time = temp.substring(1,temp.length).toCharArray()
 
@@ -144,7 +142,8 @@ class TiemTableFragment : Fragment() {
                                     textView.gravity = Gravity.CENTER
                                     textView.text = name
                                     textView.setTypeface(textView.typeface, Typeface.BOLD)
-                                    textView.textSize = 10f
+                                    textView.lineHeight = MyUtil.Dp2Px(context!!,20)
+                                    textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10F)
                                     textView.setTextColor(resources.getColor(R.color.white,null))
                                     when(day){
                                         "월" ->{
@@ -238,7 +237,7 @@ class TiemTableFragment : Fragment() {
 
                             }
                             randNum++
-                            if(randNum == 4){
+                            if(randNum == 8){
                                 randNum=0
                             }
                         }
@@ -261,7 +260,7 @@ class TiemTableFragment : Fragment() {
             textView.height = timeLayoutHeight
             textView.text = startTime.toString()
             textView.gravity = Gravity.RIGHT
-            textView.textSize = 9f
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 9F)
             textView.setPadding(0,10,5,0)
             textView.background = ContextCompat.getDrawable(context!!,R.drawable.all_solid)
             v.time_table_time.addView(textView)
