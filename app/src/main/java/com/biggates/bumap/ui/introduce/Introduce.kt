@@ -346,10 +346,5 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
             }
         }
 
-
-
-
-
-
     }
 }
