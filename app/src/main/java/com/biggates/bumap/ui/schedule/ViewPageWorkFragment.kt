@@ -45,6 +45,9 @@ class ViewPageWorkFragment : Fragment() {
         lectureSchedule!!.forEach { user, lecture ->
             lectureWorkSchedule = (((lecture as LinkedTreeMap<String, Any>)["lecture"] as LinkedTreeMap<String, Any>)[title] as LinkedTreeMap<String, Any>)["과제"] as LinkedTreeMap<String, LinkedTreeMap<String, String>>?
         }
+        
+        if(lectureWorkSchedule.isNullOrEmpty()) view.view_page_work_empty.visibility = View.VISIBLE
+        else view.view_page_work_empty.visibility = View.GONE
 
         var viewPageWorkAdapter = ViewPageWorkAdapter(context!!,lectureWorkSchedule)
         recyclerView.adapter = viewPageWorkAdapter

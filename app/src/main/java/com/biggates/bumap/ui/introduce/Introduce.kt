@@ -27,6 +27,8 @@ import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.overlay.OverlayImage
 import kotlinx.android.synthetic.main.activity_introduce.*
+import java.util.*
+import kotlin.Comparator
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.math.absoluteValue
@@ -238,20 +240,62 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
                 view_all.setOnClickListener { v:View ->
                     var showAll = arrayListOf<String>()
                     var sort = arrayListOf<String>()
+
                     for(i in total_list.keys){
                         sort.add(i)
                     }
-                    for(i in sort.indices){
-                        if(sort.get(i)[0].toString().equals("B")){
-                            sort.add(0,sort.get(i))
-                            sort.removeAt(sort.size-1)
+
+                    sort.sortWith(object : Comparator<String>{
+                        override fun compare(o1: String, o2: String): Int {
+                            var a = o1
+                            var b = o2
+
+                            if(a.startsWith("B") && b.startsWith("B")) return a.compareTo(b)
+                            else if (a.startsWith("B")) return 1
+                            else if (b.startsWith("B")) return -1
+                            else return b.toInt().compareTo(a.toInt())
+
                         }
-                    }
+
+                    })
                     for(i in sort.indices){
-                        (total_list.get(sort.get(i))?.split(",") as ArrayList<String>).forEach { s ->
-                            showAll.add(s)
+                        var tempArr = ArrayList<String>()
+                        total_list.get(sort.get(i))?.split(",")!!.forEach {
+                            tempArr.add(it)
                         }
+                        tempArr.sortWith(object : Comparator<String>{
+                            override fun compare(o1: String, o2: String): Int {
+                                var a = o1.split("+")[1].split("-")[0]
+                                var b = o2.split("+")[1].split("-")[0]
+                                var a_len = o1.split("+")[1].split("-").size
+                                var b_len = o2.split("+")[1].split("-").size
+
+                                if(a.startsWith("B") && b.startsWith("B")){
+                                    var a_t = a.substring(a.indexOf("B")+1,a.length)
+                                    var b_t = b.substring(a.indexOf("B")+1,b.length)
+                                    if(a_t.toInt().compareTo(b_t.toInt()) == 0) return a_len.compareTo(b_len)
+                                    return a_t.toInt().compareTo(b_t.toInt())
+                                }
+                                else{
+
+                                    var regex = "[a-zA-Z?]".toRegex()
+                                    if (a.contains(regex) && b.contains(regex)) return a.compareTo(b)
+                                    else if(a.contains(regex)) return 1
+                                    else if(b.contains(regex)) return -1
+                                    if(a.toInt().compareTo(b.toInt()) == 0) return a_len.compareTo(b_len)
+                                    return a.toInt().compareTo(b.toInt())
+
+                                }
+
+                            }
+
+                        })
+
+                        for(i in tempArr) showAll.add(i)
+
                     }
+
+
 
                     introduceAdapter = IntroduceAdapter(this@Introduce,showAll,floor_maker,naverMap,introduce,mapFragment)
                     recyclerView.adapter = introduceAdapter
@@ -264,6 +308,22 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
                 total_list.get(selectFloor)!!.split(",").forEach { s->
                     showFloor.add(s)
                 }
+                showFloor.sortWith(object : Comparator<String>{
+                    override fun compare(o1: String, o2: String): Int {
+                        var a = o1.split("+")[1].split("-")[0]
+                        var b = o2.split("+")[1].split("-")[0]
+                        var a_len = o1.split("+")[1].split("-").size
+                        var b_len = o2.split("+")[1].split("-").size
+
+                        var regex = "[a-zA-Z?]".toRegex()
+                        if (a.contains(regex) && b.contains(regex)) return a.compareTo(b)
+                        else if(a.contains(regex)) return 1
+                        else if(b.contains(regex)) return -1
+                        if(a.toInt().compareTo(b.toInt()) == 0) return a_len.compareTo(b_len)
+                        return a.toInt().compareTo(b.toInt())
+                    }
+
+                })
                 introduceAdapter = IntroduceAdapter(applicationContext, showFloor, floor_maker,naverMap,introduce,mapFragment)
                 recyclerView.adapter = introduceAdapter
 
@@ -271,7 +331,7 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
                     var layoutParam = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT)
                     layoutParam.addRule(RelativeLayout.CENTER_VERTICAL)
                     layoutParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
-                    layoutParam.rightMargin = MyUtil.Dp2Px(applicationContext,60)
+                    layoutParam.rightMargin = MyUtil.Dp2Px(applicationContext,15)
                     btn_recyclerView.layoutParams = layoutParam
 
                 }

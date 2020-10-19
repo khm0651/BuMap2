@@ -30,7 +30,7 @@ import kotlinx.android.synthetic.main.fragment_tiem_table.view.*
 import java.util.*
 import kotlin.random.Random
 
-@RequiresApi(Build.VERSION_CODES.N)
+@RequiresApi(Build.VERSION_CODES.P)
 class TiemTableFragment : Fragment() {
 
     lateinit var time_table_layout : RelativeLayout
@@ -52,13 +52,7 @@ class TiemTableFragment : Fragment() {
         v =view
         time_table_layout = view.time_table_layout
         LectureScheduleViewModel.isViewLoading.observe(viewLifecycleOwner, Observer {
-            if(it){
-                view.progressbar_time_table.visibility = View.VISIBLE
-            }else{
-                view.progressbar_time_table.visibility = View.GONE
-                createTimeTable()
-
-            }
+            if(!it) createTimeTable()
         })
 
 
@@ -72,7 +66,7 @@ class TiemTableFragment : Fragment() {
     private fun createTimeTable() {
         val vto: ViewTreeObserver = time_table_layout.getViewTreeObserver()
         vto.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener{
-            @RequiresApi(Build.VERSION_CODES.P)
+
             override fun onGlobalLayout() {
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
                     time_table_layout.getViewTreeObserver().removeGlobalOnLayoutListener(this)
@@ -133,7 +127,8 @@ class TiemTableFragment : Fragment() {
                         (l as LinkedTreeMap<String,Any>).forEach { lectureName, u ->
                             var split = lectureName.split("(")
                             var name = split[0]
-                            var temp = split[1].replace("[^가-힣0-9]".toRegex(),"")
+                            var temp = split[1].replace("[^가-힣0-9]".toRegex(),"").trim()
+                            if(temp.contains("사")) temp = temp.substring(0,temp.indexOf("사"))
                             var day = temp.substring(0,1)
                             var time = temp.substring(1,temp.length).toCharArray()
 

@@ -85,6 +85,16 @@ class IntroduceBtnAdapter (private var mContext : Context, private var mBtnList 
 
             introduce.isFirst=false
             mapFragment.getMapAsync(introduce)
+            showFloor.sortWith(object : Comparator<String>{
+                override fun compare(o1: String, o2: String): Int {
+                    var a = o1.split("+")[1]
+                    var b = o2.split("+")[1]
+                    if(a.contains(Regex.fromLiteral("[a-zA-Z]"))) return -1
+                    else if(b.contains(Regex.fromLiteral("[a-zA-Z]"))) return 1
+                    return a.compareTo(b)
+                }
+
+            })
             var introduceAdapter = IntroduceAdapter(mContext, showFloor, floor_maker,naverMap,introduce,mapFragment)
             recyclerView.adapter = introduceAdapter
             introduceAdapter.notifyDataSetChanged()
