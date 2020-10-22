@@ -24,5 +24,6 @@
             android:id="@+id/nav_bus"
             android:icon="@drawable/bus"
             android:title="셔틀버스 시간표" />
+
     </group>
 </menu>

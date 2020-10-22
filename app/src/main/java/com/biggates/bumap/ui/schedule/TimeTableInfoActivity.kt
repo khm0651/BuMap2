@@ -162,27 +162,52 @@ class TimeTableInfoActivity : Activity() {
                                                             var left = time.substring(0,time.indexOf("/")).trim()
                                                             var r_right = right.replace(" ","")
                                                             var r_left = left.replace(" ","")
-                                                            var rc = Calendar.getInstance()
-                                                            var rc_m = r_right.substring(0,r_right.indexOf("분")).trim()
-                                                            var rc_s =""
 
-                                                            rc.set(Calendar.MINUTE,rc_m.toInt())
-                                                            if(r_right.contains("초")) {
+
+                                                            var rc = Calendar.getInstance()
+                                                            var rc_m = ""
+                                                            var rc_s = ""
+                                                            if(r_right.contains("분") && r_right.contains("초")){
+                                                                rc_m = r_right.substring(0,r_right.indexOf("분")).trim()
                                                                 rc_s = r_right.substring(r_right.indexOf("분")+1,r_right.indexOf("초")).trim()
+                                                                rc.set(Calendar.MINUTE,rc_m.toInt())
                                                                 rc.set(Calendar.SECOND,rc_s.toInt())
+                                                            }else{
+                                                                if(r_right.contains("초")) {
+                                                                    rc_s = r_right.substring(r_right.indexOf("분")+1,r_right.indexOf("초")).trim()
+                                                                    rc.set(Calendar.SECOND,rc_s.toInt())
+                                                                }
+                                                                else rc.set(Calendar.SECOND,0)
+
+                                                                if(r_right.contains("분")) {
+                                                                    rc_m = r_right.substring(0,r_right.indexOf("분")).trim()
+                                                                    rc.set(Calendar.MINUTE,rc_m.toInt())
+                                                                }
+                                                                else rc.set(Calendar.MINUTE,0)
                                                             }
-                                                            else rc.set(Calendar.SECOND,0)
 
                                                             var lc = Calendar.getInstance()
-                                                            var lc_m = r_left.substring(0,r_left.indexOf("분")).trim()
+                                                            var lc_m = ""
                                                             var lc_s = ""
 
-                                                            lc.set(Calendar.MINUTE,lc_m.toInt())
-                                                            if(r_left.contains("초")) {
+                                                            if(r_left.contains("분") && r_left.contains("초")){
+                                                                lc_m = r_left.substring(0,r_left.indexOf("분")).trim()
                                                                 lc_s = r_left.substring(r_left.indexOf("분")+1,r_left.indexOf("초")).trim()
+                                                                lc.set(Calendar.MINUTE,lc_m.toInt())
                                                                 lc.set(Calendar.SECOND,lc_s.toInt())
+                                                            }else{
+                                                                if(r_left.contains("초")) {
+                                                                    lc_s = r_left.substring(r_left.indexOf("분")+1,r_left.indexOf("초")).trim()
+                                                                    lc.set(Calendar.SECOND,lc_s.toInt())
+                                                                }
+                                                                else lc.set(Calendar.SECOND,0)
+
+                                                                if(r_left.contains("분")) {
+                                                                    lc_m = r_left.substring(0,r_left.indexOf("분")).trim()
+                                                                    lc.set(Calendar.MINUTE,lc_m.toInt())
+                                                                }
+                                                                else lc.set(Calendar.MINUTE,0)
                                                             }
-                                                            else lc.set(Calendar.SECOND,0)
 
                                                             var layout = layoutInflater.inflate(R.layout.video_layout,null)
                                                             layout.title_video.text = v_title
