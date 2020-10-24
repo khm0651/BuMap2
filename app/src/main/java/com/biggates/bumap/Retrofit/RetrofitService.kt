@@ -1,11 +1,10 @@
 package com.biggates.bumap.Retrofit
 
-import com.biggates.bumap.Model.Bus
-import com.biggates.bumap.Model.Calendar
-import com.biggates.bumap.Model.LectureSchedule
-import com.biggates.bumap.Model.Notice
+import com.biggates.bumap.Model.*
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 
 interface RetrofitService {
 
@@ -18,7 +17,10 @@ interface RetrofitService {
     @GET("bus")
     fun getBus() : Call<ArrayList<Bus>>
 
-    @GET("schedule")
-    fun getSchedule() : Call<LectureSchedule>
+    @POST("schedule")
+    fun getSchedule(@Body params : LoginParam) : Call<LectureSchedule>
+
+    @POST("buLogin")
+    fun buLogin(@Body params : LoginParam) : Call<Message>
 
 }

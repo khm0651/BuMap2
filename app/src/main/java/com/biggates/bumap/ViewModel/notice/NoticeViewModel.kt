@@ -34,6 +34,14 @@ object NoticeViewModel : ViewModel(){
 
     fun getContext(context: Context) = this.context
 
+    fun setIsViewLoading(v : Boolean){
+        _isViewLoading.postValue(v)
+    }
+
+    fun setNoticeList(v : ArrayList<Notice>){
+        _noticeList.postValue(v)
+    }
+
     fun loadNoitce(){
         _isViewLoading.postValue(true)
         myAPI.getNotice().enqueue(object  : Callback<ArrayList<Notice>> {
