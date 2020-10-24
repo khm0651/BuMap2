@@ -13,7 +13,8 @@
         <action
             android:id="@+id/action_homeFragment_to_noticeFragment"
             app:destination="@id/nav_notice" />
-        <action            android:id="@+id/action_homeFragment_to_calendarFragment"
+        <action
+            android:id="@+id/action_homeFragment_to_calendarFragment"
             app:destination="@id/nav_calendar" />
         <action
             android:id="@+id/action_nav_home_to_searchFragment"
