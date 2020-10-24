@@ -28,6 +28,7 @@ import com.google.gson.internal.LinkedTreeMap
 import kotlinx.android.synthetic.main.fragment_schedule.view.*
 import kotlinx.android.synthetic.main.fragment_tiem_table.view.*
 import java.util.*
+import kotlin.properties.Delegates
 import kotlin.random.Random
 
 @RequiresApi(Build.VERSION_CODES.P)
@@ -36,6 +37,8 @@ class TiemTableFragment : Fragment() {
     lateinit var time_table_layout : RelativeLayout
     lateinit var v : View
     private var color : Array<Int> = arrayOf(R.color.timeTable1,R.color.timeTable2,R.color.timeTable3,R.color.timeTable4,R.color.timeTable5,R.color.timeTable6,R.color.timeTable7,R.color.timeTable8)
+    var layoutCount = 12
+    var timeLayoutHeight by Delegates.notNull<Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +53,7 @@ class TiemTableFragment : Fragment() {
         // Inflate the layout for this fragment
         var view = inflater.inflate(R.layout.fragment_tiem_table, container, false)
         v =view
+        timeLayoutHeight = MyUtil.Dp2Px(context!!,70)
         time_table_layout = view.time_table_layout
         LectureScheduleViewModel.isViewLoading.observe(viewLifecycleOwner, Observer {
             if(!it) createTimeTable()
@@ -64,198 +68,228 @@ class TiemTableFragment : Fragment() {
 
 
     private fun createTimeTable() {
-        val vto: ViewTreeObserver = time_table_layout.getViewTreeObserver()
-        vto.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener{
 
-            override fun onGlobalLayout() {
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-                    time_table_layout.getViewTreeObserver().removeGlobalOnLayoutListener(this)
-                } else {
-                    time_table_layout.getViewTreeObserver().removeOnGlobalLayoutListener(this)
-                }
-                createTime()
+        createTime()
 
-                var timeLayoutHeight = v.time_table_time.height / 9
-                for(i in 1 .. 9){
-                    var linearLayout = LinearLayout(context)
-                    var linearLayoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,timeLayoutHeight)
-                    linearLayout.layoutParams=linearLayoutParam
-                    linearLayout.background = ContextCompat.getDrawable(context!!,R.drawable.all_solid)
-                    v.time_table_mon.addView(linearLayout)
-                }
 
-                for(i in 1 .. 9){
-                    var linearLayout = LinearLayout(context)
-                    var linearLayoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,timeLayoutHeight)
-                    linearLayout.layoutParams=linearLayoutParam
-                    linearLayout.background = ContextCompat.getDrawable(context!!,R.drawable.all_solid)
-                    v.time_table_tue.addView(linearLayout)
+        for(i in 1 .. layoutCount){
+            var linearLayout = LinearLayout(context)
+            var linearLayoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,timeLayoutHeight)
+            linearLayout.layoutParams=linearLayoutParam
+            linearLayout.background = ContextCompat.getDrawable(context!!,R.drawable.all_solid)
+            v.time_table_mon.addView(linearLayout)
+        }
 
-                }
+        for(i in 1 .. layoutCount){
+            var linearLayout = LinearLayout(context)
+            var linearLayoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,timeLayoutHeight)
+            linearLayout.layoutParams=linearLayoutParam
+            linearLayout.background = ContextCompat.getDrawable(context!!,R.drawable.all_solid)
+            v.time_table_tue.addView(linearLayout)
 
-                for(i in 1 .. 9){
-                    var linearLayout = LinearLayout(context)
-                    var linearLayoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,timeLayoutHeight)
-                    linearLayout.layoutParams=linearLayoutParam
-                    linearLayout.background = ContextCompat.getDrawable(context!!,R.drawable.all_solid)
-                    v.time_table_wed.addView(linearLayout)
+        }
 
-                }
+        for(i in 1 .. layoutCount){
+            var linearLayout = LinearLayout(context)
+            var linearLayoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,timeLayoutHeight)
+            linearLayout.layoutParams=linearLayoutParam
+            linearLayout.background = ContextCompat.getDrawable(context!!,R.drawable.all_solid)
+            v.time_table_wed.addView(linearLayout)
 
-                for(i in 1 .. 9){
-                    var linearLayout = LinearLayout(context)
-                    var linearLayoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,timeLayoutHeight)
-                    linearLayout.layoutParams=linearLayoutParam
-                    linearLayout.background = ContextCompat.getDrawable(context!!,R.drawable.all_solid)
-                    v.time_table_thu.addView(linearLayout)
+        }
 
-                }
+        for(i in 1 .. layoutCount){
+            var linearLayout = LinearLayout(context)
+            var linearLayoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,timeLayoutHeight)
+            linearLayout.layoutParams=linearLayoutParam
+            linearLayout.background = ContextCompat.getDrawable(context!!,R.drawable.all_solid)
+            v.time_table_thu.addView(linearLayout)
 
-                for(i in 1 .. 9){
-                    var linearLayout = LinearLayout(context)
-                    var linearLayoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,timeLayoutHeight)
-                    linearLayout.layoutParams=linearLayoutParam
-                    linearLayout.background = ContextCompat.getDrawable(context!!,R.drawable.all_solid)
-                    v.time_table_fri.addView(linearLayout)
+        }
 
-                }
+        for(i in 1 .. layoutCount){
+            var linearLayout = LinearLayout(context)
+            var linearLayoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,timeLayoutHeight)
+            linearLayout.layoutParams=linearLayoutParam
+            linearLayout.background = ContextCompat.getDrawable(context!!,R.drawable.all_solid)
+            v.time_table_fri.addView(linearLayout)
 
-                var randNum = 0
-                var lectureSchedule = LectureScheduleViewModel.lectureSchedule.value!!.getSchedule()!!
-                lectureSchedule.forEach { name , lecture ->
-                    (lecture as LinkedTreeMap<String,Any>).forEach { key, l ->
-                        (l as LinkedTreeMap<String,Any>).forEach { lectureName, u ->
-                            var split = lectureName.split("(")
-                            var name = split[0]
-                            var temp = split[1].replace("[^가-힣0-9]".toRegex(),"").trim()
+        }
+
+        var randNum = 0
+        var lectureSchedule = LectureScheduleViewModel.lectureSchedule.value!!.getSchedule()!!
+        lectureSchedule.forEach { name , lecture ->
+            (lecture as LinkedTreeMap<String,Any>).forEach { key, l ->
+                (l as LinkedTreeMap<String,Any>).forEach { lectureName, u ->
+                    if(lectureName.lastIndexOf("(") >= 0){
+
+                        var temp = lectureName.substring(lectureName.lastIndexOf("("),lectureName.length)
+
+                        if(temp.contains("[월화수목금사]".toRegex())){
+                            temp = temp.replace("[a-zA-Z(),]".toRegex(),"").trim()
+                            var name = lectureName.substring(0,lectureName.lastIndexOf("("))
+
                             if(temp.contains("사")) temp = temp.substring(0,temp.indexOf("사"))
-                            var day = temp.substring(0,1)
-                            var time = temp.substring(1,temp.length).toCharArray()
+                            if(temp.length > 0){
 
-                            for(i in 0 until time.size){
-                                var t = time[i].toString().toInt() -1
-                                if(i==0){
-                                    var textView = TextView(context)
-                                    var param = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT)
-                                    param.setMargins(20,20,20,20)
-                                    textView.layoutParams = param
-                                    textView.gravity = Gravity.CENTER
-                                    textView.text = name
-                                    textView.setTypeface(textView.typeface, Typeface.BOLD)
-                                    textView.lineHeight = MyUtil.Dp2Px(context!!,20)
-                                    textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10F)
-                                    textView.setTextColor(resources.getColor(R.color.white,null))
-                                    when(day){
-                                        "월" ->{
-                                            (v.time_table_mon.get(t) as LinearLayout).addView(textView)
-                                            v.time_table_mon.get(t).setBackgroundColor(resources.getColor(color[randNum],null))
-                                            v.time_table_mon.get(t).setOnClickListener {
-                                                startActivity(Intent(context,TimeTableInfoActivity::class.java)
-                                                    .putExtra("name",name))
+
+                                var day = temp.substring(0,1)
+                                if(day.contains("[월화수목금]".toRegex())){
+
+                                    temp = temp.substring(1,temp.length)
+                                    var timelist = temp.trim().split(" ")
+                                    var timeMap = hashMapOf<String,ArrayList<String>>()
+                                    var timeArrayList = arrayListOf<String>()
+
+                                    for(i in timelist){
+                                        if(i.contains("[월화수목금]".toRegex())) {
+                                            if(timeArrayList.isNotEmpty()) {
+                                                timeMap.put(day,timeArrayList)
+                                                timeArrayList = arrayListOf()
                                             }
+                                            day=i
                                         }
-
-                                        "화" ->{
-                                            (v.time_table_tue.get(t) as LinearLayout).addView(textView)
-                                            v.time_table_tue.get(t).setBackgroundColor(resources.getColor(color[randNum],null))
-                                            v.time_table_tue.get(t).setOnClickListener {
-                                                startActivity(Intent(context,TimeTableInfoActivity::class.java)
-                                                    .putExtra("name",name))
-                                            }
-                                        }
-
-                                        "수" ->{
-                                            (v.time_table_wed.get(t) as LinearLayout).addView(textView)
-                                            v.time_table_wed.get(t).setBackgroundColor(resources.getColor(color[randNum],null))
-                                            v.time_table_wed.get(t).setOnClickListener {
-                                                startActivity(Intent(context,TimeTableInfoActivity::class.java)
-                                                    .putExtra("name",name))
-                                            }
-                                        }
-
-                                        "목" ->{
-                                            (v.time_table_thu.get(t) as LinearLayout).addView(textView)
-                                            v.time_table_thu.get(t).setBackgroundColor(resources.getColor(color[randNum],null))
-                                            v.time_table_thu.get(t).setOnClickListener {
-                                                startActivity(Intent(context,TimeTableInfoActivity::class.java)
-                                                    .putExtra("name",name))
-                                            }
-                                        }
-
-                                        "금" ->{
-                                            (v.time_table_fri.get(t) as LinearLayout).addView(textView)
-                                            v.time_table_fri.get(t).setBackgroundColor(resources.getColor(color[randNum],null))
-                                            v.time_table_fri.get(t).setOnClickListener {
-                                                startActivity(Intent(context,TimeTableInfoActivity::class.java)
-                                                    .putExtra("name",name))
-                                            }
+                                        else {
+                                            timeArrayList.add(i)
                                         }
                                     }
-                                }else{
-                                    when(day){
-                                        "월" ->{
-                                            v.time_table_mon.get(t).setBackgroundColor(resources.getColor(color[randNum],null))
-                                            v.time_table_mon.get(t).setOnClickListener {
-                                                startActivity(Intent(context,TimeTableInfoActivity::class.java)
-                                                    .putExtra("name",name))
+                                    timeMap.put(day,timeArrayList)
+
+                                    timeMap.forEach { day, timelist ->
+                                        for(i in 0 until timelist.size){
+                                            var t = timelist[i].toInt() -1
+                                            if(i==0){
+                                                var textView = TextView(context)
+                                                var param = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT)
+                                                param.setMargins(20,20,20,20)
+                                                textView.layoutParams = param
+                                                textView.gravity = Gravity.CENTER
+                                                textView.text = name
+                                                textView.setTypeface(textView.typeface, Typeface.BOLD)
+                                                textView.lineHeight = MyUtil.Dp2Px(context!!,20)
+                                                textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10F)
+                                                textView.setTextColor(resources.getColor(R.color.white,null))
+                                                when(day){
+                                                    "월" ->{
+                                                        (v.time_table_mon.get(t) as LinearLayout).addView(textView)
+                                                        v.time_table_mon.get(t).setBackgroundColor(resources.getColor(color[randNum],null))
+                                                        v.time_table_mon.get(t).setOnClickListener {
+                                                            startActivity(Intent(context,TimeTableInfoActivity::class.java)
+                                                                .putExtra("name",name))
+                                                        }
+                                                    }
+
+                                                    "화" ->{
+                                                        (v.time_table_tue.get(t) as LinearLayout).addView(textView)
+                                                        v.time_table_tue.get(t).setBackgroundColor(resources.getColor(color[randNum],null))
+                                                        v.time_table_tue.get(t).setOnClickListener {
+                                                            startActivity(Intent(context,TimeTableInfoActivity::class.java)
+                                                                .putExtra("name",name))
+                                                        }
+                                                    }
+
+                                                    "수" ->{
+                                                        (v.time_table_wed.get(t) as LinearLayout).addView(textView)
+                                                        v.time_table_wed.get(t).setBackgroundColor(resources.getColor(color[randNum],null))
+                                                        v.time_table_wed.get(t).setOnClickListener {
+                                                            startActivity(Intent(context,TimeTableInfoActivity::class.java)
+                                                                .putExtra("name",name))
+                                                        }
+                                                    }
+
+                                                    "목" ->{
+                                                        (v.time_table_thu.get(t) as LinearLayout).addView(textView)
+                                                        v.time_table_thu.get(t).setBackgroundColor(resources.getColor(color[randNum],null))
+                                                        v.time_table_thu.get(t).setOnClickListener {
+                                                            startActivity(Intent(context,TimeTableInfoActivity::class.java)
+                                                                .putExtra("name",name))
+                                                        }
+                                                    }
+
+                                                    "금" ->{
+                                                        (v.time_table_fri.get(t) as LinearLayout).addView(textView)
+                                                        v.time_table_fri.get(t).setBackgroundColor(resources.getColor(color[randNum],null))
+                                                        v.time_table_fri.get(t).setOnClickListener {
+                                                            startActivity(Intent(context,TimeTableInfoActivity::class.java)
+                                                                .putExtra("name",name))
+                                                        }
+                                                    }
+                                                }
+                                            }else{
+                                                when(day){
+                                                    "월" ->{
+                                                        v.time_table_mon.get(t).setBackgroundColor(resources.getColor(color[randNum],null))
+                                                        v.time_table_mon.get(t).setOnClickListener {
+                                                            startActivity(Intent(context,TimeTableInfoActivity::class.java)
+                                                                .putExtra("name",name))
+                                                        }
+                                                    }
+
+                                                    "화" ->{
+                                                        v.time_table_tue.get(t).setBackgroundColor(resources.getColor(color[randNum],null))
+                                                        v.time_table_tue.get(t).setOnClickListener {
+                                                            startActivity(Intent(context,TimeTableInfoActivity::class.java)
+                                                                .putExtra("name",name))
+                                                        }
+                                                    }
+
+                                                    "수" ->{
+                                                        v.time_table_wed.get(t).setBackgroundColor(resources.getColor(color[randNum],null))
+                                                        v.time_table_wed.get(t).setOnClickListener {
+                                                            startActivity(Intent(context,TimeTableInfoActivity::class.java)
+                                                                .putExtra("name",name))
+                                                        }
+                                                    }
+
+                                                    "목" ->{
+                                                        v.time_table_thu.get(t).setBackgroundColor(resources.getColor(color[randNum],null))
+                                                        v.time_table_thu.get(t).setOnClickListener {
+                                                            startActivity(Intent(context,TimeTableInfoActivity::class.java)
+                                                                .putExtra("name",name))
+                                                        }
+                                                    }
+
+                                                    "금" ->{
+                                                        v.time_table_fri.get(t).setBackgroundColor(resources.getColor(color[randNum],null))
+                                                        v.time_table_fri.get(t).setOnClickListener {
+                                                            startActivity(Intent(context,TimeTableInfoActivity::class.java)
+                                                                .putExtra("name",name))
+                                                        }
+                                                    }
+                                                }
                                             }
+
                                         }
 
-                                        "화" ->{
-                                            v.time_table_tue.get(t).setBackgroundColor(resources.getColor(color[randNum],null))
-                                            v.time_table_tue.get(t).setOnClickListener {
-                                                startActivity(Intent(context,TimeTableInfoActivity::class.java)
-                                                    .putExtra("name",name))
-                                            }
+                                        randNum++
+                                        if(randNum == color.size){
+                                            randNum=0
                                         }
 
-                                        "수" ->{
-                                            v.time_table_wed.get(t).setBackgroundColor(resources.getColor(color[randNum],null))
-                                            v.time_table_wed.get(t).setOnClickListener {
-                                                startActivity(Intent(context,TimeTableInfoActivity::class.java)
-                                                    .putExtra("name",name))
-                                            }
-                                        }
-
-                                        "목" ->{
-                                            v.time_table_thu.get(t).setBackgroundColor(resources.getColor(color[randNum],null))
-                                            v.time_table_thu.get(t).setOnClickListener {
-                                                startActivity(Intent(context,TimeTableInfoActivity::class.java)
-                                                    .putExtra("name",name))
-                                            }
-                                        }
-
-                                        "금" ->{
-                                            v.time_table_fri.get(t).setBackgroundColor(resources.getColor(color[randNum],null))
-                                            v.time_table_fri.get(t).setOnClickListener {
-                                                startActivity(Intent(context,TimeTableInfoActivity::class.java)
-                                                    .putExtra("name",name))
-                                            }
-                                        }
                                     }
+
                                 }
 
                             }
-                            randNum++
-                            if(randNum == 8){
-                                randNum=0
-                            }
+
                         }
 
+
+
                     }
-                    vto.removeOnGlobalLayoutListener { this }
+
+
                 }
 
             }
 
-        })
+        }
 
     }
 
     private fun createTime() {
         var startTime = 9
-        var timeLayoutHeight = v.time_table_time.height / 9
-        for(i in 0 until 9){
+        for(i in 0 until layoutCount){
             var textView = TextView(context)
             textView.height = timeLayoutHeight
             textView.text = startTime.toString()
