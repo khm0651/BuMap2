@@ -32,8 +32,8 @@ class CalendarInfoActivity : Activity() {
         var scrollLayout = item_list_view!!
         var layoutParam = FrameLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT)
 
-        layoutParam.width = displayMetrics.widthPixels - MyUtil.Int2Dp(applicationContext,150)
-        layoutParam.height = MyUtil.Int2Dp(applicationContext,675)
+        layoutParam.width = displayMetrics.widthPixels - MyUtil.Dp2Px(applicationContext,70)
+        layoutParam.height = MyUtil.Dp2Px(applicationContext,400)
         layout.layoutParams = layoutParam
 
         day_calendar_info.text = "${day}일"

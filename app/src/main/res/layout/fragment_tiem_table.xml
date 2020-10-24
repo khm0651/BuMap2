@@ -83,76 +83,85 @@
         </TextView>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/time_table_content"
-        android:layout_below="@+id/time_table_top"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:weightSum="5.3"
+        android:layout_below="@+id/time_table_top"
         >
 
         <LinearLayout
-            android:id="@+id/time_table_time"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.3"
-            android:orientation="vertical"
+            android:id="@+id/time_table_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="5.3"
             >
+
+            <LinearLayout
+                android:id="@+id/time_table_time"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"
+                android:orientation="vertical"
+                >
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/time_table_mon"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                >
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/time_table_tue"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                >
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/time_table_wed"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                >
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/time_table_thu"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                >
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/time_table_fri"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                >
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/time_table_mon"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            >
+    </ScrollView>
 
-        </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/time_table_tue"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            >
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/time_table_wed"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            >
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/time_table_thu"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            >
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/time_table_fri"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            >
-
-        </LinearLayout>
-
-    </LinearLayout>
 
 
 

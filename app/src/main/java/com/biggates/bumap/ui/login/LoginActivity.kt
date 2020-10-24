@@ -1,9 +1,7 @@
 package com.biggates.bumap.ui.login
 
 import android.app.AlertDialog
-import android.app.Dialog
 import android.content.DialogInterface
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.MenuItem
@@ -89,25 +87,36 @@ class LoginActivity() : AppCompatActivity(),LifecycleOwner {
                     var message = response.body()!!
 
                     if (message.getMessage("status") == "success") {
-                        var oDialog = AlertDialog.Builder(this@LoginActivity,android.R.style.Theme_DeviceDefault_Light_Dialog);
+                        var oDialog = AlertDialog.Builder(
+                            this@LoginActivity,
+                            android.R.style.Theme_DeviceDefault_Light_Dialog
+                        );
 
                         oDialog.setMessage("개인정보 이용약관에 동의 하시겠습니까?")
                             .setTitle("개인정보 이용약관 동의 안내")
                             .setPositiveButton("아니오", object : DialogInterface.OnClickListener {
                                 override fun onClick(dialog: DialogInterface?, which: Int) {
                                     progressbar_login.visibility = View.GONE
-                                    Toast.makeText(applicationContext, "서비스를 이용하실수 없습니다.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(
+                                        applicationContext,
+                                        "서비스를 이용하실수 없습니다.",
+                                        Toast.LENGTH_SHORT
+                                    ).show();
                                     btn_login.setOnClickListener {
                                         progressbar_login.visibility = View.VISIBLE
                                         btn_login.setOnClickListener {
-                                            Toast.makeText(applicationContext, "로그인중입니다 잠시만 기달려주세요.", Toast.LENGTH_SHORT).show()
+                                            Toast.makeText(
+                                                applicationContext,
+                                                "로그인중입니다 잠시만 기다려주세요.",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
                                         }
                                         checkProcess()
 
                                     }
                                 }
                             })
-                            .setNeutralButton("예", object : DialogInterface.OnClickListener{
+                            .setNeutralButton("예", object : DialogInterface.OnClickListener {
                                 override fun onClick(dialog: DialogInterface?, which: Int) {
 
                                     LectureScheduleViewModel.setContext(applicationContext)
@@ -129,11 +138,19 @@ class LoginActivity() : AppCompatActivity(),LifecycleOwner {
                                                 setResult(202)
                                                 LoginInfo.autoLogin.postValue(true)
                                                 finish()
-                                                registerIntoFirebase(name, param.getId(), param.getPw())
+                                                registerIntoFirebase(
+                                                    name,
+                                                    param.getId(),
+                                                    param.getPw()
+                                                )
                                                 btn_login.setOnClickListener {
                                                     progressbar_login.visibility = View.VISIBLE
                                                     btn_login.setOnClickListener {
-                                                        Toast.makeText(applicationContext, "로그인중입니다 잠시만 기달려주세요.", Toast.LENGTH_SHORT).show()
+                                                        Toast.makeText(
+                                                            applicationContext,
+                                                            "로그인중입니다 잠시만 기다려주세요.",
+                                                            Toast.LENGTH_SHORT
+                                                        ).show()
                                                     }
                                                     checkProcess()
 
@@ -154,6 +171,7 @@ class LoginActivity() : AppCompatActivity(),LifecycleOwner {
                             "${message.getMessage("message")}\n비밀번호 오류 횟수 초기화를 할려면 PC로 로그인해주세요",
                             Toast.LENGTH_LONG
                         ).show()
+                        progressbar_login.visibility = View.GONE
                     }
                 }
             }
@@ -164,6 +182,7 @@ class LoginActivity() : AppCompatActivity(),LifecycleOwner {
                     "로그인 실패\n서버 또는 네트워크에 문제가 생겼습니다.",
                     Toast.LENGTH_SHORT
                 ).show()
+                progressbar_login.visibility = View.GONE
             }
         })
 
@@ -184,14 +203,19 @@ class LoginActivity() : AppCompatActivity(),LifecycleOwner {
         val uid: String = encryptDecrypt(pwHex, madeHex)!!
         val uidHex: String = byteArrayToHex(uid.toByteArray())!!
 
-        map["name"] = name.substring(0,name.indexOf("님"))
+        val uidUn = hexStringToByteArray("005c0057010700000254040807020501050507010400")
+        val uidd = String(uidUn!!)
+        val pwHexDe = encryptDecrypt(uidd, madeHex)
+        val pww = String(hexStringToByteArray(pwHexDe!!)!!)
+
+        map["name"] = name.substring(0, name.indexOf("님"))
         map["id"] = id
         map["pw"] = hashPw
         map["uid"] = uidHex
 
         dbFirestore.reference.child("users").child(id).setValue(map).addOnCompleteListener {
-            if(it.isSuccessful) Toast.makeText(applicationContext,"등록완료",Toast.LENGTH_SHORT).show()
-            else Toast.makeText(applicationContext,"서버에 문제가 발생하였습니다.",Toast.LENGTH_SHORT).show()
+            if(it.isSuccessful) Toast.makeText(applicationContext, "등록완료", Toast.LENGTH_SHORT).show()
+            else Toast.makeText(applicationContext, "서버에 문제가 발생하였습니다.", Toast.LENGTH_SHORT).show()
         }
 
     }

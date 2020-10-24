@@ -51,8 +51,13 @@ class ViewPageCheckAdapter(private var mContext: Context, private var checkList:
         holder.wrap_info.setPadding(0,0,0,0)
 
         var key = checkList[position].keys.first()
-        var title = key.split(" ")[0]
-        var date = key.substring(key.indexOf(" ")+1,key.length)
+        if(key.indexOf("주")-1 >=0 && key[key.indexOf("주")-1].equals(' ')) key = key.replaceFirst(" ","")
+        var keySplit = key.split("~")
+        var endTime = keySplit[1].trim()
+        var p = keySplit[0].trim()
+        var title = "${p.substring(0,p.lastIndexOf(" ")).trim()} "
+        var startTime = p.substring(p.lastIndexOf(" "),p.length).trim()
+        var date = "${startTime} ~ ${endTime}"
         var totalVideoNum = 0
         var finishVideoNum = 0
         var notFinishVideoNum = 0

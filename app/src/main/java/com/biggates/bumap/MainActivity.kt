@@ -1,6 +1,7 @@
 package com.biggates.bumap
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Rect
 import android.os.Bundle
@@ -32,6 +33,13 @@ import com.biggates.bumap.ViewModel.schedule.LectureScheduleViewModel
 import com.biggates.bumap.ui.bus.BusFragment
 import com.biggates.bumap.ui.schedule.ScheduleFragment
 import com.google.android.material.navigation.NavigationView
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.AppUpdateType.IMMEDIATE
+import com.google.android.play.core.install.model.InstallStatus
+import com.google.android.play.core.install.model.UpdateAvailability
+import com.google.firebase.FirebaseApp
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -48,7 +56,9 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     val myAPI = RetrofitClient.getInstance().create(RetrofitService::class.java)
-    var dbFirestore = FirebaseDatabase.getInstance()
+    lateinit var dbFirestore : FirebaseDatabase
+    private var APP_UPDATE_REQUSET_CODE = 1004
+    lateinit var appUpdateManager : AppUpdateManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +72,29 @@ class MainActivity : AppCompatActivity() {
         var pref = getSharedPreferences("userInfo",0)
         var isAutoLogin = pref.getBoolean("isAutoLogin",false)
         var editor = pref.edit()
+        appUpdateManager = AppUpdateManagerFactory.create(this)
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                // For a flexible update, use AppUpdateType.FLEXIBLE
+                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+            ) {
+                // Request the update.
+                appUpdateManager.startUpdateFlowForResult(
+                    // Pass the intent that is returned by 'getAppUpdateInfo()'.
+                    appUpdateInfo,
+                    // Or 'AppUpdateType.FLEXIBLE' for flexible updates.
+                    AppUpdateType.IMMEDIATE,
+                    // The current activity making the update request.
+                    this,
+                    // Include a request code to later monitor this update request.
+                    APP_UPDATE_REQUSET_CODE
+                )
+            }
+        }
 
+        FirebaseApp.initializeApp(applicationContext)
+        dbFirestore = FirebaseDatabase.getInstance()
         appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
@@ -78,7 +110,7 @@ class MainActivity : AppCompatActivity() {
             LectureScheduleViewModel.setLectureSchedule(null)
             LectureScheduleViewModel._viewStart.postValue(false)
             var id = pref.getString("id","null")!!
-            dbFirestore.reference.child("users").child(id).removeValue()
+            //dbFirestore.reference.child("users").child(id).removeValue()
             editor.apply{
                 clear()
                 commit()
@@ -255,5 +287,36 @@ class MainActivity : AppCompatActivity() {
         return super.dispatchTouchEvent(ev)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == APP_UPDATE_REQUSET_CODE) {
+            if (resultCode != RESULT_OK) {
+                // If the update is cancelled or fails,
+                // you can request to start the update again.
+            }
+        }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        appUpdateManager
+            .appUpdateInfo
+            .addOnSuccessListener { appUpdateInfo ->
+
+                if (appUpdateInfo.updateAvailability()
+                    == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS
+                ) {
+                    // If an in-app update is already running, resume the update.
+                    appUpdateManager.startUpdateFlowForResult(
+                        appUpdateInfo,
+                        IMMEDIATE,
+                        this,
+                        APP_UPDATE_REQUSET_CODE
+                    );
+                }
+            }
+    }
 
 }
