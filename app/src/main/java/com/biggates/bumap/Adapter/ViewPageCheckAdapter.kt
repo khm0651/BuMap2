@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.view_page_check_video_layout.view.presentI
 import java.util.*
 import kotlin.collections.ArrayList
 
+@RequiresApi(Build.VERSION_CODES.M)
 class ViewPageCheckAdapter(private var mContext: Context, private var checkList: ArrayList<LinkedTreeMap<String, Any>>)
     :RecyclerView.Adapter<ViewPageCheckAdapter.ViewHolder>(){
 
@@ -43,7 +44,7 @@ class ViewPageCheckAdapter(private var mContext: Context, private var checkList:
         return ViewHolder(view)
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.detail_view_page_check.removeAllViews()
         holder.detail_view_page_check.visibility = View.GONE
@@ -65,10 +66,12 @@ class ViewPageCheckAdapter(private var mContext: Context, private var checkList:
         var attendanceLectureNum = 0
         var absentLectureNum = 0
         var latenessLectureNum = 0
-        checkList[position].forEach { period, v ->
+        checkList[position].keys.forEach { period ->
+            var v = checkList[position][period] as LinkedTreeMap<String,LinkedTreeMap<String,String>>
             var videoViewArr = arrayListOf<View>()
             var checkViewArr = arrayListOf<View>()
-            (v as LinkedTreeMap<String,LinkedTreeMap<String,String>>).forEach { checkOrVideo, info  ->
+            v.keys.forEach { checkOrVideo ->
+                var info = v[checkOrVideo]!!
                 if(checkOrVideo.startsWith("video")){
                     totalVideoNum++
                     if(info["state"] == "학습안함") notFinishVideoNum++
@@ -115,7 +118,6 @@ class ViewPageCheckAdapter(private var mContext: Context, private var checkList:
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     private fun createCheckLayout(info: LinkedTreeMap<String, String>) : View {
         var checkLayout = LayoutInflater.from(mContext).inflate(R.layout.view_page_check_state_layout,null)
         var title = "${info["title"]} ( ${info["state"]} )"

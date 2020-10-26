@@ -17,8 +17,6 @@ import kotlinx.android.synthetic.main.activity_calendar_info.*
 class CalendarInfoActivity : Activity() {
 
 
-
-    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_calendar_info)
@@ -51,7 +49,7 @@ class CalendarInfoActivity : Activity() {
             textView.layoutParams = textViewParam
             textView.text = "●  ${contentArray[i]}"
             textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16F)
-            textView.lineHeight = MyUtil.Dp2Px(applicationContext,27)
+            textView.setLineSpacing(MyUtil.Dp2Px(applicationContext,8).toFloat(),MyUtil.Dp2Px(applicationContext,1).toFloat())
             textView.setPadding(60,0,60,0)
             scrollLayout.addView(textView)
         }

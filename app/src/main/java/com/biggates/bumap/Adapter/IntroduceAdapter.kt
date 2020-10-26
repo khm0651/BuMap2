@@ -37,7 +37,7 @@ class IntroduceAdapter (private var mContext : Context, private var mRoomList : 
         return mRoomList.size
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var split = mRoomList[position].split("+")
         if((split[1].get(0) >= 'a' && split[1].get(0) <= 'z') || (split[1].contains("ATM"))){
@@ -60,9 +60,10 @@ class IntroduceAdapter (private var mContext : Context, private var mRoomList : 
                 }
             }
 
-            floor_maker.forEach { t, u ->
-                u.room.forEach { t, u ->
-                    u.map = null
+            floor_maker.keys.forEach { k ->
+                var roomMaker = floor_maker[k]!!
+                roomMaker.room.keys.forEach { key ->
+                    roomMaker.room[key]!!.map = null
                 }
             }
 

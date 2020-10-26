@@ -24,14 +24,19 @@ import com.biggates.bumap.Model.LoginParam
 import com.biggates.bumap.Model.Message
 import com.biggates.bumap.Retrofit.RetrofitClient
 import com.biggates.bumap.Retrofit.RetrofitService
+import com.biggates.bumap.ViewModel.ad.Ad
 import com.biggates.bumap.ViewModel.bus.BusViewModel
 import com.biggates.bumap.ViewModel.calendar.CalendarViewModel
 import com.biggates.bumap.ViewModel.notice.NoticeViewModel
 import com.biggates.bumap.ViewModel.building.BuBuilding
 import com.biggates.bumap.ViewModel.loginInfo.LoginInfo
 import com.biggates.bumap.ViewModel.schedule.LectureScheduleViewModel
+import com.biggates.bumap.ui.ad.AdActivity
 import com.biggates.bumap.ui.bus.BusFragment
 import com.biggates.bumap.ui.schedule.ScheduleFragment
+import com.google.android.gms.ads.*
+import com.google.android.gms.ads.formats.NativeAdOptions
+import com.google.android.gms.ads.formats.UnifiedNativeAd
 import com.google.android.material.navigation.NavigationView
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
@@ -41,6 +46,7 @@ import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.android.synthetic.main.activity_ad.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_bus.*
@@ -93,6 +99,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        MobileAds.initialize(this) {}
+        Ad.init(applicationContext)
         FirebaseApp.initializeApp(applicationContext)
         dbFirestore = FirebaseDatabase.getInstance()
         appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)

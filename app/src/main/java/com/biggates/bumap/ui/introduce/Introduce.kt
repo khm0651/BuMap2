@@ -32,9 +32,11 @@ import kotlin.Comparator
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.math.absoluteValue
+
 class RoomMaker {
     var room : HashMap<String,Marker> = HashMap()
 }
+
 class Introduce : FragmentActivity(), OnMapReadyCallback {
 
     var building = Building()
@@ -49,7 +51,6 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
     lateinit var mapFragment: MapFragment
     lateinit var introduce: Introduce
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.NoTitleBar);
@@ -71,9 +72,11 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
 
 
         building = BuBuilding.buBuilding.value!!.get(d_name)!!
-        BuBuilding.buBuilding.value!!.get(d_name!!)!!.floor.forEach { floorKey, f ->
+        BuBuilding.buBuilding.value!!.get(d_name!!)!!.floor.keys.forEach { floorKey ->
+            var f = BuBuilding.buBuilding.value!!.get(d_name!!)!!.floor[floorKey]!!
             var str = ""
-            f.roomNumber.forEach { roomKey, r ->
+            f.roomNumber.keys.forEach { roomKey ->
+                var r = f.roomNumber[roomKey]!!
                 str += "${r.name}+${roomKey}+${placeName}+${floorKey}층,"
             }
             total_list.put(floorKey,str.substring(0,str.length-1))
@@ -86,7 +89,6 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onMapReady(naverMap: NaverMap) {
 
 
@@ -201,14 +203,16 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
 
 
                 view_toilet.setOnClickListener { v:View->
-                    floor_maker.forEach { t, u ->
-                        u.room.forEach { t, u ->
-                            u.map = null
+                    floor_maker.keys.forEach { k ->
+                        var v = floor_maker[k]!!
+                        v.room.keys.forEach { key ->
+                            v.room[key]!!.map = null
                         }
                     }
-                    floor_maker["1"]!!.room.forEach { t, u ->
-                        if(t.contains("toilet")){
-                            u.map = naverMap
+                    floor_maker["1"]!!.room.keys.forEach { k ->
+                        var v = floor_maker["1"]!!.room[k]!!
+                        if(k.contains("toilet")){
+                            v.map = naverMap
                         }
 
                     }

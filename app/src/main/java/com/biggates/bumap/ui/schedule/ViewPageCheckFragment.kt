@@ -15,7 +15,7 @@ import com.biggates.bumap.ViewModel.schedule.LectureScheduleViewModel
 import com.google.gson.internal.LinkedTreeMap
 import kotlinx.android.synthetic.main.fragment_view_page_check.view.*
 
-
+@RequiresApi(Build.VERSION_CODES.M)
 class ViewPageCheckFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var title: String? = null
@@ -27,7 +27,7 @@ class ViewPageCheckFragment : Fragment() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,19 +39,23 @@ class ViewPageCheckFragment : Fragment() {
         var linearLayoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = linearLayoutManager
 
-        var lectureSchedule = LectureScheduleViewModel.lectureSchedule.value!!.getSchedule()
+        var lectureSchedule = LectureScheduleViewModel.lectureSchedule.value!!.getSchedule()!!
 
         var lectureCheckSchedule : LinkedTreeMap<String, LinkedTreeMap<String, String>>? = null
-        lectureSchedule!!.forEach { user, lecture ->
-            lectureCheckSchedule = (((lecture as LinkedTreeMap<String, Any>)["lecture"] as LinkedTreeMap<String, Any>)[title] as LinkedTreeMap<String, Any>)["학습목차"] as LinkedTreeMap<String, LinkedTreeMap<String, String>>?
+        lectureSchedule.keys.forEach { user ->
+            lectureCheckSchedule = (((lectureSchedule[user] as LinkedTreeMap<String, Any>)["lecture"] as LinkedTreeMap<String, Any>)[title] as LinkedTreeMap<String, Any>)["학습목차"] as LinkedTreeMap<String, LinkedTreeMap<String, String>>
+
         }
 
+
         var arr = arrayListOf<LinkedTreeMap<String, Any>>()
-        lectureCheckSchedule!!.forEach { k, v ->
+
+        lectureCheckSchedule!!.keys.forEach { k ->
             var map = LinkedTreeMap<String,Any>()
-            map.put(k,v)
+            map.put(k, lectureCheckSchedule!![k])
             arr.add(map)
         }
+
         if(arr.isNotEmpty()){
             arr.sortWith(object : Comparator<LinkedTreeMap<String,Any>>{
                 override fun compare(

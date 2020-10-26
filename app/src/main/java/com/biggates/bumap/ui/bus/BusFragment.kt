@@ -62,7 +62,6 @@ class BusFragment : Fragment() {
         requireActivity().getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -111,7 +110,6 @@ class BusFragment : Fragment() {
 
                     }
 
-                    @RequiresApi(Build.VERSION_CODES.O)
                     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
                         if(view.search_edit_bus.text.toString() != ""){

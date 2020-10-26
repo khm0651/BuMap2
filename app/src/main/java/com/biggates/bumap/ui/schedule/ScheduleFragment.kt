@@ -27,7 +27,7 @@ import com.google.gson.internal.LinkedTreeMap
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_schedule.view.*
 
-@RequiresApi(Build.VERSION_CODES.P)
+@RequiresApi(Build.VERSION_CODES.M)
 class ScheduleFragment : Fragment() {
 
     var REQUEST_CODE = 100
@@ -71,9 +71,11 @@ class ScheduleFragment : Fragment() {
 
                         var lectureList : ArrayList<String> = arrayListOf()
                         var lectureSchedule = LectureScheduleViewModel.lectureSchedule.value!!.getSchedule()!!
-                        lectureSchedule.forEach { name, lecture ->
-                            (lecture as LinkedTreeMap<String, Any>).forEach { key, l ->
-                                (l as LinkedTreeMap<String,Any>).forEach { lectureName, u ->
+                        lectureSchedule.keys.forEach { name ->
+                            var lecture = lectureSchedule[name] as LinkedTreeMap<String, Any>
+                            lecture.keys.forEach { key ->
+                                var l = lecture[key] as LinkedTreeMap<String, Any>
+                                l.keys.forEach { lectureName ->
                                     lectureList.add(lectureName)
                                 }
                             }
