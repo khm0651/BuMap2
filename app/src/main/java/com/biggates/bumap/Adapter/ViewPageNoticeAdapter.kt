@@ -14,6 +14,7 @@ import com.biggates.bumap.R
 import com.google.gson.internal.LinkedTreeMap
 import kotlinx.android.synthetic.main.view_page_notice_layout.view.*
 
+@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class ViewPageNoticeAdapter(private var mContext: Context, private var noticeList: LinkedTreeMap<String, LinkedTreeMap<String, String>>?)
     : RecyclerView.Adapter<ViewPageNoticeAdapter.ViewHolder>() {
 
@@ -34,7 +35,6 @@ class ViewPageNoticeAdapter(private var mContext: Context, private var noticeLis
         else return noticeList!!.size
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.content.visibility = View.GONE
         holder.title.background = null

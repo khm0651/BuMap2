@@ -21,7 +21,6 @@ import androidx.core.view.marginTop
 import androidx.lifecycle.Observer
 import com.biggates.bumap.Model.LectureSchedule
 import com.biggates.bumap.MyUtil
-
 import com.biggates.bumap.R
 import com.biggates.bumap.ViewModel.schedule.LectureScheduleViewModel
 import com.google.gson.internal.LinkedTreeMap
@@ -31,7 +30,7 @@ import java.util.*
 import kotlin.properties.Delegates
 import kotlin.random.Random
 
-@RequiresApi(Build.VERSION_CODES.P)
+@RequiresApi(Build.VERSION_CODES.M)
 class TiemTableFragment : Fragment() {
 
     lateinit var time_table_layout : RelativeLayout
@@ -118,9 +117,11 @@ class TiemTableFragment : Fragment() {
 
         var randNum = 0
         var lectureSchedule = LectureScheduleViewModel.lectureSchedule.value!!.getSchedule()!!
-        lectureSchedule.forEach { name , lecture ->
-            (lecture as LinkedTreeMap<String,Any>).forEach { key, l ->
-                (l as LinkedTreeMap<String,Any>).forEach { lectureName, u ->
+        lectureSchedule.keys.forEach {name ->
+            var lecture = lectureSchedule[name] as LinkedTreeMap<String,Any>
+            lecture.keys.forEach { l ->
+                var lectureList = lecture[l] as LinkedTreeMap<String,Any>
+                lectureList.keys.forEach { lectureName ->
                     if(lectureName.lastIndexOf("(") >= 0){
 
                         var temp = lectureName.substring(lectureName.lastIndexOf("("),lectureName.length)
@@ -155,7 +156,8 @@ class TiemTableFragment : Fragment() {
                                     }
                                     timeMap.put(day,timeArrayList)
 
-                                    timeMap.forEach { day, timelist ->
+                                    timeMap.keys.forEach { day ->
+                                        var timelist = timeMap[day]!!
                                         for(i in 0 until timelist.size){
                                             var t = timelist[i].toInt() -1
                                             if(i==0){
@@ -166,7 +168,7 @@ class TiemTableFragment : Fragment() {
                                                 textView.gravity = Gravity.CENTER
                                                 textView.text = name
                                                 textView.setTypeface(textView.typeface, Typeface.BOLD)
-                                                textView.lineHeight = MyUtil.Dp2Px(context!!,20)
+                                                textView.setLineSpacing(MyUtil.Dp2Px(context!!,1).toFloat(),MyUtil.Dp2Px(context!!,1).toFloat())
                                                 textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10F)
                                                 textView.setTextColor(resources.getColor(R.color.white,null))
                                                 when(day){
@@ -175,7 +177,7 @@ class TiemTableFragment : Fragment() {
                                                         v.time_table_mon.get(t).setBackgroundColor(resources.getColor(color[randNum],null))
                                                         v.time_table_mon.get(t).setOnClickListener {
                                                             startActivity(Intent(context,TimeTableInfoActivity::class.java)
-                                                                .putExtra("name",name))
+                                                                .putExtra("name",lectureName))
                                                         }
                                                     }
 
@@ -184,7 +186,7 @@ class TiemTableFragment : Fragment() {
                                                         v.time_table_tue.get(t).setBackgroundColor(resources.getColor(color[randNum],null))
                                                         v.time_table_tue.get(t).setOnClickListener {
                                                             startActivity(Intent(context,TimeTableInfoActivity::class.java)
-                                                                .putExtra("name",name))
+                                                                .putExtra("name",lectureName))
                                                         }
                                                     }
 
@@ -193,7 +195,7 @@ class TiemTableFragment : Fragment() {
                                                         v.time_table_wed.get(t).setBackgroundColor(resources.getColor(color[randNum],null))
                                                         v.time_table_wed.get(t).setOnClickListener {
                                                             startActivity(Intent(context,TimeTableInfoActivity::class.java)
-                                                                .putExtra("name",name))
+                                                                .putExtra("name",lectureName))
                                                         }
                                                     }
 
@@ -202,7 +204,7 @@ class TiemTableFragment : Fragment() {
                                                         v.time_table_thu.get(t).setBackgroundColor(resources.getColor(color[randNum],null))
                                                         v.time_table_thu.get(t).setOnClickListener {
                                                             startActivity(Intent(context,TimeTableInfoActivity::class.java)
-                                                                .putExtra("name",name))
+                                                                .putExtra("name",lectureName))
                                                         }
                                                     }
 
@@ -211,7 +213,7 @@ class TiemTableFragment : Fragment() {
                                                         v.time_table_fri.get(t).setBackgroundColor(resources.getColor(color[randNum],null))
                                                         v.time_table_fri.get(t).setOnClickListener {
                                                             startActivity(Intent(context,TimeTableInfoActivity::class.java)
-                                                                .putExtra("name",name))
+                                                                .putExtra("name",lectureName))
                                                         }
                                                     }
                                                 }
@@ -221,7 +223,7 @@ class TiemTableFragment : Fragment() {
                                                         v.time_table_mon.get(t).setBackgroundColor(resources.getColor(color[randNum],null))
                                                         v.time_table_mon.get(t).setOnClickListener {
                                                             startActivity(Intent(context,TimeTableInfoActivity::class.java)
-                                                                .putExtra("name",name))
+                                                                .putExtra("name",lectureName))
                                                         }
                                                     }
 
@@ -229,7 +231,7 @@ class TiemTableFragment : Fragment() {
                                                         v.time_table_tue.get(t).setBackgroundColor(resources.getColor(color[randNum],null))
                                                         v.time_table_tue.get(t).setOnClickListener {
                                                             startActivity(Intent(context,TimeTableInfoActivity::class.java)
-                                                                .putExtra("name",name))
+                                                                .putExtra("name",lectureName))
                                                         }
                                                     }
 
@@ -237,7 +239,7 @@ class TiemTableFragment : Fragment() {
                                                         v.time_table_wed.get(t).setBackgroundColor(resources.getColor(color[randNum],null))
                                                         v.time_table_wed.get(t).setOnClickListener {
                                                             startActivity(Intent(context,TimeTableInfoActivity::class.java)
-                                                                .putExtra("name",name))
+                                                                .putExtra("name",lectureName))
                                                         }
                                                     }
 
@@ -245,7 +247,7 @@ class TiemTableFragment : Fragment() {
                                                         v.time_table_thu.get(t).setBackgroundColor(resources.getColor(color[randNum],null))
                                                         v.time_table_thu.get(t).setOnClickListener {
                                                             startActivity(Intent(context,TimeTableInfoActivity::class.java)
-                                                                .putExtra("name",name))
+                                                                .putExtra("name",lectureName))
                                                         }
                                                     }
 
@@ -253,7 +255,7 @@ class TiemTableFragment : Fragment() {
                                                         v.time_table_fri.get(t).setBackgroundColor(resources.getColor(color[randNum],null))
                                                         v.time_table_fri.get(t).setOnClickListener {
                                                             startActivity(Intent(context,TimeTableInfoActivity::class.java)
-                                                                .putExtra("name",name))
+                                                                .putExtra("name",lectureName))
                                                         }
                                                     }
                                                 }
@@ -265,7 +267,6 @@ class TiemTableFragment : Fragment() {
                                         if(randNum == color.size){
                                             randNum=0
                                         }
-
                                     }
 
                                 }
@@ -277,12 +278,8 @@ class TiemTableFragment : Fragment() {
 
 
                     }
-
-
                 }
-
             }
-
         }
 
     }

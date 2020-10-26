@@ -47,7 +47,6 @@ class BusAdapter(
         return busList.size
     }
 
-    @RequiresApi(Build.VERSION_CODES.P)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.title.text = busList[position]
         holder.layout.setOnClickListener {
@@ -97,7 +96,6 @@ class BusAdapter(
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.P)
     private fun createToHomeTable(bus: Bus, view: View) {
 
         var titletextview = TextView(mContext)
@@ -125,6 +123,7 @@ class BusAdapter(
             var textview2 = TextView(mContext)
             var textViewParam2 = LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.WRAP_CONTENT,0.8f)
             textview2.layoutParams = textViewParam2
+            textview2.setLineSpacing(MyUtil.Dp2Px(mContext!!,5).toFloat(),MyUtil.Dp2Px(mContext!!,1).toFloat())
             textview2.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14F)
             textview2.text = tohome.value
 
@@ -149,7 +148,9 @@ class BusAdapter(
         var takePlaceTextview2 = TextView(mContext)
         var takePlaceTextviewParam2 = LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.WRAP_CONTENT,0.8f)
         takePlaceTextview2.layoutParams = takePlaceTextviewParam2
+        takePlaceTextview2.setLineSpacing(MyUtil.Dp2Px(mContext!!,5).toFloat(),MyUtil.Dp2Px(mContext!!,1).toFloat())
         takePlaceTextview2.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14F)
+
         takePlaceTextview2.text = bus.toHomeTakePlace
 
         linearLayout2.setPadding(0,0,20,0)
@@ -160,7 +161,6 @@ class BusAdapter(
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.P)
     private fun createToBuTable(bus: Bus, view: View) {
 
         var titletextview = TextView(mContext)
@@ -190,6 +190,7 @@ class BusAdapter(
             var textViewParam2 = LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.WRAP_CONTENT,0.8f)
             textview2.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14F)
             textview2.text = tobu.value
+            textview2.setLineSpacing(MyUtil.Dp2Px(mContext!!,5).toFloat(),MyUtil.Dp2Px(mContext!!,1).toFloat())
             textview2.layoutParams = textViewParam2
 
             linearLayout.setPadding(0,0,20,0)
@@ -214,6 +215,7 @@ class BusAdapter(
         var takePlaceTextviewParam2 = LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.WRAP_CONTENT,0.8f)
         takePlaceTextview2.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14F)
         takePlaceTextview2.text = bus.toBuTakePlace
+        takePlaceTextview2.setLineSpacing(MyUtil.Dp2Px(mContext!!,5).toFloat(),MyUtil.Dp2Px(mContext!!,1).toFloat())
         takePlaceTextview2.layoutParams = takePlaceTextviewParam2
 
         linearLayout2.setPadding(0,0,20,0)

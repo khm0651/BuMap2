@@ -44,7 +44,6 @@ class CalendarFragment : Fragment() {
         else {
             allCalendar = CalendarViewModel.calendarList.value!!
             var cal = GregorianCalendar() // 오늘 날짜
-
             var calendar = GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) , 1, 0, 0, 0);
             year = cal.get(Calendar.YEAR).toString()
             month = (cal.get(Calendar.MONTH)+1).toString()
@@ -113,7 +112,7 @@ class CalendarFragment : Fragment() {
     }
 
     private fun createCalendar(calendar: GregorianCalendar) {
-        var dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1; //해당 월에 시작하는 요일 -1 을 하면 빈칸을 구할 수 있겠죠 ?
+        var dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) -1 ; //해당 월에 시작하는 요일 -1 을 하면 빈칸을 구할 수 있겠죠 ?
         var max = calendar.getActualMaximum(Calendar.DAY_OF_MONTH); // 해당 월에 마지막 요일
         var dayOfPreMonth = calendar.getMaximum(Calendar.DAY_OF_MONTH)
         var dayOfNextMonth = 1
@@ -272,7 +271,7 @@ class CalendarFragment : Fragment() {
         month = it.tag.toString().split(".")[1]
         calendar_bar_month.text = "${month}월"
         calendar_bar_year.text = "${year}년"
-        var calendar = GregorianCalendar(year.toInt(), month.toInt() , 1, 0, 0, 0);
+        var calendar = GregorianCalendar(year.toInt(), month.toInt()-1 , 1, 0, 0, 0);
 
         day = 1.toString()
         nowDate = "${year}.${month}.${day}"

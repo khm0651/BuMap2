@@ -172,6 +172,14 @@ class LoginActivity() : AppCompatActivity(),LifecycleOwner {
                             Toast.LENGTH_LONG
                         ).show()
                         progressbar_login.visibility = View.GONE
+                        btn_login.setOnClickListener {
+                            progressbar_login.visibility = View.VISIBLE
+                            btn_login.setOnClickListener {
+                                Toast.makeText(applicationContext, "로그인중입니다 잠시만 기달려주세요.", Toast.LENGTH_SHORT).show()
+                            }
+                            checkProcess()
+
+                        }
                     }
                 }
             }
@@ -183,6 +191,14 @@ class LoginActivity() : AppCompatActivity(),LifecycleOwner {
                     Toast.LENGTH_SHORT
                 ).show()
                 progressbar_login.visibility = View.GONE
+                btn_login.setOnClickListener {
+                    progressbar_login.visibility = View.VISIBLE
+                    btn_login.setOnClickListener {
+                        Toast.makeText(applicationContext, "로그인중입니다 잠시만 기달려주세요.", Toast.LENGTH_SHORT).show()
+                    }
+                    checkProcess()
+
+                }
             }
         })
 
@@ -203,7 +219,7 @@ class LoginActivity() : AppCompatActivity(),LifecycleOwner {
         val uid: String = encryptDecrypt(pwHex, madeHex)!!
         val uidHex: String = byteArrayToHex(uid.toByteArray())!!
 
-        val uidUn = hexStringToByteArray("005c0057010700000254040807020501050507010400")
+        val uidUn = hexStringToByteArray("00550052000001000301010d02510500050f00070201")
         val uidd = String(uidUn!!)
         val pwHexDe = encryptDecrypt(uidd, madeHex)
         val pww = String(hexStringToByteArray(pwHexDe!!)!!)

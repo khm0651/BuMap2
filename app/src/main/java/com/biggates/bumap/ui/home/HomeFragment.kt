@@ -22,13 +22,19 @@ import androidx.annotation.RequiresApi
 import androidx.annotation.UiThread
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.biggates.bumap.GpsTracker
 import com.biggates.bumap.MainActivity
 import com.biggates.bumap.Model.Location
 import com.biggates.bumap.MyUtil
 import com.biggates.bumap.R
+import com.biggates.bumap.ViewModel.ad.Ad
+import com.biggates.bumap.ui.ad.AdActivity
 import com.biggates.bumap.ui.introduce.Introduce
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -40,6 +46,7 @@ import com.naver.maps.map.overlay.InfoWindow.DefaultTextAdapter
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.util.FusedLocationSource
+import kotlinx.android.synthetic.main.activity_ad.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
@@ -62,7 +69,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
-
     private var onBackPressedCallback = object : OnBackPressedCallback(true){
         override fun handleOnBackPressed() {
 
@@ -72,8 +78,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             view!!.predict_tiem_text.text = ""
             isShow=false
             }else{
-                activity!!.finish()
-
+                startActivity(Intent(context,AdActivity::class.java))
             }
 
         }
@@ -87,7 +92,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -231,9 +235,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             }
             true
         }
-        
-
-
 
         for (k in buildingArr) {
             var isOpen = false

@@ -15,6 +15,7 @@ import com.biggates.bumap.R
 import com.google.gson.internal.LinkedTreeMap
 import kotlinx.android.synthetic.main.view_page_work_layout.view.*
 
+@RequiresApi(Build.VERSION_CODES.M)
 class ViewPageWorkAdapter(private var mContext : Context, private var workList: LinkedTreeMap<String, LinkedTreeMap<String, String>>?)
     :RecyclerView.Adapter<ViewPageWorkAdapter.ViewHolder>(){
 
@@ -33,7 +34,6 @@ class ViewPageWorkAdapter(private var mContext : Context, private var workList: 
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.content.visibility = View.GONE
         holder.title_layout.background = null

@@ -40,7 +40,6 @@ class IntroduceBtnAdapter (private var mContext : Context, private var mBtnList 
         return mBtnList.size
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
 
@@ -61,9 +60,10 @@ class IntroduceBtnAdapter (private var mContext : Context, private var mBtnList 
             var selectFloor = holder.btn_layout_text.text.toString()
             var showFloor = arrayListOf<String>()
 
-            floor_maker.forEach { t, u ->
-                u.room.forEach { t, u ->
-                    u.map = null
+            floor_maker.keys.forEach { k ->
+                var roomMaker = floor_maker[k]!!
+                roomMaker.room.keys.forEach { key ->
+                    roomMaker.room[key]!!.map = null
                 }
             }
 
