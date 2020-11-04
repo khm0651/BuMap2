@@ -31,6 +31,7 @@ import com.biggates.bumap.Model.BtnKeyword
 import com.biggates.bumap.Model.Location
 import com.biggates.bumap.R
 import com.biggates.bumap.ui.introduce.Introduce
+import com.google.android.material.chip.Chip
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -43,6 +44,7 @@ import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.util.FusedLocationSource
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.btn_keyword_main.*
 import kotlinx.android.synthetic.main.btn_keyword_main.view.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
@@ -101,14 +103,25 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         locationSource =
             FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
 
+        val btnKeywordLayout = view.btn_keyword_layout
+        //검색 플로팅 키워드 버튼
         val btnKeywordList = arrayListOf<BtnKeyword>()
         for (title in resources.getStringArray(R.array.keyword_list)){
             btnKeywordList.add(BtnKeyword(title))
         }
 
-        btnKeywordAdapter = BtnKeywordAdapter(btnKeywordList)
-        view.btn_keyword_recyclerview.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL ,false)
-        view.btn_keyword_recyclerview.adapter = btnKeywordAdapter
+        for (keyword in btnKeywordList){
+            val button = Chip(context).apply {
+                text = keyword.title
+                elevation = 10F
+                setChipIconResource(R.drawable.bus)
+            }
+            btnKeywordLayout.addView(button)
+        }
+
+//        btnKeywordAdapter = BtnKeywordAdapter(btnKeywordList)
+//        view.btn_keyword_recyclerview.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL ,false)
+//        view.btn_keyword_recyclerview.adapter = btnKeywordAdapter
 
 
         if(arguments!!.isEmpty){
@@ -252,7 +265,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             }
             true
         }
-        
+
 
 
 

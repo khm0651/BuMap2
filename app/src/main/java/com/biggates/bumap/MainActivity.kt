@@ -16,8 +16,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.biggates.bumap.Adapter.BtnKeywordAdapter
-import com.biggates.bumap.Model.BtnKeyword
 import com.biggates.bumap.ViewModel.bus.BusViewModel
 import com.biggates.bumap.ViewModel.calendar.CalendarViewModel
 import com.biggates.bumap.ViewModel.notice.NoticeViewModel

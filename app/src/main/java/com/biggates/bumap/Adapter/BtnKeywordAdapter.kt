@@ -4,15 +4,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
 import com.biggates.bumap.Model.BtnKeyword
 import com.biggates.bumap.R
+import com.google.android.material.chip.Chip
 
 class BtnKeywordAdapter(private val items: List<BtnKeyword>) :
     RecyclerView.Adapter<BtnKeywordAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.btn_keyword_item_layout, parent, false)
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.btn_keyword_item_layout, parent, false)
         return ViewHolder(view)
     }
 
@@ -24,7 +27,7 @@ class BtnKeywordAdapter(private val items: List<BtnKeyword>) :
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val itemBtn: Button = itemView.findViewById(R.id.item_Button)
+        private val itemBtn: Chip = itemView.findViewById(R.id.item_Button)
 
         fun bind(item: BtnKeyword) {
             itemBtn.text = item.title
