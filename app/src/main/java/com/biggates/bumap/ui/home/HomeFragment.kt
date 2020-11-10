@@ -113,8 +113,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         for (keyword in btnKeywordList){
             val button = Chip(context).apply {
                 text = keyword.title
-                elevation = 10F
+                elevation = 10F //그림자 설정
+                setChipBackgroundColorResource(R.color.white)
                 setChipIconResource(R.drawable.bus)
+                chipIconSize = 50F
+                chipStartPadding = 30F
             }
             btnKeywordLayout.addView(button)
         }
