@@ -33,7 +33,7 @@ import kotlin.Comparator
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-@RequiresApi(Build.VERSION_CODES.N)
+
 class SearchFragment : Fragment() {
 
     private lateinit var search_recyclerView : RecyclerView
@@ -91,7 +91,8 @@ class SearchFragment : Fragment() {
     private fun searchBuilding(input: String) {
 
         arrayList.clear()
-        BuBuilding.buBuilding.value!!.forEach { buildingKey, b ->
+        BuBuilding.buBuilding.value!!.keys.forEach { buildingKey ->
+            var b = BuBuilding.buBuilding.value!![buildingKey]!!
             var location = b.location
             var name = b.name
 
@@ -102,8 +103,10 @@ class SearchFragment : Fragment() {
             }
 
 
-            b.floor.forEach { floorKey, f ->
-                f.roomNumber.forEach { roomKey, r ->
+            b.floor.keys.forEach { floorKey->
+                var f = b.floor[floorKey]!!
+                f.roomNumber.keys.forEach { roomKey ->
+                    var r = f.roomNumber[roomKey]!!
                     var roomName = r.name
                     var roomNum = roomKey
                     if(roomName.contains(input)){

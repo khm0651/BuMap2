@@ -15,9 +15,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".ui.createMarker.CreateMarkerActivity"></activity>
+        <activity
+            android:name=".ui.notice_bumap.NoticeBuMapActivity"
+            android:theme="@style/Theme.Design.Light" />
+        <activity
+            android:name=".ui.ad.AdActivity"
+            android:theme="@style/myDialog" />
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:theme="@style/Theme.Design.Light" />
         <activity
             android:name=".ui.schedule.TimeTableInfoActivity"
-            android:theme="@style/myDialog"></activity>
+            android:theme="@style/myDialog" />
         <activity android:name=".ui.calendar.YearMonthPickerActivity" />
         <activity
             android:name=".ui.calendar.CalendarInfoActivity"
@@ -37,6 +47,9 @@
             </intent-filter>
         </activity>
 
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-2919478410688908~4888569879" />
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="i1dvx0xcaa" />

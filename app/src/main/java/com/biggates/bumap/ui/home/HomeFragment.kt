@@ -5,20 +5,13 @@ import android.content.Context.LOCATION_SERVICE
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.res.Resources
 import android.location.LocationManager
-import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-import android.util.TypedValue
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.annotation.RequiresApi
 import androidx.annotation.UiThread
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -29,7 +22,10 @@ import com.biggates.bumap.GpsTracker
 import com.biggates.bumap.MainActivity
 import com.biggates.bumap.Model.BtnKeyword
 import com.biggates.bumap.Model.Location
+import com.biggates.bumap.MyUtil
 import com.biggates.bumap.R
+import com.biggates.bumap.ui.ad.AdActivity
+import com.biggates.bumap.ui.createMarker.CreateMarkerActivity
 import com.biggates.bumap.ui.introduce.Introduce
 import com.google.android.material.chip.Chip
 import com.google.firebase.database.DataSnapshot
@@ -43,6 +39,7 @@ import com.naver.maps.map.overlay.InfoWindow.DefaultTextAdapter
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.util.FusedLocationSource
+import com.naver.maps.map.util.MarkerIcons
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.btn_keyword_main.*
 import kotlinx.android.synthetic.main.btn_keyword_main.view.*
@@ -56,6 +53,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private var isShowPredictTime = false
     private var isShow = false
     private lateinit var btnKeywordAdapter: BtnKeywordAdapter
+    lateinit var mapFragment : MapFragment
+    var newMarker: Marker? = null
+    var isMarkerLongTouch = false
 
 
     var markerList:HashMap<String, Marker> = HashMap()
@@ -68,7 +68,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
-
     private var onBackPressedCallback = object : OnBackPressedCallback(true){
         override fun handleOnBackPressed() {
 
@@ -78,8 +77,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             view!!.predict_tiem_text.text = ""
             isShow=false
             }else{
-                activity!!.finish()
-
+                startActivity(Intent(context, AdActivity::class.java))
             }
 
         }
@@ -91,7 +89,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -151,10 +148,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
         }
 
-        val mapFragment = fm.findFragmentById(R.id.map) as MapFragment?
+        mapFragment = fm.findFragmentById(R.id.map) as MapFragment?
             ?: MapFragment.newInstance(options).also {
                 fm.beginTransaction().add(R.id.map, it).commit()
             }
+
 
 
         val database = FirebaseDatabase.getInstance()
@@ -195,18 +193,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
     @UiThread
     override fun onMapReady(naverMap: NaverMap) {
-
-        var r: Resources = resources
-        var w = Math.round(
-            TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 20F, r.getDisplayMetrics()
-            )
-        ).toInt()
-        var h = Math.round(
-            TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 30F, r.getDisplayMetrics()
-            )
-        ).toInt()
 
         this.naverMap = naverMap
         naverMap.locationSource = locationSource
@@ -269,9 +255,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             true
         }
 
-
-
-
         for (k in buildingArr) {
             var isOpen = false
             if(!arguments!!.isEmpty){
@@ -298,8 +281,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             marker.tag = k.value.keys.first().toString() + "-" +k.key
             marker.map = naverMap
             marker.onClickListener = listener
-            marker.width=w
-            marker.height=h
+            marker.width= MyUtil.Dp2Px(context, 15)
+            marker.height= MyUtil.Dp2Px(context, 20)
             markerList.set(k.key, marker)
             if(isOpen){
                 infoWindow.open(marker)
@@ -321,6 +304,31 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
         }
 
+        markerCreate.setOnClickListener {
+            val cameraPosition = naverMap.cameraPosition
+            var latlng = LatLng(
+                cameraPosition.target.latitude,
+                cameraPosition.target.longitude
+            )
+            newMarker = Marker()
+            newMarker!!.position = latlng
+            newMarker!!.width= MyUtil.Dp2Px(context, 15)
+            newMarker!!.height= MyUtil.Dp2Px(context, 20)
+            newMarker!!.map = naverMap
+            newMarker!!.icon = MarkerIcons.BLACK
+            naverMap.addOnCameraChangeListener (markerCreateListener)
+            markerCreateAllow.visibility = View.VISIBLE
+
+        }
+
+        markerCreateAllow.setOnClickListener {
+            startActivityForResult(Intent(context,CreateMarkerActivity::class.java)
+                .putExtra("lat",newMarker!!.position.latitude.toString())
+                .putExtra("lng",newMarker!!.position.longitude.toString()),CREATE_MARKER_REQUEST_CODE)
+        }
+
+
+
         markerBtn.setOnClickListener{ v: View->
             if(!markerFlag){
                 for(k in markerList){
@@ -341,10 +349,14 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         }
         naverMap.setOnMapClickListener { point, coord ->
             Log.d("coord", "${coord.latitude.toFloat()}, ${coord.longitude.toFloat()}")
+
         }
 
 
     }
+
+
+
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -520,6 +532,30 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                         return
                     }
                 }
+
+            CREATE_MARKER_REQUEST_CODE -> {
+                if(resultCode == 200){
+                    Toast.makeText(context,"등록 완료",Toast.LENGTH_SHORT).show()
+                    newMarker = null
+                    naverMap.removeOnCameraChangeListener(markerCreateListener)
+                    markerCreateAllow.visibility = View.GONE
+                }
+            }
+
+        }
+    }
+
+
+
+
+    private var markerCreateListener = NaverMap.OnCameraChangeListener { reason, animated ->
+        if(reason == CameraUpdate.REASON_GESTURE){
+            val cameraPosition = naverMap.cameraPosition
+            var latlng = LatLng(
+                cameraPosition.target.latitude,
+                cameraPosition.target.longitude
+            )
+            newMarker!!.position = latlng
         }
     }
 
@@ -527,6 +563,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
         private const val GPS_ENABLE_REQUEST_CODE = 2001
         private const val PERMISSIONS_REQUEST_CODE = 100
+        private const val CREATE_MARKER_REQUEST_CODE = 300
     }
 
 

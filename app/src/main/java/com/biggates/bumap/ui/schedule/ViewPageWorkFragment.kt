@@ -15,7 +15,7 @@ import com.biggates.bumap.ViewModel.schedule.LectureScheduleViewModel
 import com.google.gson.internal.LinkedTreeMap
 import kotlinx.android.synthetic.main.fragment_view_page_work.view.*
 
-
+@RequiresApi(Build.VERSION_CODES.M)
 class ViewPageWorkFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var title: String? = null
@@ -27,7 +27,7 @@ class ViewPageWorkFragment : Fragment() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,9 +42,12 @@ class ViewPageWorkFragment : Fragment() {
         var lectureSchedule = LectureScheduleViewModel.lectureSchedule.value!!.getSchedule()
 
         var lectureWorkSchedule : LinkedTreeMap<String, LinkedTreeMap<String, String>>? = null
-        lectureSchedule!!.forEach { user, lecture ->
-            lectureWorkSchedule = (((lecture as LinkedTreeMap<String, Any>)["lecture"] as LinkedTreeMap<String, Any>)[title] as LinkedTreeMap<String, Any>)["과제"] as LinkedTreeMap<String, LinkedTreeMap<String, String>>?
+        lectureSchedule!!.keys.forEach { user ->
+            lectureWorkSchedule = (((lectureSchedule[user] as LinkedTreeMap<String, Any>)["lecture"] as LinkedTreeMap<String, Any>)[title] as LinkedTreeMap<String, Any>)["과제"] as LinkedTreeMap<String, LinkedTreeMap<String, String>>?
         }
+        
+        if(lectureWorkSchedule.isNullOrEmpty()) view.view_page_work_empty.visibility = View.VISIBLE
+        else view.view_page_work_empty.visibility = View.GONE
 
         var viewPageWorkAdapter = ViewPageWorkAdapter(context!!,lectureWorkSchedule)
         recyclerView.adapter = viewPageWorkAdapter

@@ -14,7 +14,7 @@ import com.biggates.bumap.ViewModel.schedule.LectureScheduleViewModel
 import com.google.gson.internal.LinkedTreeMap
 import kotlinx.android.synthetic.main.view_page_notice.view.*
 
-@RequiresApi(Build.VERSION_CODES.N)
+
 class ViewPageNoticeFragment : Fragment() {
 
     private var title: String? = null
@@ -38,12 +38,17 @@ class ViewPageNoticeFragment : Fragment() {
         var linearLayoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = linearLayoutManager
 
-        var lectureSchedule = LectureScheduleViewModel.lectureSchedule.value!!.getSchedule()
+        var lectureSchedule = LectureScheduleViewModel.lectureSchedule.value!!.getSchedule()!!
 
         var lectureNoticeSchedule : LinkedTreeMap<String, LinkedTreeMap<String, String>>? = null
-        lectureSchedule!!.forEach { user, lecture ->
-            lectureNoticeSchedule = (((lecture as LinkedTreeMap<String, Any>)["lecture"] as LinkedTreeMap<String, Any>)[title] as LinkedTreeMap<String, Any>)["공지사항"] as LinkedTreeMap<String, LinkedTreeMap<String, String>>?
+        lectureSchedule.keys.forEach { user ->
+            lectureNoticeSchedule = (((lectureSchedule[user] as LinkedTreeMap<String, Any>)["lecture"] as LinkedTreeMap<String, Any>)[title] as LinkedTreeMap<String, Any>)["공지사항"] as LinkedTreeMap<String, LinkedTreeMap<String, String>>?
+
         }
+
+
+        if(lectureNoticeSchedule!!.isNullOrEmpty()) view.view_page_notice_empty.visibility = View.VISIBLE
+        else view.view_page_notice_empty.visibility = View.GONE
 
         var viewPageNoticeAdapter = ViewPageNoticeAdapter(context!!,lectureNoticeSchedule)
         recyclerView.adapter = viewPageNoticeAdapter

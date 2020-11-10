@@ -40,7 +40,6 @@ class IntroduceBtnAdapter (private var mContext : Context, private var mBtnList 
         return mBtnList.size
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
 
@@ -61,9 +60,10 @@ class IntroduceBtnAdapter (private var mContext : Context, private var mBtnList 
             var selectFloor = holder.btn_layout_text.text.toString()
             var showFloor = arrayListOf<String>()
 
-            floor_maker.forEach { t, u ->
-                u.room.forEach { t, u ->
-                    u.map = null
+            floor_maker.keys.forEach { k ->
+                var roomMaker = floor_maker[k]!!
+                roomMaker.room.keys.forEach { key ->
+                    roomMaker.room[key]!!.map = null
                 }
             }
 
@@ -85,6 +85,16 @@ class IntroduceBtnAdapter (private var mContext : Context, private var mBtnList 
 
             introduce.isFirst=false
             mapFragment.getMapAsync(introduce)
+            showFloor.sortWith(object : Comparator<String>{
+                override fun compare(o1: String, o2: String): Int {
+                    var a = o1.split("+")[1]
+                    var b = o2.split("+")[1]
+                    if(a.contains(Regex.fromLiteral("[a-zA-Z]"))) return -1
+                    else if(b.contains(Regex.fromLiteral("[a-zA-Z]"))) return 1
+                    return a.compareTo(b)
+                }
+
+            })
             var introduceAdapter = IntroduceAdapter(mContext, showFloor, floor_maker,naverMap,introduce,mapFragment)
             recyclerView.adapter = introduceAdapter
             introduceAdapter.notifyDataSetChanged()

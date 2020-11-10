@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.view_page_check_video_layout.view.presentI
 import java.util.*
 import kotlin.collections.ArrayList
 
+@RequiresApi(Build.VERSION_CODES.M)
 class ViewPageCheckAdapter(private var mContext: Context, private var checkList: ArrayList<LinkedTreeMap<String, Any>>)
     :RecyclerView.Adapter<ViewPageCheckAdapter.ViewHolder>(){
 
@@ -43,12 +44,21 @@ class ViewPageCheckAdapter(private var mContext: Context, private var checkList:
         return ViewHolder(view)
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.detail_view_page_check.removeAllViews()
+        holder.detail_view_page_check.visibility = View.GONE
+        holder.wrap_info.background = null
+        holder.wrap_info.setPadding(0,0,0,0)
+
         var key = checkList[position].keys.first()
-        var title = key.split(" ")[0]
-        var date = key.substring(key.indexOf(" ")+1,key.length)
+        if(key.indexOf("주")-1 >=0 && key[key.indexOf("주")-1].equals(' ')) key = key.replaceFirst(" ","")
+        var keySplit = key.split("~")
+        var endTime = keySplit[1].trim()
+        var p = keySplit[0].trim()
+        var title = "${p.substring(0,p.lastIndexOf(" ")).trim()} "
+        var startTime = p.substring(p.lastIndexOf(" "),p.length).trim()
+        var date = "${startTime} ~ ${endTime}"
         var totalVideoNum = 0
         var finishVideoNum = 0
         var notFinishVideoNum = 0
@@ -56,10 +66,12 @@ class ViewPageCheckAdapter(private var mContext: Context, private var checkList:
         var attendanceLectureNum = 0
         var absentLectureNum = 0
         var latenessLectureNum = 0
-        checkList[position].forEach { period, v ->
+        checkList[position].keys.forEach { period ->
+            var v = checkList[position][period] as LinkedTreeMap<String,LinkedTreeMap<String,String>>
             var videoViewArr = arrayListOf<View>()
             var checkViewArr = arrayListOf<View>()
-            (v as LinkedTreeMap<String,LinkedTreeMap<String,String>>).forEach { checkOrVideo, info  ->
+            v.keys.forEach { checkOrVideo ->
+                var info = v[checkOrVideo]!!
                 if(checkOrVideo.startsWith("video")){
                     totalVideoNum++
                     if(info["state"] == "학습안함") notFinishVideoNum++
@@ -106,7 +118,6 @@ class ViewPageCheckAdapter(private var mContext: Context, private var checkList:
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     private fun createCheckLayout(info: LinkedTreeMap<String, String>) : View {
         var checkLayout = LayoutInflater.from(mContext).inflate(R.layout.view_page_check_state_layout,null)
         var title = "${info["title"]} ( ${info["state"]} )"
@@ -129,19 +140,57 @@ class ViewPageCheckAdapter(private var mContext: Context, private var checkList:
         videoLayout.time_video.text = info["state"]
         var time = info["state"].toString()
         if(time != "학습안함"){
-            var right = time.substring(time.lastIndexOf("/")+1,time.length).trim()
+            val right = time.substring(time.lastIndexOf("/")+1,time.length).trim()
             var left = time.substring(0,time.indexOf("/")).trim()
             var r_right = right.replace(" ","")
             var r_left = left.replace(" ","")
+            
             var rc = Calendar.getInstance()
-            rc.set(Calendar.MINUTE,r_right.substring(0,r_right.indexOf("분")-1).toInt())
-            if(r_right.contains("초")) rc.set(Calendar.SECOND,r_right.substring(r_right.indexOf("분")+1,r_right.indexOf("초")).toInt())
+            var rc_m = ""
+            var rc_s = ""
+            if(r_right.contains("분") && r_right.contains("초")){
+                rc_m = r_right.substring(0,r_right.indexOf("분")).trim()
+                rc_s = r_right.substring(r_right.indexOf("분")+1,r_right.indexOf("초")).trim()
+                rc.set(Calendar.MINUTE,rc_m.toInt())
+                rc.set(Calendar.SECOND,rc_s.toInt())
+            }else{
+                if(r_right.contains("초")) {
+                    rc_s = r_right.substring(r_right.indexOf("분")+1,r_right.indexOf("초")).trim()
+                    rc.set(Calendar.SECOND,rc_s.toInt())
+                }
+                else rc.set(Calendar.SECOND,0)
+
+                if(r_right.contains("분")) {
+                    rc_m = r_right.substring(0,r_right.indexOf("분")).trim()
+                    rc.set(Calendar.MINUTE,rc_m.toInt())
+                }
+                else rc.set(Calendar.MINUTE,0)
+            }
 
             var lc = Calendar.getInstance()
-            lc.set(Calendar.MINUTE,r_left.substring(0,r_left.indexOf("분")-1).toInt())
-            if(r_left.contains("초")) lc.set(Calendar.SECOND,r_left.substring(r_left.indexOf("분")+1,r_left.indexOf("초")).toInt())
+            var lc_m = ""
+            var lc_s = ""
 
-            if(lc.compareTo(rc) <1) videoLayout.presentImg.setImageResource(R.drawable.cancel)
+            if(r_left.contains("분") && r_left.contains("초")){
+                lc_m = r_left.substring(0,r_left.indexOf("분")).trim()
+                lc_s = r_left.substring(r_left.indexOf("분")+1,r_left.indexOf("초")).trim()
+                lc.set(Calendar.MINUTE,lc_m.toInt())
+                lc.set(Calendar.SECOND,lc_s.toInt())
+            }else{
+                if(r_left.contains("초")) {
+                    lc_s = r_left.substring(r_left.indexOf("분")+1,r_left.indexOf("초")).trim()
+                    lc.set(Calendar.SECOND,lc_s.toInt())
+                }
+                else lc.set(Calendar.SECOND,0)
+
+                if(r_left.contains("분")) {
+                    lc_m = r_left.substring(0,r_left.indexOf("분")).trim()
+                    lc.set(Calendar.MINUTE,lc_m.toInt())
+                }
+                else lc.set(Calendar.MINUTE,0)
+            }
+
+            if(lc.compareTo(rc) <0) videoLayout.presentImg.setImageResource(R.drawable.cancel)
             else videoLayout.presentImg.setImageResource(R.drawable.check)
 
         }else{

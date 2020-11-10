@@ -14,6 +14,7 @@ import com.biggates.bumap.R
 import com.google.gson.internal.LinkedTreeMap
 import kotlinx.android.synthetic.main.view_page_notice_layout.view.*
 
+@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class ViewPageNoticeAdapter(private var mContext: Context, private var noticeList: LinkedTreeMap<String, LinkedTreeMap<String, String>>?)
     : RecyclerView.Adapter<ViewPageNoticeAdapter.ViewHolder>() {
 
@@ -34,14 +35,11 @@ class ViewPageNoticeAdapter(private var mContext: Context, private var noticeLis
         else return noticeList!!.size
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var r: Resources = mContext.resources
-        var bottomDP = Math.round(
-            TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 10F, r.getDisplayMetrics()
-            )
-        ).toInt()
+        holder.content.visibility = View.GONE
+        holder.title.background = null
+        holder.title.setPadding(0,0,0,0)
+
         holder.title.text = noticeList!!.get(position.toString())!!["title"]
         holder.time.text = (noticeList!!.get(position.toString())!!["info"] as LinkedTreeMap<String, String>)["작성일"]
         holder.content.text = noticeList!!.get(position.toString())!!["content"]
@@ -49,7 +47,7 @@ class ViewPageNoticeAdapter(private var mContext: Context, private var noticeLis
             if(holder.content.visibility == View.GONE) {
                 holder.content.visibility = View.VISIBLE
                 holder.title.background = mContext.resources.getDrawable(R.drawable.bottom_solid_black,null)
-                holder.title.setPadding(0,0,0,bottomDP)
+                holder.title.setPadding(0,0,0,10)
             }
             else {
                 holder.content.visibility = View.GONE
