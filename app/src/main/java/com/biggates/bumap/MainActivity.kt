@@ -30,9 +30,12 @@ import com.biggates.bumap.ViewModel.calendar.CalendarViewModel
 import com.biggates.bumap.ViewModel.notice.NoticeViewModel
 import com.biggates.bumap.ViewModel.building.BuBuilding
 import com.biggates.bumap.ViewModel.loginInfo.LoginInfo
+import com.biggates.bumap.ViewModel.noticeBuMap.NoticeBuMap
 import com.biggates.bumap.ViewModel.schedule.LectureScheduleViewModel
+import com.biggates.bumap.ViewModel.shuttleBus.ShuttleBus
 import com.biggates.bumap.ui.ad.AdActivity
 import com.biggates.bumap.ui.bus.BusFragment
+import com.biggates.bumap.ui.notice_bumap.NoticeBuMapActivity
 import com.biggates.bumap.ui.schedule.ScheduleFragment
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.formats.NativeAdOptions
@@ -149,6 +152,10 @@ class MainActivity : AppCompatActivity() {
             buLogin(loginParam,editor)
         }
 
+        notice_BuMap.setOnClickListener {
+            startActivity(Intent(applicationContext,NoticeBuMapActivity::class.java))
+        }
+
         LoginInfo.autoLogin.observe(this@MainActivity, Observer {
             if(it){
                 var id = pref.getString("id","null")!!
@@ -162,9 +169,14 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        NoticeBuMap.setContext(applicationContext)
+        NoticeBuMap.loadBuNotice()
+
         NoticeViewModel.setContext(applicationContext)
         NoticeViewModel.loadNoitce()
 
+        ShuttleBus.setContext(applicationContext)
+        ShuttleBus.loadShuttleBus()
 
         if(BusViewModel.busList.value.isNullOrEmpty()){
             BusViewModel.setContext(applicationContext)

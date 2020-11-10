@@ -10,7 +10,7 @@ object Ad {
     fun init(context : Context){
         adView = AdView(context)
         adView.adSize = AdSize.MEDIUM_RECTANGLE
-        adView.adUnitId = "ca-app-pub-3940256099942544/6300978111"
+        adView.adUnitId = "ca-app-pub-2919478410688908/5843075810"
         val adRequest = AdRequest.Builder().build()
         adView.loadAd(adRequest)
     }

@@ -23,6 +23,18 @@
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/activity_main_drawer">
 
+        <TextView
+            android:id="@+id/notice_BuMap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="공지사항"
+            android:layout_gravity="left | bottom"
+            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/marker_solid"
+            android:padding="7dp"
+            />
+
         <ImageView
             android:id="@+id/logout"
             android:layout_width="30dp"
