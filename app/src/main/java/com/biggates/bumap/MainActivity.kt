@@ -33,28 +33,22 @@ import com.biggates.bumap.ViewModel.loginInfo.LoginInfo
 import com.biggates.bumap.ViewModel.noticeBuMap.NoticeBuMap
 import com.biggates.bumap.ViewModel.schedule.LectureScheduleViewModel
 import com.biggates.bumap.ViewModel.shuttleBus.ShuttleBus
-import com.biggates.bumap.ui.ad.AdActivity
 import com.biggates.bumap.ui.bus.BusFragment
 import com.biggates.bumap.ui.notice_bumap.NoticeBuMapActivity
 import com.biggates.bumap.ui.schedule.ScheduleFragment
 import com.google.android.gms.ads.*
-import com.google.android.gms.ads.formats.NativeAdOptions
-import com.google.android.gms.ads.formats.UnifiedNativeAd
 import com.google.android.material.navigation.NavigationView
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.AppUpdateType.IMMEDIATE
-import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.FirebaseDatabase
-import kotlinx.android.synthetic.main.activity_ad.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_bus.*
 import kotlinx.android.synthetic.main.fragment_schedule.*
-import kotlinx.android.synthetic.main.nav_header_main.*
 import kotlinx.android.synthetic.main.nav_header_main.view.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -72,6 +66,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
@@ -130,7 +125,6 @@ class MainActivity : AppCompatActivity() {
             headerView.name_hedaer.text = ""
             Toast.makeText(applicationContext,"로그아웃",Toast.LENGTH_SHORT).show()
         }
-
         search_text.setOnClickListener {
             navController.navigate(R.id.action_nav_home_to_searchFragment)
             search_edit.isEnabled = true

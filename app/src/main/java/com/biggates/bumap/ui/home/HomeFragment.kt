@@ -16,14 +16,18 @@ import androidx.annotation.UiThread
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.biggates.bumap.Adapter.BtnKeywordAdapter
 import com.biggates.bumap.GpsTracker
 import com.biggates.bumap.MainActivity
+import com.biggates.bumap.Model.BtnKeyword
 import com.biggates.bumap.Model.Location
 import com.biggates.bumap.MyUtil
 import com.biggates.bumap.R
 import com.biggates.bumap.ui.ad.AdActivity
 import com.biggates.bumap.ui.createMarker.CreateMarkerActivity
 import com.biggates.bumap.ui.introduce.Introduce
+import com.google.android.material.chip.Chip
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -37,6 +41,8 @@ import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.util.FusedLocationSource
 import com.naver.maps.map.util.MarkerIcons
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.btn_keyword_main.*
+import kotlinx.android.synthetic.main.btn_keyword_main.view.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 
@@ -46,6 +52,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private lateinit var naverMap: NaverMap
     private var isShowPredictTime = false
     private var isShow = false
+    private lateinit var btnKeywordAdapter: BtnKeywordAdapter
     lateinit var mapFragment : MapFragment
     var newMarker: Marker? = null
     var isMarkerLongTouch = false
@@ -76,25 +83,46 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         }
 
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requireActivity().getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback)
 
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         val view = inflater.inflate(R.layout.fragment_home, container, false);
         val fm = childFragmentManager
         var options = NaverMapOptions()
         locationSource =
             FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
+
+        val btnKeywordLayout = view.btn_keyword_layout
+        //검색 플로팅 키워드 버튼
+        val btnKeywordList = arrayListOf<BtnKeyword>()
+        for (title in resources.getStringArray(R.array.keyword_list)){
+            btnKeywordList.add(BtnKeyword(title))
+        }
+
+        for (keyword in btnKeywordList){
+            val button = Chip(context).apply {
+                text = keyword.title
+                elevation = 10F //그림자 설정
+                setChipBackgroundColorResource(R.color.white)
+                setChipIconResource(R.drawable.bus)
+                chipIconSize = 50F
+                chipStartPadding = 30F
+            }
+            btnKeywordLayout.addView(button)
+        }
+
+//        btnKeywordAdapter = BtnKeywordAdapter(btnKeywordList)
+//        view.btn_keyword_recyclerview.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL ,false)
+//        view.btn_keyword_recyclerview.adapter = btnKeywordAdapter
+
 
         if(arguments!!.isEmpty){
             options = NaverMapOptions()
@@ -162,8 +190,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
 
     }
-
-
 
     @UiThread
     override fun onMapReady(naverMap: NaverMap) {

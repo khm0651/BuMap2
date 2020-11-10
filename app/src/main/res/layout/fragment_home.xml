@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.HomeFragment"
-    >
+    tools:context=".ui.home.HomeFragment">
 
     <FrameLayout
         android:id="@+id/map"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
     </FrameLayout>
 
@@ -22,11 +18,10 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@drawable/home_fragment_predict_time"
         android:paddingLeft="50dp"
-        android:paddingRight="10dp"
         android:paddingTop="10dp"
+        android:paddingRight="10dp"
         android:paddingBottom="10dp"
-        android:visibility="gone"
-        >
+        android:visibility="gone">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -38,9 +33,9 @@
                 android:id="@+id/predict_tiem_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:text="도착지까지 예상 소요시간 : 5~7분"
-                android:textSize="15dp"
-                android:layout_centerInParent="true"/>
+                android:textSize="15dp" />
 
         </RelativeLayout>
 
@@ -48,14 +43,20 @@
             android:id="@+id/predict_tiem_close"
             android:layout_width="25dp"
             android:layout_height="25dp"
+            android:layout_alignParentRight="true"
             android:text="X"
             android:textColor="@android:color/black"
             android:textSize="18dp"
-            android:textStyle="bold"
-            android:layout_alignParentRight="true"/>
+            android:textStyle="bold" />
 
 
     </RelativeLayout>
+
+    <include
+        layout="@layout/btn_keyword_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="65dp" />
 
     <RelativeLayout
         android:id="@+id/markerCreateAllow"
@@ -66,8 +67,7 @@
         android:layout_marginRight="20dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/marker_solid"
-        android:visibility="gone"
-        >
+        android:visibility="gone">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -105,8 +105,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/marker_solid"
-    >
+        android:background="@drawable/marker_solid">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -137,51 +136,44 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/markerBtn"
         android:layout_width="55dp"
         android:layout_height="55dp"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="35dp"
+        android:layout_alignParentBottom="true"
         android:layout_marginRight="20dp"
+        android:layout_marginBottom="35dp"
         android:background="@drawable/marker_solid"
-        android:id="@+id/markerBtn"
-        >
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            >
+            android:layout_centerInParent="true">
 
             <ImageView
+                android:id="@+id/markerImg"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:id="@+id/markerImg"
-                android:src="@drawable/markeron"
                 android:layout_centerHorizontal="true"
-                />
+                android:src="@drawable/markeron" />
 
             <TextView
                 android:id="@+id/markerText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/markerImg"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
                 android:text="ON"
                 android:textSize="8dp"
-                android:textStyle="bold"
-                android:layout_marginTop="5dp"
-                android:layout_centerHorizontal="true"
-                />
-
+                android:textStyle="bold" />
 
 
         </RelativeLayout>
 
 
-
     </RelativeLayout>
-
-
 
 
 </RelativeLayout>
