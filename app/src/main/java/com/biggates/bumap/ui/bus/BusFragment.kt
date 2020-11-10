@@ -31,35 +31,12 @@ class BusFragment : Fragment() {
     var isSearchRecyclerViewScroll = 0
     var searchBusTitleList : ArrayList<String> = arrayListOf()
     var isKeyboardShowing = false
-    var globalListener = ViewTreeObserver.OnGlobalLayoutListener {
-        var r = Rect();
-        view!!.getWindowVisibleDisplayFrame(r);
-        var screenHeight = view!!.getRootView().getHeight();
 
-        // r.bottom is the position above soft keypad or device button.
-        // if keypad is shown, the r.bottom is smaller than that before.
-        var keypadHeight = screenHeight - r.bottom;
-
-
-        if (keypadHeight > screenHeight * 0.15) { // 0.15 ratio is perhaps enough to determine keypad height.
-            // keyboard is opened
-            if (!isKeyboardShowing) {
-                isKeyboardShowing = true
-            }
-        } else {
-            // keyboard is closed
-            if (isKeyboardShowing) {
-                isKeyboardShowing = false
-                view!!.search_edit_bus.clearFocus()
-                view!!.search_edit_bus.text.clear()
-            }
-        }
-    }
     lateinit var imm:InputMethodManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requireActivity().getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
+        //requireActivity().getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
     }
 
     override fun onCreateView(
@@ -99,7 +76,33 @@ class BusFragment : Fragment() {
                 var busSearchAdapter = BusAdapter(context!!,searchBusTitleList, view,imm)
                 searchRecyclerView.adapter = busSearchAdapter
 
-                view.getViewTreeObserver().addOnGlobalLayoutListener(globalListener)
+                view.getViewTreeObserver().addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+
+                    override fun onGlobalLayout() {
+                        var r = Rect();
+                        view!!.getWindowVisibleDisplayFrame(r);
+                        var screenHeight = view!!.getRootView().getHeight();
+
+                        // r.bottom is the position above soft keypad or device button.
+                        // if keypad is shown, the r.bottom is smaller than that before.
+                        var keypadHeight = screenHeight - r.bottom;
+
+
+                        if (keypadHeight > screenHeight * 0.15) { // 0.15 ratio is perhaps enough to determine keypad height.
+                            // keyboard is opened
+                            if (!isKeyboardShowing) {
+                                isKeyboardShowing = true
+                            }
+                        } else {
+                            // keyboard is closed
+                            if (isKeyboardShowing) {
+                                isKeyboardShowing = false
+                                view!!.search_edit_bus.clearFocus()
+                                view!!.search_edit_bus.text.clear()
+                            }
+                        }
+                    }
+                })
 
                 view.search_edit_bus.addTextChangedListener(object : TextWatcher{
                     override fun afterTextChanged(s: Editable?) {
@@ -186,18 +189,18 @@ class BusFragment : Fragment() {
     }
 
 
-    private fun moveFromSearchToHome() {
-        findNavController().navigate(R.id.action_busFragment_to_nav_home)
-        (activity as MainActivity).app_bar_layout_main.visibility = View.VISIBLE
-    }
-
-    private var onBackPressedCallback = object : OnBackPressedCallback(true){
-        override fun handleOnBackPressed() {
-            moveFromSearchToHome()
-            view!!.getViewTreeObserver().removeOnGlobalLayoutListener(globalListener)
-        }
-
-    }
+//    private fun moveFromBusToHome() {
+//        findNavController().navigate(R.id.action_busFragment_to_nav_home)
+//        (activity as MainActivity).app_bar_layout_main.visibility = View.VISIBLE
+//    }
+//
+//    private var onBackPressedCallback = object : OnBackPressedCallback(true){
+//        override fun handleOnBackPressed() {
+//            moveFromBusToHome()
+//            view!!.getViewTreeObserver().removeOnGlobalLayoutListener(globalListener)
+//        }
+//
+//    }
 
 
 }

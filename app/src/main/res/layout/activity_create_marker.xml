@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.createMarker.CreateMarkerActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        android:layout_above="@+id/wrapper_login"
+        android:layout_marginBottom="150dp"
+        >
+
+        <TextView
+            android:id="@+id/category_cafe"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="카페"
+            android:layout_weight="0.3"
+            android:gravity="center"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/marker_solid"
+            />
+
+        <TextView
+            android:id="@+id/category_beer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="술집"
+            android:layout_weight="0.4"
+            android:gravity="center"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/marker_solid"
+            />
+
+        <TextView
+            android:id="@+id/category_food"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="음식집"
+            android:layout_weight="0.3"
+            android:gravity="center"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/marker_solid"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        android:layout_above="@+id/wrapper_login"
+        android:layout_marginBottom="100dp"
+        >
+
+        <TextView
+            android:id="@+id/category_sing"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="노래방"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/marker_solid"
+            />
+
+        <TextView
+            android:id="@+id/category_convenienceStore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="편의점"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/marker_solid"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/wrapper_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.2"
+                android:layout_height="match_parent"
+                android:text="장소명"
+                android:textSize="12dp"
+                android:textStyle="bold"
+                android:gravity="center"
+                />
+
+            <EditText
+                android:id="@+id/place_edit"
+                android:layout_width="0dp"
+                android:layout_weight="0.75"
+                android:layout_height="match_parent"
+                android:hint="장소명을 입력해주세요"
+                android:text=""
+                android:textSize="12dp"
+                android:paddingLeft="10dp"
+                />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:layout_marginTop="10dp"
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.2"
+                android:layout_height="match_parent"
+                android:text="Lat"
+                android:textSize="12dp"
+                android:textStyle="bold"
+                android:gravity="center"
+                />
+
+            <EditText
+                android:id="@+id/lat_edit"
+                android:layout_width="0dp"
+                android:layout_weight="0.75"
+                android:layout_height="match_parent"
+                android:hint="좌표를 입력해주세요"
+                android:textSize="12dp"
+                android:paddingLeft="10dp"
+                android:text=""
+                android:enabled="false"
+                />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:layout_marginTop="10dp"
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.2"
+                android:layout_height="match_parent"
+                android:text="Lng"
+                android:textSize="12dp"
+                android:textStyle="bold"
+                android:gravity="center"
+                />
+
+            <EditText
+                android:id="@+id/lng_edit"
+                android:layout_width="0dp"
+                android:layout_weight="0.75"
+                android:layout_height="match_parent"
+                android:hint="좌표를 입력해주세요"
+                android:textSize="12dp"
+                android:paddingLeft="10dp"
+                android:text=""
+                android:enabled="false"
+                />
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/btn_ok"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:text="확인"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginRight="50dp"
+            android:layout_marginLeft="50dp"
+            android:background="@drawable/btn_all_solid"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>

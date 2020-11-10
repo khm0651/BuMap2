@@ -219,11 +219,6 @@ class LoginActivity() : AppCompatActivity(),LifecycleOwner {
         val uid: String = encryptDecrypt(pwHex, madeHex)!!
         val uidHex: String = byteArrayToHex(uid.toByteArray())!!
 
-        val uidUn = hexStringToByteArray("00550052000001000301010d02510500050f00070201")
-        val uidd = String(uidUn!!)
-        val pwHexDe = encryptDecrypt(uidd, madeHex)
-        val pww = String(hexStringToByteArray(pwHexDe!!)!!)
-
         map["name"] = name.substring(0, name.indexOf("님"))
         map["id"] = id
         map["pw"] = hashPw

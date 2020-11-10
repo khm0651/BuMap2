@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    tools:context=".ui.bus.ShuttleBusFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+
+            <TextView
+                android:id="@+id/shuttle_time_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="셔틀버스 시간표"
+                android:textColor="@android:color/black"
+                android:textSize="16dp"
+                />
+
+            <LinearLayout
+                android:id="@+id/shuttle_time_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/shuttle_time_title"
+                android:orientation="vertical"
+                android:paddingBottom="5dp"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="1"
+                    >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"
+                        android:text=""
+                        />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:text="오전 (두정역→학교)"
+                        android:gravity="center"
+                        android:textSize="12dp"
+                        />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:text="오후 (학교→천안역)"
+                        android:gravity="center"
+                        android:textSize="12dp"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="1"
+                    android:layout_marginTop="5dp"
+                    >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"
+                        android:text="월 ~ 목"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textSize="12dp"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="첫차 : 07:50"
+                            android:gravity="center"
+                            android:textSize="12dp"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="막차 : 11:30"
+                            android:gravity="center"
+                            android:textSize="12dp"
+                            android:layout_marginTop="5dp"
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="첫차 : 13:30"
+                            android:gravity="center"
+                            android:textSize="12dp"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="막차 : 18:00"
+                            android:gravity="center"
+                            android:textSize="12dp"
+                            android:layout_marginTop="5dp"
+                            />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="1"
+                    android:layout_marginTop="15dp"
+                    >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"
+                        android:text="금"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textSize="12dp"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="첫차 : 08:00"
+                            android:gravity="center"
+                            android:textSize="12dp"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="막차 : 11:30"
+                            android:gravity="center"
+                            android:textSize="12dp"
+                            android:layout_marginTop="5dp"
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="첫차 : 13:30"
+                            android:gravity="center"
+                            android:textSize="12dp"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="막차 : 18:00"
+                            android:gravity="center"
+                            android:textSize="12dp"
+                            android:layout_marginTop="5dp"
+                            />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/shuttle_period"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="운행기간 : 학기중 (계절학기 별도 운행)"
+                android:textColor="@android:color/black"
+                android:textSize="12dp"
+                android:layout_below="@id/shuttle_time_content"
+                android:layout_marginTop="10dp"
+                />
+
+            <TextView
+                android:id="@+id/shuttle_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="요금 : 500 원"
+                android:textColor="@android:color/black"
+                android:textSize="12dp"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/shuttle_period"
+                />
+
+            <TextView
+                android:id="@+id/shuttle_suttle_tiket"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="승차권 구입 : 진리관 지하1층 편의점"
+                android:textColor="@android:color/black"
+                android:textSize="12dp"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/shuttle_price"
+                />
+
+            <TextView
+                android:id="@+id/shuttle_take_place"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="승차장 위치"
+                android:textColor="@android:color/black"
+                android:textSize="16dp"
+                android:layout_below="@+id/shuttle_suttle_tiket"
+                android:layout_marginTop="25dp"
+                />
+
+            <LinearLayout
+                android:id="@+id/take_place_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/shuttle_take_place"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12dp"
+                    android:textColor="@android:color/black"
+                    android:layout_marginTop="5dp"
+                    android:text="학교 : 백석대학교 운동장 옆"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12dp"
+                    android:textColor="@android:color/black"
+                    android:layout_marginTop="5dp"
+                    android:text="두정역 : 두정역 건너편 불가마건강사우나 주차장 앞"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12dp"
+                    android:textColor="@android:color/black"
+                    android:layout_marginTop="5dp"
+                    android:text="천안역 : 역전앞 버스회차로 [오후만 운행합니다.]"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12dp"
+                    android:textColor="@android:color/black"
+                    android:layout_marginTop="5dp"
+                    android:text="터미널 : 학화호도과자 앞 [오후만 운행합니다.]"
+                    />
+
+            </LinearLayout>
+
+
+
+            <TextView
+                android:id="@+id/shuttle_notice_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="셔틀버스 공지"
+                android:textColor="@android:color/black"
+                android:textSize="16dp"
+                android:layout_below="@+id/take_place_content"
+                android:layout_marginTop="25dp"
+
+                />
+
+            <TextView
+                android:id="@+id/shuttle_notice_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="셔틀버스를 이용하는 학생들의 요청에 의해 이번 학기부터 아래와 같이 셔틀버스 시간별 배차를 실시합니다.\n\n도로 사정이나 교통체증 등으로 정시배차가 어려운 경우도 있으니 이 점 양지하시고 탑승 대기자가 많을 시에는 대중교통(시내버스 등)을 활용해 주시기 바랍니다.\n\n시내버스 14번은 10분 간격으로 학교 안까지 운행되므로 도로사정 등 셔틀버스가 지연될 경우 시내버스 이용을 부탁드립니다.\n\n음주학생은 승차 절대불가합니다.\n"
+                android:textSize="14dp"
+                android:layout_below="@id/shuttle_notice_title"
+                android:layout_marginTop="5dp"
+                />
+
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+
+
+</RelativeLayout>

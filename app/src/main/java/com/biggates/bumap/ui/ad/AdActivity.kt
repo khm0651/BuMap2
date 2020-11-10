@@ -3,6 +3,7 @@ package com.biggates.bumap.ui.ad
 import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.core.view.contains
 import androidx.core.view.get
 import com.biggates.bumap.MainActivity
@@ -20,7 +21,7 @@ class AdActivity() : Activity() {
         setContentView(R.layout.activity_ad)
 
         ad_layout.addView(Ad.adView,0)
-
+        Toast.makeText(applicationContext,"뒤로가기를 한번더 누르면 종료가 됍니다.",Toast.LENGTH_SHORT).show()
         cancel_ad.setOnClickListener {
             finish()
         }
