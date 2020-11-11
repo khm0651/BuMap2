@@ -29,6 +29,7 @@ import com.biggates.bumap.ViewModel.bus.BusViewModel
 import com.biggates.bumap.ViewModel.calendar.CalendarViewModel
 import com.biggates.bumap.ViewModel.notice.NoticeViewModel
 import com.biggates.bumap.ViewModel.building.BuBuilding
+import com.biggates.bumap.ViewModel.building.Cafe
 import com.biggates.bumap.ViewModel.loginInfo.LoginInfo
 import com.biggates.bumap.ViewModel.noticeBuMap.NoticeBuMap
 import com.biggates.bumap.ViewModel.schedule.LectureScheduleViewModel
@@ -165,6 +166,9 @@ class MainActivity : AppCompatActivity() {
 
         NoticeBuMap.setContext(applicationContext)
         NoticeBuMap.loadBuNotice()
+
+        Cafe.setContext(applicationContext)
+        Cafe.loadCafeBuildings()
 
         NoticeViewModel.setContext(applicationContext)
         NoticeViewModel.loadNoitce()

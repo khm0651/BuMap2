@@ -24,6 +24,7 @@ import com.biggates.bumap.Model.BtnKeyword
 import com.biggates.bumap.Model.Location
 import com.biggates.bumap.MyUtil
 import com.biggates.bumap.R
+import com.biggates.bumap.ViewModel.building.Cafe
 import com.biggates.bumap.ui.ad.AdActivity
 import com.biggates.bumap.ui.createMarker.CreateMarkerActivity
 import com.biggates.bumap.ui.introduce.Introduce
@@ -57,8 +58,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     var newMarker: Marker? = null
     var isMarkerLongTouch = false
 
-
     var markerList:HashMap<String, Marker> = HashMap()
+    var cafeMarkerList : HashMap<String,Marker> = hashMapOf()
     var markerFlag:Boolean = false;
 //    var buildingArr : HashMap<String,Building> = HashMap()
     var buildingArr : HashMap<String, HashMap<String, Location>> = HashMap()
@@ -115,6 +116,17 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 setChipIconResource(R.drawable.bus)
                 chipIconSize = 50F
                 chipStartPadding = 30F
+                setOnClickListener {
+                    Toast.makeText(context,this.text.toString(),Toast.LENGTH_SHORT).show()
+                    when(this.text.toString()){
+                        "카페" -> {
+                            for(cafe in cafeMarkerList){
+                                if(cafe.value.map != naverMap) cafe.value.map = naverMap
+                                else cafe.value.map = null
+                            }
+                        }
+                    }
+                }
             }
             btnKeywordLayout.addView(button)
         }
@@ -302,6 +314,15 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 }
             }
 
+        }
+
+        for ( cafe in Cafe.cafeBuildings.value!!){
+            var marker = Marker()
+            marker.position = LatLng(cafe.value.location.lat.toDouble(),cafe.value.location.lng.toDouble())
+            marker.width= MyUtil.Dp2Px(context, 15)
+            marker.height= MyUtil.Dp2Px(context, 20)
+            marker.map = null
+            cafeMarkerList.put(cafe.value.name,marker)
         }
 
         markerCreate.setOnClickListener {
