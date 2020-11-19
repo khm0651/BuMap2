@@ -25,11 +25,10 @@ import com.biggates.bumap.Model.Message
 import com.biggates.bumap.Retrofit.RetrofitClient
 import com.biggates.bumap.Retrofit.RetrofitService
 import com.biggates.bumap.ViewModel.ad.Ad
+import com.biggates.bumap.ViewModel.building.*
 import com.biggates.bumap.ViewModel.bus.BusViewModel
 import com.biggates.bumap.ViewModel.calendar.CalendarViewModel
 import com.biggates.bumap.ViewModel.notice.NoticeViewModel
-import com.biggates.bumap.ViewModel.building.BuBuilding
-import com.biggates.bumap.ViewModel.building.Cafe
 import com.biggates.bumap.ViewModel.loginInfo.LoginInfo
 import com.biggates.bumap.ViewModel.noticeBuMap.NoticeBuMap
 import com.biggates.bumap.ViewModel.schedule.LectureScheduleViewModel
@@ -48,6 +47,7 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.btn_keyword_main.*
 import kotlinx.android.synthetic.main.fragment_bus.*
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import kotlinx.android.synthetic.main.nav_header_main.view.*
@@ -169,6 +169,18 @@ class MainActivity : AppCompatActivity() {
 
         Cafe.setContext(applicationContext)
         Cafe.loadCafeBuildings()
+
+        FoodStore.setContext(applicationContext)
+        FoodStore.loadFoodBuildings()
+
+        Beer.setContext(applicationContext)
+        Beer.loadBeerBuildings()
+
+        Copy.setContext(applicationContext)
+        Copy.loadCopyBuildings()
+
+        ConvenienceStore.setContext(applicationContext)
+        ConvenienceStore.loadConvenienceStoreBuildings()
 
         NoticeViewModel.setContext(applicationContext)
         NoticeViewModel.loadNoitce()

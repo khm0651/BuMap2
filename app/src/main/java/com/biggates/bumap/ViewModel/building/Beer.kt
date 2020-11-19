@@ -5,17 +5,16 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.biggates.bumap.Model.BuildingSubInfo
-import com.biggates.bumap.Model.Room
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-object Cafe {
-    private val _cafeBuildings = MutableLiveData<HashMap<String,BuildingSubInfo>>().apply {
+object Beer {
+    private val _beerBuildings = MutableLiveData<HashMap<String, BuildingSubInfo>>().apply {
         value = hashMapOf()
     }
-    val cafeBuildings : LiveData<HashMap<String, BuildingSubInfo>> = _cafeBuildings
+    val beerBuildings : LiveData<HashMap<String, BuildingSubInfo>> = _beerBuildings
 
     private var context : Context? = null
     fun getContext() = context
@@ -23,22 +22,21 @@ object Cafe {
         this.context = context
     }
 
-    fun loadCafeBuildings(){
-        val ref = FirebaseDatabase.getInstance().reference.child("search").child("cafe")
+    fun loadBeerBuildings(){
+        val ref = FirebaseDatabase.getInstance().reference.child("search").child("beer")
 
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
-                Toast.makeText(context,"카페 건물정보 불러오기 실패\n서버 또는 네트워크에 문제가 생겼습니다.", Toast.LENGTH_LONG).show()
+                Toast.makeText(context,"술집 건물정보 불러오기 실패\n서버 또는 네트워크에 문제가 생겼습니다.", Toast.LENGTH_LONG).show()
             }
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                for(c in dataSnapshot.children){
-                    var cafe = c.getValue(BuildingSubInfo::class.java)!!
-                    _cafeBuildings.value!!.put(c.key.toString(),cafe)
+                for(b in dataSnapshot.children){
+                    var beer = b.getValue(BuildingSubInfo::class.java)!!
+                    _beerBuildings.value!!.put(b.key.toString(),beer)
                 }
             }
         })
     }
-
 }
