@@ -107,7 +107,8 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/marker_solid">
+        android:background="@drawable/marker_solid"
+        >
 
         <RelativeLayout
             android:layout_width="wrap_content"

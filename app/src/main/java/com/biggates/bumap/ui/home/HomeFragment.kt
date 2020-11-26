@@ -148,30 +148,35 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                         setChipIconResource(R.drawable.coffeechip)
                         setOnClickListener {
                             onOffcafeMarkerList()
+                            offOtherMarkerList(keyword.title)
                         }
                     }
                     "음식점" -> {
                         setChipIconResource(R.drawable.foodstorechip)
                         setOnClickListener {
                             onOffFoodMarkerList()
+                            offOtherMarkerList(keyword.title)
                         }
                     }
                     "주점" -> {
                         setChipIconResource(R.drawable.beerchip)
                         setOnClickListener {
                             onOffBeerMarkerList()
+                            offOtherMarkerList(keyword.title)
                         }
                     }
                     "편의점" -> {
                         setChipIconResource(R.drawable.conveniencechip)
                         setOnClickListener {
                             onOffConvenienceStoreMarkerList()
+                            offOtherMarkerList(keyword.title)
                         }
                     }
                     "복사점" -> {
                         setChipIconResource(R.drawable.printerchip)
                         setOnClickListener {
                             onOffCopyMarkerList()
+                            offOtherMarkerList(keyword.title)
                         }
                     }
 
@@ -405,9 +410,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 cafe.value.location.lng.toDouble()
             )
             marker.width= MyUtil.Dp2Px(context, 25)
-            marker.height= MyUtil.Dp2Px(context, 25)
+            marker.height= MyUtil.Dp2Px(context, 30)
             marker.map = null
-            marker.icon = OverlayImage.fromResource(R.drawable.coffee)
+            marker.icon = OverlayImage.fromResource(R.drawable.coffee2)
             marker.setOnClickListener {
                 placeList.clear()
 
@@ -442,9 +447,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 food.value.location.lng.toDouble()
             )
             marker.width= MyUtil.Dp2Px(context, 25)
-            marker.height= MyUtil.Dp2Px(context, 25)
+            marker.height= MyUtil.Dp2Px(context, 30)
             marker.map = null
-            marker.icon = OverlayImage.fromResource(R.drawable.foodstorechip)
+            marker.icon = OverlayImage.fromResource(R.drawable.foodstore)
             marker.setOnClickListener {
 
                 placeList.clear()
@@ -482,7 +487,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             marker.width= MyUtil.Dp2Px(context, 25)
             marker.height= MyUtil.Dp2Px(context, 25)
             marker.map = null
-            marker.icon = OverlayImage.fromResource(R.drawable.beerchip)
+            marker.icon = OverlayImage.fromResource(R.drawable.beer)
             marker.setOnClickListener {
 
                 placeList.clear()
@@ -520,7 +525,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             marker.width= MyUtil.Dp2Px(context, 25)
             marker.height= MyUtil.Dp2Px(context, 25)
             marker.map = null
-            marker.icon = OverlayImage.fromResource(R.drawable.conveniencechip)
+            marker.icon = OverlayImage.fromResource(R.drawable.convenience)
             marker.setOnClickListener {
 
                 placeList.clear()
@@ -555,10 +560,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 copy.value.location.lat.toDouble(),
                 copy.value.location.lng.toDouble()
             )
-            marker.width= MyUtil.Dp2Px(context, 20)
-            marker.height= MyUtil.Dp2Px(context, 20)
+            marker.width= MyUtil.Dp2Px(context, 25)
+            marker.height= MyUtil.Dp2Px(context, 30)
             marker.map = null
-            marker.icon = OverlayImage.fromResource(R.drawable.printerchip)
+            marker.icon = OverlayImage.fromResource(R.drawable.copy)
             marker.setOnClickListener {
 
                 placeList.clear()
@@ -647,7 +652,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             markerBtn.markerImg.setImageResource(R.drawable.markeroff)
             markerBtn.markerText.text = "OFF"
         }
-        naverMap.symbolScale = 0f
+        if(category=="학교") naverMap.symbolScale = 1f
     }
 
     private fun onOffcafeMarkerList() {
@@ -655,7 +660,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         for (cafe in cafeMarkerList) {
             if (cafe.value.map != naverMap) {
                 cafe.value.map = naverMap
-                offOtherMarkerList("카페")
+                naverMap.symbolScale = 0f
             }
             else {
                 cafe.value.map = null
@@ -670,6 +675,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         for (food in foodMarkerList) {
             if (food.value.map != naverMap) {
                 food.value.map = naverMap
+                naverMap.symbolScale = 0f
             }
             else {
                 food.value.map = null
@@ -682,6 +688,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         for (copy in copyMarkerList) {
             if (copy.value.map != naverMap) {
                 copy.value.map = naverMap
+                naverMap.symbolScale = 0f
             }
             else {
                 copy.value.map = null
@@ -694,6 +701,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         for (convenience in convenienceMarkerList) {
             if (convenience.value.map != naverMap) {
                 convenience.value.map = naverMap
+                naverMap.symbolScale = 0f
             }
             else {
                 convenience.value.map = null
@@ -706,6 +714,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         for (beer in beerMarkerList) {
             if (beer.value.map != naverMap) {
                 beer.value.map = naverMap
+                naverMap.symbolScale = 0f
             }
             else {
                 beer.value.map = null
@@ -729,6 +738,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             markerFlag=false;
             markerBtn.markerImg.setImageResource(R.drawable.markeron)
             markerBtn.markerText.text = "ON"
+            offOtherMarkerList("학교")
         }
     }
 
