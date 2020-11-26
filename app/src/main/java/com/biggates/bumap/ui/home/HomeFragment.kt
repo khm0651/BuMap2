@@ -6,28 +6,41 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-import android.view.*
+import android.util.TypedValue
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.RequiresApi
 import androidx.annotation.UiThread
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.biggates.bumap.Adapter.BottomSheetAdapter
 import com.biggates.bumap.Adapter.BtnKeywordAdapter
 import com.biggates.bumap.GpsTracker
 import com.biggates.bumap.MainActivity
 import com.biggates.bumap.Model.BtnKeyword
+import com.biggates.bumap.Model.BuildingSubInfo
 import com.biggates.bumap.Model.Location
 import com.biggates.bumap.MyUtil
 import com.biggates.bumap.R
-import com.biggates.bumap.ViewModel.building.Cafe
+import com.biggates.bumap.ViewModel.building.*
 import com.biggates.bumap.ui.ad.AdActivity
 import com.biggates.bumap.ui.createMarker.CreateMarkerActivity
 import com.biggates.bumap.ui.introduce.Introduce
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
 import com.google.android.material.chip.Chip
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -39,15 +52,15 @@ import com.naver.maps.map.overlay.InfoWindow
 import com.naver.maps.map.overlay.InfoWindow.DefaultTextAdapter
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Overlay
+import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
 import com.naver.maps.map.util.MarkerIcons
 import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.android.synthetic.main.btn_keyword_main.*
 import kotlinx.android.synthetic.main.btn_keyword_main.view.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 
-
+@RequiresApi(Build.VERSION_CODES.M)
 class HomeFragment : Fragment(), OnMapReadyCallback {
     private lateinit var locationSource: FusedLocationSource
     private lateinit var naverMap: NaverMap
@@ -57,13 +70,19 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     lateinit var mapFragment : MapFragment
     var newMarker: Marker? = null
     var isMarkerLongTouch = false
-
+    var placeList = arrayListOf<MutableMap.MutableEntry<String, BuildingSubInfo>>()
     var markerList:HashMap<String, Marker> = HashMap()
-    var cafeMarkerList : HashMap<String,Marker> = hashMapOf()
+
     var markerFlag:Boolean = false;
-//    var buildingArr : HashMap<String,Building> = HashMap()
+
+    var cafeMarkerList : HashMap<String, Marker> = hashMapOf()
+    var foodMarkerList : HashMap<String, Marker> = hashMapOf()
+    var beerMarkerList : HashMap<String, Marker> = hashMapOf()
+    var convenienceMarkerList : HashMap<String, Marker> = hashMapOf()
+    var copyMarkerList : HashMap<String, Marker> = hashMapOf()
     var buildingArr : HashMap<String, HashMap<String, Location>> = HashMap()
     private lateinit var gpsTracker : GpsTracker
+    lateinit var bottomSheetBehavior : BottomSheetBehavior<ConstraintLayout>
 
     private var REQUIRED_PERMISSIONS = arrayOf<String>(
         Manifest.permission.ACCESS_FINE_LOCATION,
@@ -98,10 +117,17 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         val view = inflater.inflate(R.layout.fragment_home, container, false);
         val fm = childFragmentManager
         var options = NaverMapOptions()
-        locationSource =
-            FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
-
-        val btnKeywordLayout = view.btn_keyword_layout
+        locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
+        val tv = TypedValue()
+        var actionBarHeight = 0
+        if (activity!!.theme.resolveAttribute(R.attr.actionBarSize, tv, true)) {
+            actionBarHeight =
+                TypedValue.complexToDimensionPixelSize(tv.data, resources.displayMetrics)
+        }
+        var keyword_layout_param = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT)
+        keyword_layout_param.setMargins(0,actionBarHeight + 5,0,0)
+        view.btn_keyword_layout.layoutParams = keyword_layout_param
+        val btnKeywordLayout = view.btn_keyword_group
         //검색 플로팅 키워드 버튼
         val btnKeywordList = arrayListOf<BtnKeyword>()
         for (title in resources.getStringArray(R.array.keyword_list)){
@@ -113,23 +139,82 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 text = keyword.title
                 elevation = 10F //그림자 설정
                 setChipBackgroundColorResource(R.color.white)
-                setChipIconResource(R.drawable.bus)
-                chipIconSize = 50F
-                chipStartPadding = 30F
-                setOnClickListener {
-                    Toast.makeText(context,this.text.toString(),Toast.LENGTH_SHORT).show()
-                    when(this.text.toString()){
-                        "카페" -> {
-                            for(cafe in cafeMarkerList){
-                                if(cafe.value.map != naverMap) cafe.value.map = naverMap
-                                else cafe.value.map = null
-                            }
+                chipIconSize = MyUtil.Dp2Px(context, 20).toFloat()
+                chipMinHeight = MyUtil.Dp2Px(context, 35).toFloat()
+                chipStartPadding = MyUtil.Dp2Px(context, 15).toFloat()
+                chipEndPadding = MyUtil.Dp2Px(context, 15).toFloat()
+                when(keyword.title){
+                    "카페" -> {
+                        setChipIconResource(R.drawable.coffeechip)
+                        setOnClickListener {
+                            onOffcafeMarkerList()
+                            offOtherMarkerList(keyword.title)
                         }
                     }
+                    "음식점" -> {
+                        setChipIconResource(R.drawable.foodstorechip)
+                        setOnClickListener {
+                            onOffFoodMarkerList()
+                            offOtherMarkerList(keyword.title)
+                        }
+                    }
+                    "주점" -> {
+                        setChipIconResource(R.drawable.beerchip)
+                        setOnClickListener {
+                            onOffBeerMarkerList()
+                            offOtherMarkerList(keyword.title)
+                        }
+                    }
+                    "편의점" -> {
+                        setChipIconResource(R.drawable.conveniencechip)
+                        setOnClickListener {
+                            onOffConvenienceStoreMarkerList()
+                            offOtherMarkerList(keyword.title)
+                        }
+                    }
+                    "복사점" -> {
+                        setChipIconResource(R.drawable.printerchip)
+                        setOnClickListener {
+                            onOffCopyMarkerList()
+                            offOtherMarkerList(keyword.title)
+                        }
+                    }
+
                 }
+
+
             }
             btnKeywordLayout.addView(button)
         }
+
+        bottomSheetBehavior = BottomSheetBehavior.from(view!!.bottom_navigation_container)
+        view.more_btn.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        }
+        bottomSheetBehavior.peekHeight = 0
+        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetCallback() {
+
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                    // do stuff when the drawer is expanded
+                    view.upscroll_bottomSheet.visibility = View.GONE
+                }
+                if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                    // do stuff when the drawer is collapsed
+                    if (placeList.size > 1) {
+                        view.upscroll_bottomSheet.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                // do stuff during the actual drag event for example
+                // animating a background color change based on the offset
+
+                // or for example hidding or showing a fab
+
+            }
+        })
 
 //        btnKeywordAdapter = BtnKeywordAdapter(btnKeywordList)
 //        view.btn_keyword_recyclerview.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL ,false)
@@ -197,11 +282,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
                 })
 
-//        mapFragment.getMapAsync(this@HomeFragment);
         return view;
 
 
     }
+
+
 
     @UiThread
     override fun onMapReady(naverMap: NaverMap) {
@@ -215,6 +301,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 return infoWindow.marker!!.tag.toString().split("-").toTypedArray()[0]
             }
         }
+
 
         naverMap.locationTrackingMode = LocationTrackingMode.NoFollow
 
@@ -318,11 +405,191 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
         for ( cafe in Cafe.cafeBuildings.value!!){
             var marker = Marker()
-            marker.position = LatLng(cafe.value.location.lat.toDouble(),cafe.value.location.lng.toDouble())
-            marker.width= MyUtil.Dp2Px(context, 15)
-            marker.height= MyUtil.Dp2Px(context, 20)
+            marker.position = LatLng(
+                cafe.value.location.lat.toDouble(),
+                cafe.value.location.lng.toDouble()
+            )
+            marker.width= MyUtil.Dp2Px(context, 25)
+            marker.height= MyUtil.Dp2Px(context, 30)
             marker.map = null
-            cafeMarkerList.put(cafe.value.name,marker)
+            marker.icon = OverlayImage.fromResource(R.drawable.coffee2)
+            marker.setOnClickListener {
+                placeList.clear()
+
+                var category = "카페"
+                var bottomSheetRecyclerView = view!!.bottom_navigation_container_recyclerview
+
+                for (c in Cafe.cafeBuildings.value!!) {
+                    if (cafe.value.location.lat == c.value.location.lat && cafe.value.location.lng == c.value.location.lng) {
+                        placeList.add(c)
+                    }
+                }
+                var bottomSheetAdapter = BottomSheetAdapter(context, placeList, category)
+                bottomSheetRecyclerView.adapter = bottomSheetAdapter
+                bottomSheetRecyclerView.layoutManager = LinearLayoutManager(context)
+                if (placeList.size > 1) {
+                    upscroll_bottomSheet.visibility = View.VISIBLE
+                } else {
+                    upscroll_bottomSheet.visibility = View.GONE
+                }
+                bottomSheetBehavior.peekHeight = MyUtil.Dp2Px(context, 150)
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                true
+            }
+            cafeMarkerList.put(cafe.value.name, marker)
+
+        }
+
+        for ( food in FoodStore.foodStoreBuildings.value!!){
+            var marker = Marker()
+            marker.position = LatLng(
+                food.value.location.lat.toDouble(),
+                food.value.location.lng.toDouble()
+            )
+            marker.width= MyUtil.Dp2Px(context, 25)
+            marker.height= MyUtil.Dp2Px(context, 30)
+            marker.map = null
+            marker.icon = OverlayImage.fromResource(R.drawable.foodstore)
+            marker.setOnClickListener {
+
+                placeList.clear()
+
+                var category = "음식점"
+                var bottomSheetRecyclerView = view!!.bottom_navigation_container_recyclerview
+
+                for (f in FoodStore.foodStoreBuildings.value!!) {
+                    if (food.value.location.lat == f.value.location.lat && food.value.location.lng == f.value.location.lng) {
+                        placeList.add(f)
+                    }
+                }
+                var bottomSheetAdapter = BottomSheetAdapter(context, placeList, category)
+                bottomSheetRecyclerView.adapter = bottomSheetAdapter
+                bottomSheetRecyclerView.layoutManager = LinearLayoutManager(context)
+                if (placeList.size > 1) {
+                    upscroll_bottomSheet.visibility = View.VISIBLE
+                } else {
+                    upscroll_bottomSheet.visibility = View.GONE
+                }
+                bottomSheetBehavior.peekHeight = MyUtil.Dp2Px(context, 150)
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                true
+            }
+            foodMarkerList.put(food.value.name, marker)
+
+        }
+
+        for ( beer in Beer.beerBuildings.value!!){
+            var marker = Marker()
+            marker.position = LatLng(
+                beer.value.location.lat.toDouble(),
+                beer.value.location.lng.toDouble()
+            )
+            marker.width= MyUtil.Dp2Px(context, 25)
+            marker.height= MyUtil.Dp2Px(context, 25)
+            marker.map = null
+            marker.icon = OverlayImage.fromResource(R.drawable.beer)
+            marker.setOnClickListener {
+
+                placeList.clear()
+
+                var category = "주점"
+                var bottomSheetRecyclerView = view!!.bottom_navigation_container_recyclerview
+
+                for (b in Beer.beerBuildings.value!!) {
+                    if (beer.value.location.lat == b.value.location.lat && beer.value.location.lng == b.value.location.lng) {
+                        placeList.add(b)
+                    }
+                }
+                var bottomSheetAdapter = BottomSheetAdapter(context, placeList, category)
+                bottomSheetRecyclerView.adapter = bottomSheetAdapter
+                bottomSheetRecyclerView.layoutManager = LinearLayoutManager(context)
+                if (placeList.size > 1) {
+                    upscroll_bottomSheet.visibility = View.VISIBLE
+                } else {
+                    upscroll_bottomSheet.visibility = View.GONE
+                }
+                bottomSheetBehavior.peekHeight = MyUtil.Dp2Px(context, 150)
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                true
+            }
+            beerMarkerList.put(beer.value.name, marker)
+
+        }
+
+        for ( convenienceStore in ConvenienceStore.convenienceStoreBuildings.value!!){
+            var marker = Marker()
+            marker.position = LatLng(
+                convenienceStore.value.location.lat.toDouble(),
+                convenienceStore.value.location.lng.toDouble()
+            )
+            marker.width= MyUtil.Dp2Px(context, 25)
+            marker.height= MyUtil.Dp2Px(context, 25)
+            marker.map = null
+            marker.icon = OverlayImage.fromResource(R.drawable.convenience)
+            marker.setOnClickListener {
+
+                placeList.clear()
+
+                var category = "편의점"
+                var bottomSheetRecyclerView = view!!.bottom_navigation_container_recyclerview
+
+                for (c in ConvenienceStore.convenienceStoreBuildings.value!!) {
+                    if (convenienceStore.value.location.lat == c.value.location.lat && convenienceStore.value.location.lng == c.value.location.lng) {
+                        placeList.add(c)
+                    }
+                }
+                var bottomSheetAdapter = BottomSheetAdapter(context, placeList, category)
+                bottomSheetRecyclerView.adapter = bottomSheetAdapter
+                bottomSheetRecyclerView.layoutManager = LinearLayoutManager(context)
+                if (placeList.size > 1) {
+                    upscroll_bottomSheet.visibility = View.VISIBLE
+                } else {
+                    upscroll_bottomSheet.visibility = View.GONE
+                }
+                bottomSheetBehavior.peekHeight = MyUtil.Dp2Px(context, 150)
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                true
+            }
+            convenienceMarkerList.put(convenienceStore.value.name, marker)
+
+        }
+
+        for ( copy in Copy.copyBuildings.value!!){
+            var marker = Marker()
+            marker.position = LatLng(
+                copy.value.location.lat.toDouble(),
+                copy.value.location.lng.toDouble()
+            )
+            marker.width= MyUtil.Dp2Px(context, 25)
+            marker.height= MyUtil.Dp2Px(context, 30)
+            marker.map = null
+            marker.icon = OverlayImage.fromResource(R.drawable.copy)
+            marker.setOnClickListener {
+
+                placeList.clear()
+
+                var category = "복사점"
+                var bottomSheetRecyclerView = view!!.bottom_navigation_container_recyclerview
+
+                for (c in Copy.copyBuildings.value!!) {
+                    if (copy.value.location.lat == c.value.location.lat && copy.value.location.lng == c.value.location.lng) {
+                        placeList.add(c)
+                    }
+                }
+                var bottomSheetAdapter = BottomSheetAdapter(context, placeList, category)
+                bottomSheetRecyclerView.adapter = bottomSheetAdapter
+                bottomSheetRecyclerView.layoutManager = LinearLayoutManager(context)
+                if (placeList.size > 1) {
+                    upscroll_bottomSheet.visibility = View.VISIBLE
+                } else {
+                    upscroll_bottomSheet.visibility = View.GONE
+                }
+                bottomSheetBehavior.peekHeight = MyUtil.Dp2Px(context, 150)
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                true
+            }
+            copyMarkerList.put(copy.value.name, marker)
+
         }
 
         markerCreate.setOnClickListener {
@@ -337,45 +604,143 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             newMarker!!.height= MyUtil.Dp2Px(context, 20)
             newMarker!!.map = naverMap
             newMarker!!.icon = MarkerIcons.BLACK
-            naverMap.addOnCameraChangeListener (markerCreateListener)
+            naverMap.addOnCameraChangeListener(markerCreateListener)
             markerCreateAllow.visibility = View.VISIBLE
 
         }
 
         markerCreateAllow.setOnClickListener {
-            startActivityForResult(Intent(context,CreateMarkerActivity::class.java)
-                .putExtra("lat",newMarker!!.position.latitude.toString())
-                .putExtra("lng",newMarker!!.position.longitude.toString()),CREATE_MARKER_REQUEST_CODE)
+            startActivityForResult(
+                Intent(context, CreateMarkerActivity::class.java)
+                    .putExtra("lat", newMarker!!.position.latitude.toString())
+                    .putExtra("lng", newMarker!!.position.longitude.toString()),
+                CREATE_MARKER_REQUEST_CODE
+            )
         }
 
 
 
         markerBtn.setOnClickListener{ v: View->
-            if(!markerFlag){
-                for(k in markerList){
-                    k.value.map=null;
-                }
-                markerFlag=true;
-                v.markerImg.setImageResource(R.drawable.markeroff)
-                v.markerText.text = "OFF"
-            }else{
-                for(k in markerList){
-                    k.value.map=naverMap;
-                }
-                markerFlag=false;
-                v.markerImg.setImageResource(R.drawable.markeron)
-                v.markerText.text = "ON"
-            }
+            onOffBuildingMarkerList()
 
         }
         naverMap.setOnMapClickListener { point, coord ->
             Log.d("coord", "${coord.latitude.toFloat()}, ${coord.longitude.toFloat()}")
+            if(bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                bottomSheetBehavior.peekHeight = 0
+            }else{
+                bottomSheetBehavior.peekHeight = 0
+            }
 
         }
+
+        naverMap.addOnCameraChangeListener(naverMapDefaultListener)
 
 
     }
 
+    private fun offOtherMarkerList(category : String) {
+        for (cafe in cafeMarkerList) if(category!="카페") cafe.value.map = null
+        for (food in foodMarkerList) if(category!="음식점") food.value.map = null
+        for (copy in copyMarkerList) if(category!="복사점") copy.value.map = null
+        for (convenience in convenienceMarkerList) if(category!="편의점") convenience.value.map = null
+        for (beer in beerMarkerList) if(category!="주점") beer.value.map = null
+        if(category!="학교"){
+            for(k in markerList) k.value.map=null;
+            markerFlag=true;
+            markerBtn.markerImg.setImageResource(R.drawable.markeroff)
+            markerBtn.markerText.text = "OFF"
+        }
+        if(category=="학교") naverMap.symbolScale = 1f
+    }
+
+    private fun onOffcafeMarkerList() {
+
+        for (cafe in cafeMarkerList) {
+            if (cafe.value.map != naverMap) {
+                cafe.value.map = naverMap
+                naverMap.symbolScale = 0f
+            }
+            else {
+                cafe.value.map = null
+                naverMap.symbolScale = 1f
+            }
+        }
+    }
+
+
+
+    private fun onOffFoodMarkerList() {
+        for (food in foodMarkerList) {
+            if (food.value.map != naverMap) {
+                food.value.map = naverMap
+                naverMap.symbolScale = 0f
+            }
+            else {
+                food.value.map = null
+                naverMap.symbolScale = 1f
+            }
+        }
+    }
+
+    private fun onOffCopyMarkerList() {
+        for (copy in copyMarkerList) {
+            if (copy.value.map != naverMap) {
+                copy.value.map = naverMap
+                naverMap.symbolScale = 0f
+            }
+            else {
+                copy.value.map = null
+                naverMap.symbolScale = 1f
+            }
+        }
+    }
+
+    private fun onOffConvenienceStoreMarkerList() {
+        for (convenience in convenienceMarkerList) {
+            if (convenience.value.map != naverMap) {
+                convenience.value.map = naverMap
+                naverMap.symbolScale = 0f
+            }
+            else {
+                convenience.value.map = null
+                naverMap.symbolScale = 1f
+            }
+        }
+    }
+
+    private fun onOffBeerMarkerList() {
+        for (beer in beerMarkerList) {
+            if (beer.value.map != naverMap) {
+                beer.value.map = naverMap
+                naverMap.symbolScale = 0f
+            }
+            else {
+                beer.value.map = null
+                naverMap.symbolScale = 1f
+            }
+        }
+    }
+
+    private fun onOffBuildingMarkerList() {
+        if(!markerFlag){
+            for(k in markerList){
+                k.value.map=null;
+            }
+            markerFlag=true;
+            markerBtn.markerImg.setImageResource(R.drawable.markeroff)
+            markerBtn.markerText.text = "OFF"
+        }else{
+            for(k in markerList){
+                k.value.map=naverMap;
+            }
+            markerFlag=false;
+            markerBtn.markerImg.setImageResource(R.drawable.markeron)
+            markerBtn.markerText.text = "ON"
+            offOtherMarkerList("학교")
+        }
+    }
 
 
 
@@ -555,10 +920,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 }
 
             CREATE_MARKER_REQUEST_CODE -> {
-                if(resultCode == 200){
-                    Toast.makeText(context,"등록 완료",Toast.LENGTH_SHORT).show()
+                if (resultCode == 200) {
+                    Toast.makeText(context, "등록 완료", Toast.LENGTH_SHORT).show()
                     newMarker = null
                     naverMap.removeOnCameraChangeListener(markerCreateListener)
+                    naverMap.addOnCameraChangeListener(naverMapDefaultListener)
                     markerCreateAllow.visibility = View.GONE
                 }
             }
@@ -567,6 +933,17 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     }
 
 
+    private var naverMapDefaultListener = NaverMap.OnCameraChangeListener { reason, animated ->
+        if(reason == CameraUpdate.REASON_GESTURE){
+            if(bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                bottomSheetBehavior.peekHeight = 0
+            }else{
+                bottomSheetBehavior.peekHeight = 0
+            }
+
+        }
+    }
 
 
     private var markerCreateListener = NaverMap.OnCameraChangeListener { reason, animated ->

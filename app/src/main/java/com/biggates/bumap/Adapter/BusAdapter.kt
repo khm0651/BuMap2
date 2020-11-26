@@ -20,7 +20,7 @@ import com.biggates.bumap.Model.Bus
 import com.biggates.bumap.MyUtil
 import com.biggates.bumap.R
 import com.biggates.bumap.ViewModel.bus.BusViewModel
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.busitem_layout.view.*
 import kotlinx.android.synthetic.main.fragment_bus.view.*
 
@@ -78,8 +78,7 @@ class BusAdapter(
                         imageView.setPadding(10,10,10,10)
                         imageView.layoutParams = imageParam
                         bus_image_wrapper.addView(imageView)
-                        Picasso.get().load(bus.img!![i]).fit().into(imageView)
-
+                        Glide.with(mContext).load(bus.img!![i]).fitCenter().into(imageView)
 
                     }
 
