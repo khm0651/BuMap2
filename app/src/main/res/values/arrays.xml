@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="keyword_list">
-        <item>편의점</item>
-        <item>복사점</item>
         <item>카페</item>
         <item>음식점</item>
-        <item>버스정류장</item>
+        <item>주점</item>
+        <item>복사점</item>
+        <item>편의점</item>
+<!--        <item>버스정류장</item>-->
     </string-array>
+
 </resources>

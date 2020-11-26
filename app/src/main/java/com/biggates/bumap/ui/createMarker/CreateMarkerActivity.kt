@@ -73,6 +73,26 @@ class CreateMarkerActivity : AppCompatActivity() {
             }
         }
 
+        category_busStation.setOnClickListener {
+            if(category.contains("busStation")){
+                category.remove("busStation")
+                it.background = resources.getDrawable(R.drawable.marker_solid,null)
+            }else{
+                category.add("busStation")
+                it.background = resources.getDrawable(R.drawable.check_marker_solid,null)
+            }
+        }
+
+        category_copy.setOnClickListener {
+            if(category.contains("copy")){
+                category.remove("copy")
+                it.background = resources.getDrawable(R.drawable.marker_solid,null)
+            }else{
+                category.add("copy")
+                it.background = resources.getDrawable(R.drawable.check_marker_solid,null)
+            }
+        }
+
         btn_ok.setOnClickListener {
             check()
         }

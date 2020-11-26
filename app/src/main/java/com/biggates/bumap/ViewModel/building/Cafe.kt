@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.biggates.bumap.Model.BuildingSubInfo
 import com.biggates.bumap.Model.Room
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -11,10 +12,10 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
 object Cafe {
-    private val _cafeBuildings = MutableLiveData<HashMap<String,Room>>().apply {
+    private val _cafeBuildings = MutableLiveData<HashMap<String,BuildingSubInfo>>().apply {
         value = hashMapOf()
     }
-    val cafeBuildings : LiveData<HashMap<String, Room>> = _cafeBuildings
+    val cafeBuildings : LiveData<HashMap<String, BuildingSubInfo>> = _cafeBuildings
 
     private var context : Context? = null
     fun getContext() = context
@@ -33,7 +34,7 @@ object Cafe {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                 for(c in dataSnapshot.children){
-                    var cafe = c.getValue(Room::class.java)!!
+                    var cafe = c.getValue(BuildingSubInfo::class.java)!!
                     _cafeBuildings.value!!.put(c.key.toString(),cafe)
                 }
             }
