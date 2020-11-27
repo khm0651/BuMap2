@@ -1,12 +1,11 @@
 package com.biggates.bumap.Adapter
 
 import android.content.Context
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import androidx.annotation.NonNull
-import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.biggates.bumap.R
 import com.biggates.bumap.ui.introduce.Introduce
@@ -15,11 +14,19 @@ import com.naver.maps.map.MapFragment
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.overlay.InfoWindow
 import com.naver.maps.map.overlay.Marker
+import kotlinx.android.synthetic.main.activity_introduce.view.*
 import kotlinx.android.synthetic.main.room_list.view.*
 
-class IntroduceAdapter (private var mContext : Context, private var mRoomList : ArrayList<String>,
-                        private var floor_maker : HashMap<String, RoomMaker>, private var naverMap: NaverMap,
-                        private var introduce: Introduce, private var mapFragment: MapFragment)
+class IntroduceAdapter(
+    private var mContext: Context,
+    private var mRoomList: ArrayList<String>,
+    private var floor_maker: HashMap<String, RoomMaker>,
+    private var naverMap: NaverMap,
+    private var introduce: Introduce,
+    private var mapFragment: MapFragment,
+    private var layout: RelativeLayout,
+    private var infoWindow: InfoWindow
+)
     :RecyclerView.Adapter<IntroduceAdapter.ViewHolder>(){
 
     inner class ViewHolder(@NonNull itemView : View) : RecyclerView.ViewHolder(itemView){
@@ -39,6 +46,7 @@ class IntroduceAdapter (private var mContext : Context, private var mRoomList : 
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
         var split = mRoomList[position].split("+")
         if((split[1].get(0) >= 'a' && split[1].get(0) <= 'z') || (split[1].contains("ATM"))){
             holder.titleTextView.text = split[0]
@@ -48,17 +56,12 @@ class IntroduceAdapter (private var mContext : Context, private var mRoomList : 
         holder.subTextView.text = split[2]+" "+split[3]
 
         holder.room_list_layout.setOnClickListener {
+            layout.modificationMarkerBtn.visibility = View.VISIBLE
             var split = mRoomList[position].split("+")
             var roomName = split[0]
             var floorNum = split[3].substring(0,split[3].length-1)
             var roomNum = split[1]
-            val infoWindow = InfoWindow()
 
-            infoWindow.adapter = object : InfoWindow.DefaultTextAdapter(mContext!!) {
-                override fun getText(infoWindow: InfoWindow): CharSequence {
-                    return infoWindow.marker!!.tag.toString()
-                }
-            }
 
             floor_maker.keys.forEach { k ->
                 var roomMaker = floor_maker[k]!!

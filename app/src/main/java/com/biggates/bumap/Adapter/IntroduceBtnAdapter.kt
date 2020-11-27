@@ -1,27 +1,35 @@
 package com.biggates.bumap.Adapter
 
 import android.content.Context
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.annotation.NonNull
-import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.biggates.bumap.R
 import com.biggates.bumap.ui.introduce.Introduce
 import com.biggates.bumap.ui.introduce.RoomMaker
 import com.naver.maps.map.MapFragment
 import com.naver.maps.map.NaverMap
+import com.naver.maps.map.overlay.InfoWindow
 import kotlinx.android.synthetic.main.activity_introduce.view.*
 import kotlinx.android.synthetic.main.btn_layout.view.*
 
-class IntroduceBtnAdapter (private var mContext : Context, private var mBtnList : ArrayList<String>,
-                           private var recyclerView: RecyclerView, private var total_list : HashMap<String,String>,
-                           private var floor_maker : HashMap<String, RoomMaker>, private var mapFragment:MapFragment,
-                           private var naverMap : NaverMap, private var introduce : Introduce, private var btn_recyclerView : RecyclerView,
-                           private var btn_list : ArrayList<String>, private var layout : RelativeLayout)
+class IntroduceBtnAdapter(
+    private var mContext: Context,
+    private var mBtnList: ArrayList<String>,
+    private var recyclerView: RecyclerView,
+    private var total_list: HashMap<String, String>,
+    private var floor_maker: HashMap<String, RoomMaker>,
+    private var mapFragment: MapFragment,
+    private var naverMap: NaverMap,
+    private var introduce: Introduce,
+    private var btn_recyclerView: RecyclerView,
+    private var btn_list: ArrayList<String>,
+    private var layout: RelativeLayout,
+    private var infoWindow: InfoWindow
+)
     :RecyclerView.Adapter<IntroduceBtnAdapter.ViewHolder>(){
 
 
@@ -57,6 +65,7 @@ class IntroduceBtnAdapter (private var mContext : Context, private var mBtnList 
         })
         holder.btn_layout_text.text = mBtnList[position]
         holder.btn_layout.setOnClickListener {
+            layout.modificationMarkerBtn.visibility = View.GONE
             var selectFloor = holder.btn_layout_text.text.toString()
             var showFloor = arrayListOf<String>()
 
@@ -95,7 +104,16 @@ class IntroduceBtnAdapter (private var mContext : Context, private var mBtnList 
                 }
 
             })
-            var introduceAdapter = IntroduceAdapter(mContext, showFloor, floor_maker,naverMap,introduce,mapFragment)
+            var introduceAdapter = IntroduceAdapter(
+                mContext,
+                showFloor,
+                floor_maker,
+                naverMap,
+                introduce,
+                mapFragment,
+                layout,
+                infoWindow
+            )
             recyclerView.adapter = introduceAdapter
             introduceAdapter.notifyDataSetChanged()
 

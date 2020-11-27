@@ -1,12 +1,9 @@
 package com.biggates.bumap.ui.introduce
 
-import android.content.res.Resources
-import android.os.Build
+import android.content.Intent
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.*
 import android.widget.RelativeLayout
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,10 +13,7 @@ import com.biggates.bumap.Model.*
 import com.biggates.bumap.MyUtil
 import com.biggates.bumap.R
 import com.biggates.bumap.ViewModel.building.BuBuilding
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.biggates.bumap.ui.modification.ModificationMarkerActivity
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
 import com.naver.maps.map.overlay.InfoWindow
@@ -27,11 +21,11 @@ import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.overlay.OverlayImage
 import kotlinx.android.synthetic.main.activity_introduce.*
-import java.util.*
 import kotlin.Comparator
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.math.absoluteValue
+import kotlin.properties.Delegates
 
 class RoomMaker {
     var room : HashMap<String,Marker> = HashMap()
@@ -44,23 +38,27 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
     var selectFloor = "1"
     var total_list : HashMap<String,String> = HashMap()
     var isFirst : Boolean = true
-    lateinit var v:RelativeLayout
+    lateinit var layout:RelativeLayout
 
     lateinit var btnAdapter : IntroduceBtnAdapter
     lateinit var introduceAdapter : IntroduceAdapter
     lateinit var mapFragment: MapFragment
     lateinit var introduce: Introduce
+    lateinit var placeName : String
+    lateinit var d_name : String
+    var lat by Delegates.notNull<Double>()
+    var lng by Delegates.notNull<Double>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.NoTitleBar);
         setContentView(R.layout.activity_introduce)
-        v = introduce_layout
+        layout = introduce_layout
         val fm = supportFragmentManager
-        val lat = intent.getDoubleExtra("lat",0.0)!!
-        val lng = intent.getDoubleExtra("lng",0.0)!!
-        val placeName = intent.getStringExtra("placename")
-        val d_name = intent.getStringExtra("d_name")
+        lat = intent.getDoubleExtra("lat",0.0)!!
+        lng = intent.getDoubleExtra("lng",0.0)!!
+        placeName = intent.getStringExtra("placename")
+        d_name = intent.getStringExtra("d_name")
         val options = NaverMapOptions()
             .camera(CameraPosition(LatLng(lat, lng), 17.0))
             .mapType(NaverMap.MapType.Basic)
@@ -120,7 +118,7 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
 
             infoWindow.adapter = object : InfoWindow.DefaultTextAdapter(applicationContext!!) {
                 override fun getText(infoWindow: InfoWindow): CharSequence {
-                    return infoWindow.marker!!.tag.toString()
+                    return infoWindow.marker!!.tag.toString().substring(0,infoWindow.marker!!.tag.toString().lastIndexOf("+",infoWindow.marker!!.tag.toString().lastIndexOf("+")-1))
                 }
             }
 
@@ -136,9 +134,19 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
                     val marker = overlay as Marker
                     if (marker.infoWindow == null) { // 현재 마커에 정보 창이 열려있지 않을 경우 엶
                         infoWindow.open(marker)
+                        modificationMarkerBtn.visibility = View.VISIBLE
+                        modificationMarkerBtn.setOnClickListener {
+                            startActivity(Intent(this,ModificationMarkerActivity::class.java)
+                                .putExtra("info",marker.tag.toString())
+                                .putExtra("buildingName",d_name)
+                                .putExtra("lat",marker.position.latitude)
+                                .putExtra("lng",marker.position.longitude)
+                                .putExtra("placeName",placeName))
+                        }
 
                     } else { // 이미 현재 마커에 정보 창이 열려있을 경우 닫음
-                        infoWindow.close()
+                        infoWindow.map = null
+                        modificationMarkerBtn.visibility = View.GONE
                     }
                     true
                 }
@@ -152,7 +160,7 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
                             for(roomNumber in building.floor.get(floor)!!.roomNumber.keys){
                                 if(building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.name == "화장실"){
                                     var marker = Marker()
-                                    marker.tag = building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.name
+                                    marker.tag = "${building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.name}+${roomNumber}+${floor}"
                                     marker.position = LatLng(building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lat.toDouble(), building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lng.toDouble())
                                     marker.onClickListener = listener
                                     marker.map = naverMap
@@ -163,7 +171,7 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
                                     roomMaker.room.set(roomNumber,marker)
                                 }else{
                                     var marker = Marker()
-                                    marker.tag = building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.name
+                                    marker.tag = "${building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.name}+${roomNumber}+${floor}"
                                     marker.position = LatLng(building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lat.toDouble(), building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lng.toDouble())
                                     marker.onClickListener = listener
                                     marker.map = naverMap
@@ -178,7 +186,7 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
                             for(roomNumber in building.floor.get(floor)!!.roomNumber.keys){
                                 if(building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.name == "화장실"){
                                     var marker = Marker()
-                                    marker.tag = building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.name
+                                    marker.tag = "${building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.name}+${roomNumber}+${floor}"
                                     marker.position = LatLng(building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lat.toDouble(), building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lng.toDouble())
                                     marker.onClickListener = listener
                                     marker.icon = OverlayImage.fromResource(R.drawable.toilet)
@@ -188,7 +196,7 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
                                     roomMaker.room.set(roomNumber,marker)
                                 }else{
                                     var marker = Marker()
-                                    marker.tag = building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.name
+                                    marker.tag = "${building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.name}+${roomNumber}+${floor}"
                                     marker.position = LatLng(building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lat.toDouble(), building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lng.toDouble())
                                     marker.onClickListener = listener
                                     marker.width= MyUtil.Dp2Px(applicationContext,10)
@@ -237,7 +245,7 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
                         }
                     }
 
-                    introduceAdapter = IntroduceAdapter(this@Introduce,showToilet,floor_maker,naverMap,introduce,mapFragment)
+                    introduceAdapter = IntroduceAdapter(this@Introduce,showToilet,floor_maker,naverMap,introduce,mapFragment,layout,infoWindow)
                     recyclerView.adapter = introduceAdapter
                 }
 
@@ -301,7 +309,16 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
 
 
 
-                    introduceAdapter = IntroduceAdapter(this@Introduce,showAll,floor_maker,naverMap,introduce,mapFragment)
+                    introduceAdapter = IntroduceAdapter(
+                        this@Introduce,
+                        showAll,
+                        floor_maker,
+                        naverMap,
+                        introduce,
+                        mapFragment,
+                        layout,
+                        infoWindow
+                    )
                     recyclerView.adapter = introduceAdapter
                 }
 
@@ -328,7 +345,16 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
                     }
 
                 })
-                introduceAdapter = IntroduceAdapter(applicationContext, showFloor, floor_maker,naverMap,introduce,mapFragment)
+                introduceAdapter = IntroduceAdapter(
+                    applicationContext,
+                    showFloor,
+                    floor_maker,
+                    naverMap,
+                    introduce,
+                    mapFragment,
+                    layout,
+                    infoWindow
+                )
                 recyclerView.adapter = introduceAdapter
 
                 if(btn_list.size <=5){
@@ -340,7 +366,7 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
 
                 }
                 btnAdapter = IntroduceBtnAdapter(applicationContext,btn_list,recyclerView,total_list,
-                    floor_maker,mapFragment,naverMap,introduce,btn_recyclerView,btn_list,v)
+                    floor_maker,mapFragment,naverMap,introduce,btn_recyclerView,btn_list,layout,infoWindow)
                 btn_recyclerView.adapter = btnAdapter
 
 

@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.modification.ModificationCheckActivity"
+    android:paddingRight="30dp"
+    android:paddingLeft="30dp"
+    >
+
+    <LinearLayout
+        android:id="@+id/buildingName_layout"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.25"
+
+        >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="0.2"
+            android:layout_height="match_parent"
+            android:text="건물 명"
+            android:textSize="12dp"
+            android:textStyle="bold"
+            android:textColor="@android:color/darker_gray"
+            android:gravity="center"
+            />
+
+        <EditText
+            android:id="@+id/buildingName_et"
+            android:layout_width="0dp"
+            android:layout_weight="0.75"
+            android:layout_height="match_parent"
+            android:text=""
+            android:textSize="12dp"
+            android:paddingLeft="10dp"
+            android:enabled="false"
+            android:textColor="@android:color/darker_gray"
+            android:textColorHint="@android:color/darker_gray"
+            android:background="@null"
+            />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/floor_layout"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        app:layout_constraintTop_toBottomOf="@id/buildingName_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/roomName_layout"
+        app:layout_constraintVertical_bias="0.1"
+        >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="0.2"
+            android:layout_height="match_parent"
+            android:text="층"
+            android:textSize="12dp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@android:color/darker_gray"
+            />
+
+        <EditText
+            android:id="@+id/floor_et"
+            android:layout_width="0dp"
+            android:layout_weight="0.75"
+            android:layout_height="match_parent"
+            android:text=""
+            android:textSize="12dp"
+            android:paddingLeft="10dp"
+            android:enabled="false"
+            android:textColor="@android:color/darker_gray"
+            android:textColorHint="@android:color/darker_gray"
+            android:background="@null"
+            />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/roomName_layout"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        app:layout_constraintTop_toBottomOf="@id/floor_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/roomNum_layout"
+        >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="0.2"
+            android:layout_height="match_parent"
+            android:text="강의실 명"
+            android:textSize="12dp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@android:color/darker_gray"
+            />
+
+        <EditText
+            android:id="@+id/roomName_et"
+            android:layout_width="0dp"
+            android:layout_weight="0.75"
+            android:layout_height="match_parent"
+            android:text=""
+            android:textSize="12dp"
+            android:paddingLeft="10dp"
+            android:textColor="@android:color/darker_gray"
+            android:textColorHint="@android:color/darker_gray"
+            />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/roomNum_layout"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        app:layout_constraintTop_toBottomOf="@id/roomName_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/lat_layout"
+        >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="0.2"
+            android:layout_height="match_parent"
+            android:text="호"
+            android:textSize="12dp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@android:color/darker_gray"
+            />
+
+        <EditText
+            android:id="@+id/roomNum_et"
+            android:layout_width="0dp"
+            android:layout_weight="0.75"
+            android:layout_height="match_parent"
+            android:text=""
+            android:textSize="12dp"
+            android:paddingLeft="10dp"
+            android:textColor="@android:color/darker_gray"
+            android:textColorHint="@android:color/darker_gray"
+            android:inputType="number"
+            />
+
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/lat_layout"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        app:layout_constraintTop_toBottomOf="@id/roomNum_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/lng_layout"
+        >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="0.2"
+            android:layout_height="match_parent"
+            android:text="lat"
+            android:textSize="12dp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@android:color/darker_gray"
+            />
+
+        <EditText
+            android:id="@+id/lat_et"
+            android:layout_width="0dp"
+            android:layout_weight="0.75"
+            android:layout_height="match_parent"
+            android:text=""
+            android:textSize="12dp"
+            android:paddingLeft="10dp"
+            android:enabled="false"
+            android:textColor="@android:color/darker_gray"
+            android:textColorHint="@android:color/darker_gray"
+            android:background="@null"
+            />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lng_layout"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.55"
+        >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="0.2"
+            android:layout_height="match_parent"
+            android:text="lng"
+            android:textSize="12dp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@android:color/darker_gray"
+            />
+
+        <EditText
+            android:id="@+id/lng_et"
+            android:layout_width="0dp"
+            android:layout_weight="0.75"
+            android:layout_height="match_parent"
+            android:text=""
+            android:textSize="12dp"
+            android:paddingLeft="10dp"
+            android:enabled="false"
+            android:textColor="@android:color/darker_gray"
+            android:textColorHint="@android:color/darker_gray"
+            android:background="@null"
+            />
+
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/reason_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="6"
+        android:hint="수정사유를 입력해주세요."
+        android:textSize="12dp"
+        android:lineHeight="18dp"
+        android:textColor="@android:color/darker_gray"
+        android:textColorHint="@android:color/darker_gray"
+        app:layout_constraintTop_toBottomOf="@id/lng_layout"
+        android:layout_marginTop="15dp"
+        android:paddingLeft="10dp"
+
+        />
+    <TextView
+        android:id="@+id/btn_ok"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="35dp"
+        android:text="확인"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginLeft="50dp"
+        android:layout_marginBottom="70dp"
+        android:textColor="@android:color/darker_gray"
+        android:background="@drawable/button_radius"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_cancel"
+        />
+
+    <TextView
+        android:id="@+id/btn_cancel"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="35dp"
+        android:text="취소"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginRight="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginBottom="70dp"
+        android:background="@drawable/button_radius"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btn_ok"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@android:color/darker_gray"
+        />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

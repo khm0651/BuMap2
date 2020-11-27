@@ -15,7 +15,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.createMarker.CreateMarkerActivity"></activity>
+        <activity android:name=".ui.modification.ModificationCheckActivity"
+            android:theme="@style/Theme.Design.NoActionBar"></activity>
+        <activity
+            android:name=".ui.modification.ModificationMarkerActivity"
+            android:theme="@style/Theme.Design.NoActionBar" />
+        <activity android:name=".ui.createMarker.CreateMarkerActivity" />
         <activity
             android:name=".ui.notice_bumap.NoticeBuMapActivity"
             android:theme="@style/Theme.Design.Light" />
