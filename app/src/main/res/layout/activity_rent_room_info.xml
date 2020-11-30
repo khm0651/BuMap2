@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.rentRoom.RentRoomInfoActivity">
+
+    <FrameLayout
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/rent_room_info_map"
+        android:layout_width="match_parent"
+        android:layout_height="250dp">
+
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/wrapper_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        app:layout_constraintTop_toBottomOf="@+id/rent_room_info_map"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        app:layout_constraintVertical_bias="0.15"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.3"
+                android:layout_height="match_parent"
+                android:text="건물 명"
+                android:textSize="12dp"
+                android:textStyle="bold"
+                android:gravity="center"
+                />
+
+            <EditText
+                android:id="@+id/place_edit"
+                android:layout_width="0dp"
+                android:layout_weight="0.7"
+                android:layout_height="match_parent"
+                android:hint="건물명을 입력해주세요"
+                android:text=""
+                android:textSize="12dp"
+                android:paddingLeft="10dp"
+                />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:layout_marginTop="10dp"
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.3"
+                android:layout_height="match_parent"
+                android:text="년세 ( 만원 ) "
+                android:textSize="12dp"
+                android:textStyle="bold"
+                android:gravity="center"
+                />
+
+            <EditText
+                android:id="@+id/year_price_edit"
+                android:layout_width="0dp"
+                android:layout_weight="0.7"
+                android:layout_height="match_parent"
+                android:hint="가격을 입력해주세요"
+                android:textSize="12dp"
+                android:paddingLeft="10dp"
+                android:text=""
+                android:inputType="number"
+                />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:layout_marginTop="10dp"
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.3"
+                android:layout_height="match_parent"
+                android:text="반년세 ( 만원 )"
+                android:textSize="12dp"
+                android:textStyle="bold"
+                android:gravity="center"
+                />
+
+            <EditText
+                android:id="@+id/half_year_price_edit"
+                android:layout_width="0dp"
+                android:layout_weight="0.7"
+                android:layout_height="match_parent"
+                android:hint="가격을 입력해주세요"
+                android:textSize="12dp"
+                android:paddingLeft="10dp"
+                android:text=""
+                android:inputType="number"
+                />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/btn_ok"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="35dp"
+        android:text="확인"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="50dp"
+        android:background="@drawable/marker_solid"
+        app:layout_constraintTop_toBottomOf="@+id/wrapper_info"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_cancel"
+        />
+
+    <TextView
+        android:id="@+id/btn_cancel"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="35dp"
+        android:text="취소"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginRight="50dp"
+        android:layout_marginLeft="20dp"
+        android:background="@drawable/marker_solid"
+        app:layout_constraintTop_toBottomOf="@+id/wrapper_info"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_ok"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

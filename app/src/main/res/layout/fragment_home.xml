@@ -65,9 +65,9 @@
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:layout_above="@+id/markerCreate"
-        android:layout_alignParentRight="true"
+        android:layout_toLeftOf="@+id/rentRoomMarkerCreate"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="35dp"
         android:background="@drawable/marker_solid"
         android:visibility="gone">
 
@@ -103,10 +103,10 @@
         android:id="@+id/markerCreate"
         android:layout_width="55dp"
         android:layout_height="55dp"
-        android:layout_above="@+id/markerBtn"
-        android:layout_alignParentRight="true"
+        android:layout_toLeftOf="@+id/markerBtn"
+        android:layout_alignParentBottom="true"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="35dp"
         android:background="@drawable/marker_solid"
         >
 
@@ -126,6 +126,45 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/markerCreateImg"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:text="생성"
+                android:textSize="8dp"
+                android:textStyle="bold" />
+
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rentRoomMarkerCreate"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_above="@+id/markerBtn"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/marker_solid"
+        >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <ImageView
+                android:id="@+id/rentRoomMarkerCreateImg"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/markeron" />
+
+            <TextView
+                android:id="@+id/rentRoomMarkerCreateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rentRoomMarkerCreateImg"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="5dp"
                 android:text="생성"

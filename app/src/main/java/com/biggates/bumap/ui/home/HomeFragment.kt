@@ -36,6 +36,7 @@ import com.biggates.bumap.Model.Location
 import com.biggates.bumap.MyUtil
 import com.biggates.bumap.R
 import com.biggates.bumap.ViewModel.building.*
+import com.biggates.bumap.ui.RentRoomCreateMarkerActivity
 import com.biggates.bumap.ui.ad.AdActivity
 import com.biggates.bumap.ui.createMarker.CreateMarkerActivity
 import com.biggates.bumap.ui.introduce.Introduce
@@ -134,6 +135,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             btnKeywordList.add(BtnKeyword(title))
         }
 
+        view.rentRoomMarkerCreate.setOnClickListener {
+            startActivity(Intent(requireContext(),RentRoomCreateMarkerActivity::class.java))
+        }
+
         for (keyword in btnKeywordList){
             val button = Chip(context).apply {
                 text = keyword.title
@@ -144,6 +149,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 chipStartPadding = MyUtil.Dp2Px(context, 15).toFloat()
                 chipEndPadding = MyUtil.Dp2Px(context, 15).toFloat()
                 when(keyword.title){
+                    "자취방" -> {
+                        setChipIconResource(R.drawable.rentroomchip)
+                    }
                     "카페" -> {
                         setChipIconResource(R.drawable.coffeechip)
                         setOnClickListener {

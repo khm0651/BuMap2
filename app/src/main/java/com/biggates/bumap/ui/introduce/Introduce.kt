@@ -91,28 +91,27 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
 
     override fun onMapReady(naverMap: NaverMap) {
 
-
-
-        if(isFirst){
+        naverMap.symbolScale = 0f
+        if (isFirst) {
             val infoWindow = InfoWindow()
-            var recyclerView : RecyclerView = recycler_view_room_list
+            var recyclerView: RecyclerView = recycler_view_room_list
             recyclerView.layoutManager = LinearLayoutManager(applicationContext)
             recyclerView.setHasFixedSize(true)
 
 
-            var btn_recyclerView : RecyclerView = floor_btn_layout
-            var linearLayoutManager : LinearLayoutManager = LinearLayoutManager(applicationContext)
+            var btn_recyclerView: RecyclerView = floor_btn_layout
+            var linearLayoutManager: LinearLayoutManager = LinearLayoutManager(applicationContext)
             btn_recyclerView.layoutManager = linearLayoutManager
             btn_recyclerView.setHasFixedSize(true)
 
 
             //버튼 생성
-            var btn_list : ArrayList<String> = arrayListOf()
-            for( i in building.high.toInt() downTo  building.low.toInt()){
-                if(i==0) continue
-                if(i<0){
-                    btn_list.add("B"+i.absoluteValue.toString())
-                }else{
+            var btn_list: ArrayList<String> = arrayListOf()
+            for (i in building.high.toInt() downTo building.low.toInt()) {
+                if (i == 0) continue
+                if (i < 0) {
+                    btn_list.add("B" + i.absoluteValue.toString())
+                } else {
                     btn_list.add(i.toString())
 
                 }
@@ -125,12 +124,12 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
             }
 
 
-            btn_recyclerView.scrollToPosition(btn_list.size-1)
+            btn_recyclerView.scrollToPosition(btn_list.size - 1)
 
 
 
 
-            if(total_list.size > 0){
+            if (total_list.size > 0) {
 
                 val listener = Overlay.OnClickListener { overlay: Overlay ->
                     val marker = overlay as Marker
@@ -143,66 +142,82 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
                     true
                 }
 
-                if(floor_maker.isEmpty()){
-                    for(floor in building.floor.keys){
+                if (floor_maker.isEmpty()) {
+                    for (floor in building.floor.keys) {
                         var roomMaker =
                             RoomMaker()
 
-                        if(floor.equals("1")){
-                            for(roomNumber in building.floor.get(floor)!!.roomNumber.keys){
-                                if(building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.name == "화장실"){
+                        if (floor.equals("1")) {
+                            for (roomNumber in building.floor.get(floor)!!.roomNumber.keys) {
+                                if (building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.name == "화장실") {
                                     var marker = Marker()
-                                    marker.tag = building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.name
-                                    marker.position = LatLng(building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lat.toDouble(), building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lng.toDouble())
+                                    marker.tag =
+                                        building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.name
+                                    marker.position = LatLng(
+                                        building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lat.toDouble(),
+                                        building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lng.toDouble()
+                                    )
                                     marker.onClickListener = listener
                                     marker.map = naverMap
                                     marker.icon = OverlayImage.fromResource(R.drawable.toilet)
-                                    marker.width= MyUtil.Dp2Px(applicationContext,15)
-                                    marker.height= MyUtil.Dp2Px(applicationContext,15)
-                                    marker.zIndex=-10
-                                    roomMaker.room.set(roomNumber,marker)
-                                }else{
+                                    marker.width = MyUtil.Dp2Px(applicationContext, 15)
+                                    marker.height = MyUtil.Dp2Px(applicationContext, 15)
+                                    marker.zIndex = -10
+                                    roomMaker.room.set(roomNumber, marker)
+                                } else {
                                     var marker = Marker()
-                                    marker.tag = building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.name
-                                    marker.position = LatLng(building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lat.toDouble(), building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lng.toDouble())
+                                    marker.tag =
+                                        building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.name
+                                    marker.position = LatLng(
+                                        building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lat.toDouble(),
+                                        building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lng.toDouble()
+                                    )
                                     marker.onClickListener = listener
                                     marker.map = naverMap
-                                    marker.width= MyUtil.Dp2Px(applicationContext,10)
-                                    marker.height= MyUtil.Dp2Px(applicationContext,15)
-                                    roomMaker.room.set(roomNumber,marker)
+                                    marker.width = MyUtil.Dp2Px(applicationContext, 10)
+                                    marker.height = MyUtil.Dp2Px(applicationContext, 15)
+                                    roomMaker.room.set(roomNumber, marker)
                                 }
 
                             }
 
-                        }else{
-                            for(roomNumber in building.floor.get(floor)!!.roomNumber.keys){
-                                if(building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.name == "화장실"){
+                        } else {
+                            for (roomNumber in building.floor.get(floor)!!.roomNumber.keys) {
+                                if (building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.name == "화장실") {
                                     var marker = Marker()
-                                    marker.tag = building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.name
-                                    marker.position = LatLng(building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lat.toDouble(), building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lng.toDouble())
+                                    marker.tag =
+                                        building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.name
+                                    marker.position = LatLng(
+                                        building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lat.toDouble(),
+                                        building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lng.toDouble()
+                                    )
                                     marker.onClickListener = listener
                                     marker.icon = OverlayImage.fromResource(R.drawable.toilet)
-                                    marker.width= MyUtil.Dp2Px(applicationContext,15)
-                                    marker.height= MyUtil.Dp2Px(applicationContext,15)
-                                    marker.zIndex=-10
-                                    roomMaker.room.set(roomNumber,marker)
-                                }else{
+                                    marker.width = MyUtil.Dp2Px(applicationContext, 15)
+                                    marker.height = MyUtil.Dp2Px(applicationContext, 15)
+                                    marker.zIndex = -10
+                                    roomMaker.room.set(roomNumber, marker)
+                                } else {
                                     var marker = Marker()
-                                    marker.tag = building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.name
-                                    marker.position = LatLng(building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lat.toDouble(), building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lng.toDouble())
+                                    marker.tag =
+                                        building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.name
+                                    marker.position = LatLng(
+                                        building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lat.toDouble(),
+                                        building.floor.get(floor)?.roomNumber?.get(roomNumber)!!.location.lng.toDouble()
+                                    )
                                     marker.onClickListener = listener
-                                    marker.width= MyUtil.Dp2Px(applicationContext,10)
-                                    marker.height= MyUtil.Dp2Px(applicationContext,15)
-                                    roomMaker.room.set(roomNumber,marker)
+                                    marker.width = MyUtil.Dp2Px(applicationContext, 10)
+                                    marker.height = MyUtil.Dp2Px(applicationContext, 15)
+                                    roomMaker.room.set(roomNumber, marker)
                                 }
                             }
                         }
-                        floor_maker.set(floor,roomMaker)
+                        floor_maker.set(floor, roomMaker)
                     }
                 }
 
 
-                view_toilet.setOnClickListener { v:View->
+                view_toilet.setOnClickListener { v: View ->
                     floor_maker.keys.forEach { k ->
                         var v = floor_maker[k]!!
                         v.room.keys.forEach { key ->
@@ -211,7 +226,7 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
                     }
                     floor_maker["1"]!!.room.keys.forEach { k ->
                         var v = floor_maker["1"]!!.room[k]!!
-                        if(k.contains("toilet")){
+                        if (k.contains("toilet")) {
                             v.map = naverMap
                         }
 
@@ -219,42 +234,50 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
 
                     var showToilet = arrayListOf<String>()
                     var sort = arrayListOf<String>()
-                    for(i in total_list.keys){
+                    for (i in total_list.keys) {
                         sort.add(i)
 
                     }
-                    for(i in sort.indices){
-                        if(sort.get(i)[0].toString().equals("B")){
-                            sort.add(0,sort.get(i))
-                            sort.removeAt(sort.size-1)
+                    for (i in sort.indices) {
+                        if (sort.get(i)[0].toString().equals("B")) {
+                            sort.add(0, sort.get(i))
+                            sort.removeAt(sort.size - 1)
                         }
                     }
-                    for(i in sort.indices){
-                        (total_list.get(sort.get(i))?.split(",") as ArrayList<String>).forEach { s ->
-                            if(s.startsWith("화장실",0)){
+                    for (i in sort.indices) {
+                        (total_list.get(sort.get(i))
+                            ?.split(",") as ArrayList<String>).forEach { s ->
+                            if (s.startsWith("화장실", 0)) {
                                 showToilet.add(s)
                             }
                         }
                     }
 
-                    introduceAdapter = IntroduceAdapter(this@Introduce,showToilet,floor_maker,naverMap,introduce,mapFragment)
+                    introduceAdapter = IntroduceAdapter(
+                        this@Introduce,
+                        showToilet,
+                        floor_maker,
+                        naverMap,
+                        introduce,
+                        mapFragment
+                    )
                     recyclerView.adapter = introduceAdapter
                 }
 
-                view_all.setOnClickListener { v:View ->
+                view_all.setOnClickListener { v: View ->
                     var showAll = arrayListOf<String>()
                     var sort = arrayListOf<String>()
 
-                    for(i in total_list.keys){
+                    for (i in total_list.keys) {
                         sort.add(i)
                     }
 
-                    sort.sortWith(object : Comparator<String>{
+                    sort.sortWith(object : Comparator<String> {
                         override fun compare(o1: String, o2: String): Int {
                             var a = o1
                             var b = o2
 
-                            if(a.startsWith("B") && b.startsWith("B")) return a.compareTo(b)
+                            if (a.startsWith("B") && b.startsWith("B")) return a.compareTo(b)
                             else if (a.startsWith("B")) return 1
                             else if (b.startsWith("B")) return -1
                             else return b.toInt().compareTo(a.toInt())
@@ -262,31 +285,34 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
                         }
 
                     })
-                    for(i in sort.indices){
+                    for (i in sort.indices) {
                         var tempArr = ArrayList<String>()
                         total_list.get(sort.get(i))?.split(",")!!.forEach {
                             tempArr.add(it)
                         }
-                        tempArr.sortWith(object : Comparator<String>{
+                        tempArr.sortWith(object : Comparator<String> {
                             override fun compare(o1: String, o2: String): Int {
                                 var a = o1.split("+")[1].split("-")[0]
                                 var b = o2.split("+")[1].split("-")[0]
                                 var a_len = o1.split("+")[1].split("-").size
                                 var b_len = o2.split("+")[1].split("-").size
 
-                                if(a.startsWith("B") && b.startsWith("B")){
-                                    var a_t = a.substring(a.indexOf("B")+1,a.length)
-                                    var b_t = b.substring(a.indexOf("B")+1,b.length)
-                                    if(a_t.toInt().compareTo(b_t.toInt()) == 0) return a_len.compareTo(b_len)
+                                if (a.startsWith("B") && b.startsWith("B")) {
+                                    var a_t = a.substring(a.indexOf("B") + 1, a.length)
+                                    var b_t = b.substring(a.indexOf("B") + 1, b.length)
+                                    if (a_t.toInt()
+                                            .compareTo(b_t.toInt()) == 0
+                                    ) return a_len.compareTo(b_len)
                                     return a_t.toInt().compareTo(b_t.toInt())
-                                }
-                                else{
+                                } else {
 
                                     var regex = "[a-zA-Z?]".toRegex()
                                     if (a.contains(regex) && b.contains(regex)) return a.compareTo(b)
-                                    else if(a.contains(regex)) return 1
-                                    else if(b.contains(regex)) return -1
-                                    if(a.toInt().compareTo(b.toInt()) == 0) return a_len.compareTo(b_len)
+                                    else if (a.contains(regex)) return 1
+                                    else if (b.contains(regex)) return -1
+                                    if (a.toInt().compareTo(b.toInt()) == 0) return a_len.compareTo(
+                                        b_len
+                                    )
                                     return a.toInt().compareTo(b.toInt())
 
                                 }
@@ -295,24 +321,29 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
 
                         })
 
-                        for(i in tempArr) showAll.add(i)
+                        for (i in tempArr) showAll.add(i)
 
                     }
 
 
 
-                    introduceAdapter = IntroduceAdapter(this@Introduce,showAll,floor_maker,naverMap,introduce,mapFragment)
+                    introduceAdapter = IntroduceAdapter(
+                        this@Introduce,
+                        showAll,
+                        floor_maker,
+                        naverMap,
+                        introduce,
+                        mapFragment
+                    )
                     recyclerView.adapter = introduceAdapter
                 }
 
 
-
-
                 var showFloor = arrayListOf<String>()
-                total_list.get(selectFloor)!!.split(",").forEach { s->
+                total_list.get(selectFloor)!!.split(",").forEach { s ->
                     showFloor.add(s)
                 }
-                showFloor.sortWith(object : Comparator<String>{
+                showFloor.sortWith(object : Comparator<String> {
                     override fun compare(o1: String, o2: String): Int {
                         var a = o1.split("+")[1].split("-")[0]
                         var b = o2.split("+")[1].split("-")[0]
@@ -321,30 +352,42 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
 
                         var regex = "[a-zA-Z?]".toRegex()
                         if (a.contains(regex) && b.contains(regex)) return a.compareTo(b)
-                        else if(a.contains(regex)) return 1
-                        else if(b.contains(regex)) return -1
-                        if(a.toInt().compareTo(b.toInt()) == 0) return a_len.compareTo(b_len)
+                        else if (a.contains(regex)) return 1
+                        else if (b.contains(regex)) return -1
+                        if (a.toInt().compareTo(b.toInt()) == 0) return a_len.compareTo(b_len)
                         return a.toInt().compareTo(b.toInt())
                     }
 
                 })
-                introduceAdapter = IntroduceAdapter(applicationContext, showFloor, floor_maker,naverMap,introduce,mapFragment)
+                introduceAdapter = IntroduceAdapter(
+                    applicationContext,
+                    showFloor,
+                    floor_maker,
+                    naverMap,
+                    introduce,
+                    mapFragment
+                )
                 recyclerView.adapter = introduceAdapter
 
-                if(btn_list.size <=5){
-                    var layoutParam = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT)
+                if (btn_list.size <= 5) {
+                    var layoutParam = RelativeLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.WRAP_CONTENT,
+                        RelativeLayout.LayoutParams.WRAP_CONTENT
+                    )
                     layoutParam.addRule(RelativeLayout.CENTER_VERTICAL)
                     layoutParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
-                    layoutParam.rightMargin = MyUtil.Dp2Px(applicationContext,15)
+                    layoutParam.rightMargin = MyUtil.Dp2Px(applicationContext, 15)
                     btn_recyclerView.layoutParams = layoutParam
 
                 }
-                btnAdapter = IntroduceBtnAdapter(applicationContext,btn_list,recyclerView,total_list,
-                    floor_maker,mapFragment,naverMap,introduce,btn_recyclerView,btn_list,v)
+                btnAdapter = IntroduceBtnAdapter(
+                    applicationContext, btn_list, recyclerView, total_list,
+                    floor_maker, mapFragment, naverMap, introduce, btn_recyclerView, btn_list, v
+                )
                 btn_recyclerView.adapter = btnAdapter
 
 
-            } else{
+            } else {
                 recyclerView.visibility = View.GONE
                 introduce_not_yet_layout.visibility = View.VISIBLE
             }
