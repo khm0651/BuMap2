@@ -3,6 +3,7 @@ package com.biggates.bumap.ui.rentRoom
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.View
 import android.widget.Toast
 import com.biggates.bumap.MyUtil
 import com.biggates.bumap.R
@@ -21,6 +22,20 @@ class RentRoomInfoActivity : AppCompatActivity(), OnMapReadyCallback {
 
     var lat by Delegates.notNull<Double>()
     var lng by Delegates.notNull<Double>()
+    var clickListener = View.OnClickListener {
+
+        when{
+            TextUtils.isEmpty(place_edit.text) -> Toast.makeText(this,"건물명을 입력해주세요",Toast.LENGTH_SHORT).show()
+
+            TextUtils.isEmpty(year_price_edit.text) && TextUtils.isEmpty(half_year_price_edit.text) -> Toast.makeText(this,"년세 또는 반년세를 입력해주세요",Toast.LENGTH_SHORT).show()
+
+            else -> {
+                btn_ok.setOnClickListener(null)
+                registerRentRoom()
+
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,39 +55,36 @@ class RentRoomInfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 fm.beginTransaction().add(R.id.rent_room_info_map, it).commit()
             }
 
-        btn_ok.setOnClickListener {
-            when{
-                TextUtils.isEmpty(place_edit.text) -> Toast.makeText(this,"건물명을 입력해주세요",Toast.LENGTH_SHORT).show()
 
-                TextUtils.isEmpty(year_price_edit.text) && TextUtils.isEmpty(half_year_price_edit.text) -> Toast.makeText(this,"년세 또는 반년세를 입력해주세요",Toast.LENGTH_SHORT).show()
+        btn_ok.setOnClickListener (clickListener)
 
-                else -> {
-                    var fomatter = SimpleDateFormat("yyyy-MM-dd")
-                    var calendar = Calendar.getInstance()
-                    var map = hashMapOf<String,String>()
-                    map.put("buildingName",place_edit.text.toString())
-                    map.put("yearPrice",year_price_edit.text.toString())
-                    map.put("halfYearPrice",half_year_price_edit.text.toString())
-                    map.put("date",fomatter.format(calendar.time))
-                    map.put("lat",lat.toString())
-                    map.put("lng",lng.toString())
-                    FirebaseDatabase.getInstance().reference.child("rentRoomRequest").push().setValue(map).addOnCompleteListener {
-                        if(it.isSuccessful){
-                            Toast.makeText(applicationContext,"등록 요청 완료",Toast.LENGTH_SHORT).show()
-                            setResult(200)
-                            finish()
-                        }else{
-                            Toast.makeText(applicationContext,"서버 오류",Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }
-            }
-        }
 
         btn_cancel.setOnClickListener {
             finish()
         }
         mapFragment.getMapAsync(this)
+    }
+
+    private fun registerRentRoom() {
+        var fomatter = SimpleDateFormat("yyyy-MM-dd")
+        var calendar = Calendar.getInstance()
+        var map = hashMapOf<String,String>()
+        map.put("buildingName",place_edit.text.toString())
+        map.put("yearPrice",year_price_edit.text.toString())
+        map.put("halfYearPrice",half_year_price_edit.text.toString())
+        map.put("date",fomatter.format(calendar.time))
+        map.put("lat",lat.toString())
+        map.put("lng",lng.toString())
+        FirebaseDatabase.getInstance().reference.child("rentRoomRequest").push().setValue(map).addOnCompleteListener {
+            if(it.isSuccessful){
+                Toast.makeText(applicationContext,"등록 요청 완료",Toast.LENGTH_SHORT).show()
+                setResult(200)
+                finish()
+            }else{
+                btn_ok.setOnClickListener(clickListener)
+                Toast.makeText(applicationContext,"서버 오류",Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     override fun onMapReady(naverMap: NaverMap) {
