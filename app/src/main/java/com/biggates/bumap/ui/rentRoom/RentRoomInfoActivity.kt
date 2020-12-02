@@ -54,6 +54,8 @@ class RentRoomInfoActivity : AppCompatActivity(), OnMapReadyCallback {
                     map.put("yearPrice",year_price_edit.text.toString())
                     map.put("halfYearPrice",half_year_price_edit.text.toString())
                     map.put("date",fomatter.format(calendar.time))
+                    map.put("lat",lat.toString())
+                    map.put("lng",lng.toString())
                     FirebaseDatabase.getInstance().reference.child("rentRoomRequest").push().setValue(map).addOnCompleteListener {
                         if(it.isSuccessful){
                             Toast.makeText(applicationContext,"등록 요청 완료",Toast.LENGTH_SHORT).show()
