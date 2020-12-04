@@ -25,6 +25,8 @@ class RentRoomInfoActivity : AppCompatActivity(), OnMapReadyCallback {
     var clickListener = View.OnClickListener {
 
         when{
+            TextUtils.isEmpty(num_edit.text) -> Toast.makeText(this,"기준 인원을 입력해주세요",Toast.LENGTH_SHORT).show()
+
             TextUtils.isEmpty(place_edit.text) -> Toast.makeText(this,"건물명을 입력해주세요",Toast.LENGTH_SHORT).show()
 
             TextUtils.isEmpty(year_price_edit.text) && TextUtils.isEmpty(half_year_price_edit.text) -> Toast.makeText(this,"년세 또는 반년세를 입력해주세요",Toast.LENGTH_SHORT).show()
@@ -67,15 +69,20 @@ class RentRoomInfoActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun registerRentRoom() {
         var fomatter = SimpleDateFormat("yyyy-MM-dd")
+        var fomatter2 = SimpleDateFormat("yyyyMMddHHmmss")
         var calendar = Calendar.getInstance()
         var map = hashMapOf<String,String>()
+        var id = "${fomatter2.format(calendar.time)}-${place_edit.text}"
         map.put("buildingName",place_edit.text.toString())
         map.put("yearPrice",year_price_edit.text.toString())
         map.put("halfYearPrice",half_year_price_edit.text.toString())
         map.put("date",fomatter.format(calendar.time))
         map.put("lat",lat.toString())
         map.put("lng",lng.toString())
-        FirebaseDatabase.getInstance().reference.child("rentRoomRequest").push().setValue(map).addOnCompleteListener {
+        map.put("id",id)
+        map.put("num",num_edit.text.toString())
+
+        FirebaseDatabase.getInstance().reference.child("rentRoomRequest").child(id).setValue(map).addOnCompleteListener {
             if(it.isSuccessful){
                 Toast.makeText(applicationContext,"등록 요청 완료",Toast.LENGTH_SHORT).show()
                 setResult(200)
