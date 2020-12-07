@@ -10,6 +10,7 @@ import com.biggates.bumap.R
 import com.google.firebase.database.FirebaseDatabase
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
+import com.naver.maps.map.overlay.InfoWindow
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.FusedLocationSource
 import com.naver.maps.map.util.MarkerIcons
@@ -57,9 +58,7 @@ class RentRoomInfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 fm.beginTransaction().add(R.id.rent_room_info_map, it).commit()
             }
 
-
         btn_ok.setOnClickListener (clickListener)
-
 
         btn_cancel.setOnClickListener {
             finish()

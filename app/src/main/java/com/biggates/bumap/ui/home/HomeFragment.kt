@@ -290,6 +290,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
                 })
 
+        view.rentRoomList.setOnClickListener {
+            startActivity(Intent(context,RentRoomListActivity::class.java))
+        }
+
         return view;
 
 
@@ -600,38 +604,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
         }
 
-        markerCreate.setOnClickListener {
-            val cameraPosition = naverMap.cameraPosition
-            var latlng = LatLng(
-                cameraPosition.target.latitude,
-                cameraPosition.target.longitude
-            )
-            newMarker = Marker()
-            newMarker!!.position = latlng
-            newMarker!!.width= MyUtil.Dp2Px(context, 15)
-            newMarker!!.height= MyUtil.Dp2Px(context, 20)
-            newMarker!!.map = naverMap
-            newMarker!!.icon = MarkerIcons.BLACK
-            naverMap.addOnCameraChangeListener(markerCreateListener)
-            markerCreateAllow.visibility = View.VISIBLE
-
-        }
-
-        markerCreateAllow.setOnClickListener {
-            startActivityForResult(
-                Intent(context, CreateMarkerActivity::class.java)
-                    .putExtra("lat", newMarker!!.position.latitude.toString())
-                    .putExtra("lng", newMarker!!.position.longitude.toString()),
-                CREATE_MARKER_REQUEST_CODE
-            )
-        }
-
-
 
         markerBtn.setOnClickListener{ v: View->
             onOffBuildingMarkerList()
-
         }
+
         naverMap.setOnMapClickListener { point, coord ->
             Log.d("coord", "${coord.latitude.toFloat()}, ${coord.longitude.toFloat()}")
             if(bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
@@ -927,16 +904,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                     }
                 }
 
-            CREATE_MARKER_REQUEST_CODE -> {
-                if (resultCode == 200) {
-                    Toast.makeText(context, "등록 완료", Toast.LENGTH_SHORT).show()
-                    newMarker = null
-                    naverMap.removeOnCameraChangeListener(markerCreateListener)
-                    naverMap.addOnCameraChangeListener(naverMapDefaultListener)
-                    markerCreateAllow.visibility = View.GONE
-                }
-            }
-
         }
     }
 
@@ -969,7 +936,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
         private const val GPS_ENABLE_REQUEST_CODE = 2001
         private const val PERMISSIONS_REQUEST_CODE = 100
-        private const val CREATE_MARKER_REQUEST_CODE = 300
     }
 
 

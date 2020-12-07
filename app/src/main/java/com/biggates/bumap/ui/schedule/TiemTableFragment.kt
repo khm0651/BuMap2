@@ -168,7 +168,6 @@ class TiemTableFragment : Fragment() {
                                                 textView.gravity = Gravity.CENTER
                                                 textView.text = name
                                                 textView.setTypeface(textView.typeface, Typeface.BOLD)
-                                                textView.setLineSpacing(MyUtil.Dp2Px(context!!,1).toFloat(),MyUtil.Dp2Px(context!!,1).toFloat())
                                                 textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10F)
                                                 textView.setTextColor(resources.getColor(R.color.white,null))
                                                 when(day){

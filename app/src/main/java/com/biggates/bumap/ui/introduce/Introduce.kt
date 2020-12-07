@@ -144,8 +144,7 @@ class Introduce : FragmentActivity(), OnMapReadyCallback {
 
                 if (floor_maker.isEmpty()) {
                     for (floor in building.floor.keys) {
-                        var roomMaker =
-                            RoomMaker()
+                        var roomMaker = RoomMaker()
 
                         if (floor.equals("1")) {
                             for (roomNumber in building.floor.get(floor)!!.roomNumber.keys) {

@@ -15,8 +15,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.rentRoom.RentRoomInfoActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+        <activity android:name=".ui.home.RentRoomDetailActivity"
+            android:theme="@style/myDialog"></activity>
+        <activity android:name=".ui.home.RentRoomListActivity" />
+        <activity
+            android:name=".ui.rentRoom.RentRoomInfoActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".ui.RentRoomCreateMarkerActivity"
             android:theme="@style/Theme.Design.NoActionBar" />
