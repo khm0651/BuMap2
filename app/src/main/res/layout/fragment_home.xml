@@ -140,54 +140,38 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/rentRoomList"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
-        android:text="자취방 요청 목록"
-        android:gravity="center"
-        android:padding="10dp"
-        android:background="@drawable/btn_all_solid"
-        ></TextView>
-
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/bottomeSheet_home"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/bottom_navigation_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-            >
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/upscroll_bottomSheet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_container_recyclerview"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 android:padding="5dp"
                 android:visibility="gone"
-                >
+                app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_container_recyclerview"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/more_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="more"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    app:chipBackgroundColor="@android:color/white"
                     app:chipIcon="@drawable/upscroll"
                     app:chipIconSize="30dp"
-                    app:chipBackgroundColor="@android:color/white"
-                    android:text="more"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/black"
 
                     >
 
@@ -198,22 +182,19 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/bottom_navigation_container_recyclerview"
-                android:layout_width = "match_parent"
-                android:layout_height = "wrap_content"
-                android:elevation="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@android:color/white"
+                android:elevation="10dp"
                 android:fitsSystemWindows="true"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                >
-
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
 
 
             </androidx.recyclerview.widget.RecyclerView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

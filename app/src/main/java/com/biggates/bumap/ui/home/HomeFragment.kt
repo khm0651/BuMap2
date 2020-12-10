@@ -230,10 +230,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             }
         })
 
-//        btnKeywordAdapter = BtnKeywordAdapter(btnKeywordList)
-//        view.btn_keyword_recyclerview.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL ,false)
-//        view.btn_keyword_recyclerview.adapter = btnKeywordAdapter
-
 
         if(arguments!!.isEmpty){
             options = NaverMapOptions()
@@ -295,10 +291,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                     }
 
                 })
-
-        view.rentRoomList.setOnClickListener {
-            startActivity(Intent(context,RentRoomListActivity::class.java))
-        }
 
         return view;
 
