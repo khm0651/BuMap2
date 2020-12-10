@@ -167,6 +167,9 @@ class MainActivity : AppCompatActivity() {
         NoticeBuMap.setContext(applicationContext)
         NoticeBuMap.loadBuNotice()
 
+
+        RentRoom.loadRentRoomList(applicationContext)
+
         Cafe.setContext(applicationContext)
         Cafe.loadCafeBuildings()
 

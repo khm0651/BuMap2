@@ -15,8 +15,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.home.RentRoomDetailActivity"
+        <activity android:name=".ui.home.RentRoomPopUpActivity"
             android:theme="@style/myDialog"></activity>
+        <activity
+            android:name=".ui.home.RentRoomDetailActivity"
+            android:theme="@style/myDialog" />
         <activity android:name=".ui.home.RentRoomListActivity" />
         <activity
             android:name=".ui.rentRoom.RentRoomInfoActivity"

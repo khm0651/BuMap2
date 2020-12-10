@@ -44,7 +44,9 @@ class RentRoomDetailActivity : FragmentActivity(), OnMapReadyCallback {
             }
 
         rent_room_ok.setOnClickListener {
-            FirebaseDatabase.getInstance().reference.child("rentRoom").child(rentRoom.buildingName).addListenerForSingleValueEvent(object : ValueEventListener{
+            var rentRoomName = rentRoom.buildingName.replace(" ","")
+            rentRoomName = rentRoomName.toUpperCase()
+            FirebaseDatabase.getInstance().reference.child("rentRoom").child(rentRoomName).addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     registerRentRoom(dataSnapshot)
                 }
@@ -64,6 +66,7 @@ class RentRoomDetailActivity : FragmentActivity(), OnMapReadyCallback {
 
     private fun registerRentRoom(dataSnapshot: DataSnapshot) {
         var list = arrayListOf<RentRoom>()
+
         for(info in dataSnapshot.child("info").children){
             list.add(info.getValue(RentRoom::class.java)!!)
         }
@@ -71,6 +74,37 @@ class RentRoomDetailActivity : FragmentActivity(), OnMapReadyCallback {
         var cal = Calendar.getInstance()
         rentRoom.updateDate = simpleFormatter.format(cal.time)
         list.add(rentRoom)
+        var minYearPrice = 0
+        var maxYearPrice = 0
+        var minHalfYearPrice = 0
+        var maxHalfYearPrice = 0
+        var yearPriceRange = ""
+        var halfYearPriceRange = ""
+        for(rentRoomInfo in list){
+            if(minYearPrice == 0 && rentRoomInfo.yearPrice != "") minYearPrice = rentRoomInfo.yearPrice.toInt()
+            if(maxYearPrice == 0 && rentRoomInfo.yearPrice != "") maxYearPrice = rentRoomInfo.yearPrice.toInt()
+
+            if(minHalfYearPrice == 0 && rentRoomInfo.halfYearPrice != "") minHalfYearPrice = rentRoomInfo.halfYearPrice.toInt()
+            if(maxHalfYearPrice == 0 && rentRoomInfo.halfYearPrice != "") maxHalfYearPrice = rentRoomInfo.halfYearPrice.toInt()
+
+            if(rentRoomInfo.yearPrice != ""){
+                if(minYearPrice > rentRoomInfo.yearPrice.toInt()) minYearPrice = rentRoomInfo.yearPrice.toInt()
+                if(maxYearPrice < rentRoomInfo.yearPrice.toInt()) maxYearPrice = rentRoomInfo.yearPrice.toInt()
+            }
+
+            if(rentRoomInfo.halfYearPrice != ""){
+                if(minHalfYearPrice > rentRoomInfo.halfYearPrice.toInt()) minHalfYearPrice = rentRoomInfo.halfYearPrice.toInt()
+                if(maxHalfYearPrice < rentRoomInfo.halfYearPrice.toInt()) maxHalfYearPrice = rentRoomInfo.halfYearPrice.toInt()
+            }
+
+        }
+
+        if(minYearPrice == maxYearPrice) yearPriceRange = maxYearPrice.toString()
+        else yearPriceRange = "${minYearPrice} ~ ${maxYearPrice}"
+
+        if(minHalfYearPrice == maxHalfYearPrice) halfYearPriceRange = maxHalfYearPrice.toString()
+        else halfYearPriceRange = "${minHalfYearPrice} ~ ${maxHalfYearPrice}"
+
         FirebaseDatabase.getInstance().reference.child("rentRoomRequest").child(rentRoom.id).removeValue().addOnCompleteListener {
             if(it.isSuccessful) {
                 if(!dataSnapshot.hasChild("location")){
@@ -78,24 +112,48 @@ class RentRoomDetailActivity : FragmentActivity(), OnMapReadyCallback {
                     m.put("lat",rentRoom.lat)
                     m.put("lng",rentRoom.lng)
                     dataSnapshot.ref.child("location").setValue(m).addOnCompleteListener {
-                        dataSnapshot.ref.child("info").setValue(list).addOnCompleteListener {
-                            if(it.isSuccessful) {
-                                Toast.makeText(this,"등록 완료",Toast.LENGTH_SHORT).show()
-                                setResult(200)
-                                finish()
-                            }else{
-                                Toast.makeText(this,"서버 오류",Toast.LENGTH_SHORT).show()
+                        if(it.isSuccessful){
+                            dataSnapshot.ref.child("info").setValue(list).addOnCompleteListener {
+                                if(it.isSuccessful) {
+                                    var rangeMap = hashMapOf<String,String>()
+                                    rangeMap.put("yearPriceRange",yearPriceRange)
+                                    rangeMap.put("halfYearPriceRange",halfYearPriceRange)
+                                    dataSnapshot.ref.child("range").setValue(rangeMap).addOnCompleteListener {
+                                        if(it.isSuccessful){
+                                            Toast.makeText(this,"등록 완료",Toast.LENGTH_SHORT).show()
+                                            setResult(200)
+                                            finish()
+                                        }else{
+                                            Toast.makeText(this,"범위 등록 실패",Toast.LENGTH_SHORT).show()
+                                        }
+                                    }
+
+                                }else{
+                                    Toast.makeText(this,"정보 등록 실패",Toast.LENGTH_SHORT).show()
+                                }
                             }
+                        }else{
+                            Toast.makeText(this,"위치 등록 실패",Toast.LENGTH_SHORT).show()
                         }
                     }
                 }else{
                     dataSnapshot.ref.child("info").setValue(list).addOnCompleteListener {
                         if(it.isSuccessful) {
-                            Toast.makeText(this,"등록 완료",Toast.LENGTH_SHORT).show()
-                            setResult(200)
-                            finish()
+                            var rangeMap = hashMapOf<String,String>()
+                            rangeMap.put("yearPriceRange",yearPriceRange)
+                            rangeMap.put("halfYearPriceRange",halfYearPriceRange)
+                            dataSnapshot.ref.child("range").setValue(rangeMap).addOnCompleteListener {
+                                if(it.isSuccessful){
+                                    Toast.makeText(this,"등록 완료",Toast.LENGTH_SHORT).show()
+                                    setResult(200)
+                                    finish()
+                                }else{
+                                    Toast.makeText(this,"범위 등록 실패",Toast.LENGTH_SHORT).show()
+                                }
+                            }
+
                         }else{
-                            Toast.makeText(this,"서버 오류",Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this,"정보 등록 실패",Toast.LENGTH_SHORT).show()
                         }
                     }
                 }

@@ -15,7 +15,6 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -27,18 +26,19 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.biggates.bumap.Adapter.BottomSheetAdapter
+import com.biggates.bumap.Adapter.BottomSheetRentRoomAdapter
 import com.biggates.bumap.Adapter.BtnKeywordAdapter
 import com.biggates.bumap.GpsTracker
 import com.biggates.bumap.MainActivity
 import com.biggates.bumap.Model.BtnKeyword
 import com.biggates.bumap.Model.BuildingSubInfo
 import com.biggates.bumap.Model.Location
+import com.biggates.bumap.Model.RentRoomMarker
 import com.biggates.bumap.MyUtil
 import com.biggates.bumap.R
 import com.biggates.bumap.ViewModel.building.*
 import com.biggates.bumap.ui.RentRoomCreateMarkerActivity
 import com.biggates.bumap.ui.ad.AdActivity
-import com.biggates.bumap.ui.createMarker.CreateMarkerActivity
 import com.biggates.bumap.ui.introduce.Introduce
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
@@ -55,11 +55,11 @@ import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
-import com.naver.maps.map.util.MarkerIcons
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.btn_keyword_main.view.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
+import kotlinx.android.synthetic.main.info_window_layout.view.*
 
 @RequiresApi(Build.VERSION_CODES.M)
 class HomeFragment : Fragment(), OnMapReadyCallback {
@@ -72,10 +72,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     var newMarker: Marker? = null
     var isMarkerLongTouch = false
     var placeList = arrayListOf<MutableMap.MutableEntry<String, BuildingSubInfo>>()
+    var rentRoomList = arrayListOf<MutableMap.MutableEntry<String, RentRoomMarker>>()
     var markerList:HashMap<String, Marker> = HashMap()
 
     var markerFlag:Boolean = false;
 
+    var rentRoomMarkerList : HashMap<String, Marker> = hashMapOf()
     var cafeMarkerList : HashMap<String, Marker> = hashMapOf()
     var foodMarkerList : HashMap<String, Marker> = hashMapOf()
     var beerMarkerList : HashMap<String, Marker> = hashMapOf()
@@ -151,6 +153,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 when(keyword.title){
                     "자취방" -> {
                         setChipIconResource(R.drawable.rentroomchip)
+                        setOnClickListener{
+                            onOffRentRoomMarkerList()
+                            offOtherMarkerList(keyword.title)
+                        }
                     }
                     "카페" -> {
                         setChipIconResource(R.drawable.coffeechip)
@@ -299,8 +305,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
     }
 
-
-
     @UiThread
     override fun onMapReady(naverMap: NaverMap) {
 
@@ -412,6 +416,46 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                     true
                 }
             }
+
+        }
+
+        for(rentRoom in RentRoom.rentRoomList.value!!){
+            var marker = Marker()
+            marker.position = LatLng(
+                rentRoom.value.location.lat.toDouble(),
+                rentRoom.value.location.lng.toDouble()
+            )
+            marker.width= MyUtil.Dp2Px(context, 25)
+            marker.height= MyUtil.Dp2Px(context, 30)
+            marker.map = null
+            marker.tag = "년세 : ${rentRoom.value.range.yearPriceRange}-반년세 : ${rentRoom.value.range.halfYearPriceRange}"
+            marker.icon = OverlayImage.fromResource(R.drawable.rentroom)
+
+            marker.setOnClickListener {
+                rentRoomList.clear()
+
+                var bottomSheetRecyclerView = view!!.bottom_navigation_container_recyclerview
+
+                for (r in RentRoom.rentRoomList.value!!) {
+                    if (rentRoom.value.location.lat == r.value.location.lat && rentRoom.value.location.lng == r.value.location.lng) {
+                        rentRoomList.add(r)
+                    }
+                }
+
+
+                var bottomSheetAdapter = BottomSheetRentRoomAdapter(context, rentRoomList)
+                bottomSheetRecyclerView.adapter = bottomSheetAdapter
+                bottomSheetRecyclerView.layoutManager = LinearLayoutManager(context)
+                if (placeList.size > 1) {
+                    upscroll_bottomSheet.visibility = View.VISIBLE
+                } else {
+                    upscroll_bottomSheet.visibility = View.GONE
+                }
+                bottomSheetBehavior.peekHeight = MyUtil.Dp2Px(context, 150)
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                true
+            }
+            rentRoomMarkerList.put(rentRoom.value.rentRoomName, marker)
 
         }
 
@@ -626,6 +670,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun offOtherMarkerList(category : String) {
+        for (rentRoom in rentRoomMarkerList) if(category!="자취방") rentRoom.value.map = null
         for (cafe in cafeMarkerList) if(category!="카페") cafe.value.map = null
         for (food in foodMarkerList) if(category!="음식점") food.value.map = null
         for (copy in copyMarkerList) if(category!="복사점") copy.value.map = null
@@ -638,6 +683,56 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             markerBtn.markerText.text = "OFF"
         }
         if(category=="학교") naverMap.symbolScale = 1f
+    }
+
+    private fun onOffRentRoomMarkerList() {
+        for (rentRoom in rentRoomMarkerList) {
+            if (rentRoom.value.map != naverMap) {
+                rentRoom.value.map = naverMap
+                naverMap.symbolScale = 0f
+                var rentInfoWindow = InfoWindow()
+                rentInfoWindow.adapter = object : InfoWindow.DefaultViewAdapter(requireContext()){
+                    override fun getContentView(infoWindow: InfoWindow): View {
+                        var marker = infoWindow.marker
+                        var split = marker!!.tag.toString().split("-")
+                        var view = View.inflate(requireContext(),R.layout.info_window_layout,null)
+                        view.year_price_tv_info_window.text = split[0]
+                        view.half_year_price_tv_info_window.text = split[1]
+                        return view
+                    }
+
+                }
+                rentInfoWindow.setOnClickListener {
+                    rentRoomList.clear()
+
+                    var bottomSheetRecyclerView = view!!.bottom_navigation_container_recyclerview
+
+                    for (r in RentRoom.rentRoomList.value!!) {
+                        if (rentRoom.value.position.latitude.toString() == r.value.location.lat && rentRoom.value.position.longitude.toString() == r.value.location.lng) {
+                            rentRoomList.add(r)
+                        }
+                    }
+
+
+                    var bottomSheetAdapter = BottomSheetRentRoomAdapter(context!!, rentRoomList)
+                    bottomSheetRecyclerView.adapter = bottomSheetAdapter
+                    bottomSheetRecyclerView.layoutManager = LinearLayoutManager(context)
+                    if (placeList.size > 1) {
+                        upscroll_bottomSheet.visibility = View.VISIBLE
+                    } else {
+                        upscroll_bottomSheet.visibility = View.GONE
+                    }
+                    bottomSheetBehavior.peekHeight = MyUtil.Dp2Px(context!!, 150)
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                    true
+                }
+                rentInfoWindow.open(rentRoom.value)
+            }
+            else {
+                rentRoom.value.map = null
+                naverMap.symbolScale = 1f
+            }
+        }
     }
 
     private fun onOffcafeMarkerList() {

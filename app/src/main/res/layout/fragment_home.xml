@@ -140,6 +140,19 @@
 
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/rentRoomList"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:text="자취방 요청 목록"
+        android:gravity="center"
+        android:padding="10dp"
+        android:background="@drawable/btn_all_solid"
+        ></TextView>
+
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/bottomeSheet_home"
@@ -205,18 +218,7 @@
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <TextView
-        android:id="@+id/rentRoomList"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
-        android:text="자취방 요청 목록"
-        android:gravity="center"
-        android:padding="10dp"
-        android:background="@drawable/btn_all_solid"
-        ></TextView>
+
 
 </RelativeLayout>
 
